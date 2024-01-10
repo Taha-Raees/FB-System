@@ -6,7 +6,7 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
 
   const handleMenuItemClick = (itemName) => {
     if (itemName === 'Sign Out') {
-      onSignOut();  // handle sign out
+      onSignOut(); // handle sign out
     } else {
       setActiveMenuItem(itemName); // set the active menu item
     }
@@ -15,50 +15,50 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
   return (
     <div className="sidebar">
       <div className="logo">
-        <img src="/images/Logo.png" alt="Company Logo" className="logo" />
+        <img src="/images/Logo.png" alt="Company Logo" width={200} height={200} />
       </div>
       <div className="menu">
         <div
           className={`menu-item ${activeMenuItem === 'Dashboard' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Dashboard')}
         >
-          <Home /> Dashboard
+          <Home /><span>Dashboard</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Events' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Events')}
         >
-          <Event /> Events
+          <Event /><span>Events</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Staffing' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Staffing')}
         >
-          <Person /> Staffing
+          <Person /><span>Staffing</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Inventory' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Inventory')}
         >
-          <Inventory /> Inventory
+          <Inventory /><span>Inventory</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Messages' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Messages')}
         >
-          <Chat /> Messages
+          <Chat /><span>Messages</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Calendar' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Calendar')}
         >
-          <CalendarToday /> Calendar
+          <CalendarToday /><span>Calendar</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Setting' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Setting')}
         >
-          <Settings /> Setting
+          <Settings /><span>Setting</span>
         </div>
       </div>
       <hr />
@@ -67,13 +67,13 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
           className={`user-item ${activeMenuItem === 'Sign Out' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Sign Out')}
         >
-          <ExitToApp /> Sign Out
+          <ExitToApp /><span>Sign Out</span>
         </div>
         <div
           className={`user-item ${activeMenuItem === 'Help' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Help')}
         >
-          <HelpOutline /> Help
+          <HelpOutline /><span>Help</span>
         </div>
       </div>
     </div>
