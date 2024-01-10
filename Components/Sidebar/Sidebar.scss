@@ -70,7 +70,11 @@
   @media (max-width: 768px) {
     width: 5vw;
 
-    .logo, .menu-item span, .user-item span {
+    .logo{
+      visibility: hidden;
+    }
+    
+    .menu-item span, .user-item span {
       display: none;
     }
 
