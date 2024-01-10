@@ -18,7 +18,9 @@ const Login = ({ onSignIn }) => {
 
   return (
     <div className="myBackground">
+       
       <form onSubmit={handleSubmit} className="loginForm">
+      <img src="/images/Logo.png" alt="Linear Logo" className="logo" width={300} height={300} />
         <h1>Login</h1>
         <input
           type="text"
