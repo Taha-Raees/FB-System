@@ -6,7 +6,12 @@
   gap: 20px;
   padding: 20px;
   overflow: scroll;
- 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   .event-card {
     width: 300px;
