@@ -22,7 +22,7 @@
     margin-top: -0.5em;
   }
 
-  .menu, .user {
+  .menu,.user {
     display: flex;
     flex-direction: column;
   }
@@ -64,7 +64,7 @@
   }
 
   hr {
-    margin-top: auto;
+    margin-top: 25vh;
   }
 
   @media (max-width: 768px) {
