@@ -5,6 +5,7 @@
   align-content: flex-start; // Adjusts the lines within the container
   gap: 20px;
   padding: 20px;
+  overflow: scroll;
  
 
   .event-card {
