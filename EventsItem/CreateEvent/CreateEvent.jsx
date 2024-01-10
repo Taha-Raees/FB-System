@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Button, TextField, Card, CardContent, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import './CreateEvent.scss';
+import BackButton from '@/Buttons/BackButton/BackButton';
 
 
-const CreateEvent = () => {
+const CreateEvent = ({ onBack }) => {
     const [eventName, setEventName] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
@@ -21,6 +22,7 @@ const CreateEvent = () => {
     return (
         <Card className="create-event-card">
             <CardContent>
+            <BackButton onBack={onBack} />
                 <Typography variant="h5">Create New Event</Typography>
                 <form onSubmit={handleSubmit}>
                     <TextField
@@ -60,7 +62,7 @@ const CreateEvent = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    <Button type="submit" color="primary" variant="contained">
+                    <Button type="submit" style={{ backgroundColor: '#ffa239' }} variant="contained">
                         Create Event
                     </Button>
                 </form>

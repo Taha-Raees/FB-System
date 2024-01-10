@@ -16,12 +16,11 @@ import './Events.scss';
 
 const Events = () => {
   const [currentView, setCurrentView] = useState('menu');
-
   const renderView = () => {
     switch(currentView) {
       case 'create':
-        return <CreateEvent />;
-      // case 'manage':
+        return <CreateEvent onBack={() => setCurrentView('menu')} />;
+       // case 'manage':
       //   return <ManageEvent />;
       // case 'analytics':
       //   return <EventAnalytics />;
