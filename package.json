@@ -1,0 +1,26 @@
+{
+  "name": "fb-system",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.3",
+    "@mui/material": "^5.15.3",
+    "next": "14.0.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "sass": "^1.69.7"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.9",
+    "cross-env": "^7.0.3"
+  }
+}

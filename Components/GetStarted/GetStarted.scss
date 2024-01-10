@@ -1,0 +1,53 @@
+// styles/GetStarted.module.scss
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+   
+    .content {
+        background-color:rgba(255, 255, 255, 0.812);
+        text-align: center;
+        border-radius: 2%;
+        width: 30%;
+          .title {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            color: #6e6e6e;
+          }
+          .subtitle {
+            font-size: 1rem;
+            margin-bottom: 24px;
+            color: #6c757d;
+            padding: 0px 20px;
+            
+            
+          }
+          .button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #ffa239; // Example purple color
+            color: white;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          
+            &:hover {
+              background-color: #4338ca; // A slightly darker purple for hover state
+            }
+          }
+      }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

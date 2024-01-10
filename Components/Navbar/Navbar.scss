@@ -1,0 +1,40 @@
+.navbar {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  height: 50px; // Adjusted for better alignment
+  min-width: 83.2vw;
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    .search-icon {
+      color: #ff9c2a; // Color for the search icon
+    }
+    .search-input {
+      padding: 10px;
+      padding-left: 5px;
+      border: none;
+      outline: none;
+      width: 20vw; // Longer input
+      border-radius: 4px;
+
+      &:focus {
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); // Optional focus style
+      }
+    }
+  }
+
+  .user-icon {
+    svg {
+      font-size: 2rem; // Larger user icon
+       // Color for the user icon
+    }
+  }
+
+  .actions {
+    display: none; // Hide actions as they are not needed anymore
+  }
+}

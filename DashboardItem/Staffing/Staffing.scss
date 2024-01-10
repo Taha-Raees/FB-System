@@ -1,0 +1,39 @@
+.staffing-page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+
+  .staffing-card {
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .MuiCardContent-root {
+      text-align: center;
+
+      .MuiTypography-h5 {
+        margin-bottom: 8px;
+      }
+
+      .MuiTypography-body2 {
+        margin-bottom: 16px;
+      }
+
+      .card-icon {
+        font-size: 40px;
+        color: #ff9c2a;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+.myBackground { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    .loginForm {
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.701);
+        border-radius: 8px;
+        text-align: center;
+        width: 30%;
+        h1 {
+          margin-bottom: 20px;
+        }
+      }
+      
+      .inputField {
+        width: 100%;
+        padding: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #f9b624c3;
+        border-radius: 4px;
+      }
+      
+      .loginButton {
+        width: 100%;
+        padding: 10px;
+        background-color: #f3a200;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+}
+.inputField.error {
+  border: 1px solid #ff0000; // Red border for error
+}
+
+.errorMessage {
+  color: #ff0000; // Red text for the error message
+  margin-top: 10px;
+}
