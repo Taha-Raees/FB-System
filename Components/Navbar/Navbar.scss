@@ -4,8 +4,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  height: 50px; // Adjusted for better alignment
-  min-width: 83.2vw;
+  max-height: 40px;
+  min-width: 83vw;
 
   .search-bar {
     display: flex;
@@ -32,9 +32,5 @@
       font-size: 2rem; // Larger user icon
        // Color for the user icon
     }
-  }
-
-  .actions {
-    display: none; // Hide actions as they are not needed anymore
   }
 }
