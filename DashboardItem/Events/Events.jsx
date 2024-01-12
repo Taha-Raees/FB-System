@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -9,13 +8,17 @@ import BudgetIcon from '@mui/icons-material/AttachMoney';
 import AllocationIcon from '@mui/icons-material/AllInbox';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import CreateEvent from '@/EventsItem/CreateEvent/CreateEvent';
+import CreateEvent from '@/DashboardItem/Events/EventsItem/CreateEvent/CreateEvent';
 
 // Import other components similarly
 import './Events.scss';
 
-const Events = () => {
+const Events = ({onShowBackButtonChange }) => {
   const [currentView, setCurrentView] = useState('menu');
+  useEffect(() => {
+    // Inform Dashboard to show the back button when not on the main menu
+    onShowBackButtonChange(currentView !== 'menu');
+  }, [currentView, onShowBackButtonChange]);
   const renderView = () => {
     switch(currentView) {
       case 'create':

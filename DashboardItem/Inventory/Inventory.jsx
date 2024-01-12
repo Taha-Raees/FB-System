@@ -1,21 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import BuildIcon from '@mui/icons-material/Build';
+import TruckInventory from '@/DashboardItem/Inventory/InventoryItem/TruckInventory/TruckInventory';
+import FoodInventory from './InventoryItem/FoodInventory/FoodInventory';
+import EquipmentInventory from './InventoryItem/EquipmentInventory/EquipmentInventory';
 import './Inventory.scss';
 
 const Inventory = () => {
-  const handleTrucks = () => {/* ... */};
-  const handleFood = () => {/* ... */};
-  const handleEquipment = () => {/* ... */};
-
-  return (
-    <div className="inventory-page">
+  const [currentView, setCurrentView] = useState('menu');
+  const renderView = () => {
+    switch(currentView) {
+      case 'manageTruck':
+        return <TruckInventory onBack={() => setCurrentView('menu')} />;
+      case 'manageFood':
+         return <FoodInventory onBack={() => setCurrentView('menu')} />;
+      case 'manageEquipment':
+      return <EquipmentInventory onBack={() => setCurrentView('menu')} />;
+      // Add cases for other views
+      default:
+        return renderMenu();
+    }
+  };
+  const renderMenu = () => (
+    <>
       {/* Trucks Inventory */}
-      <Card variant="outlined" className="inventory-card" onClick={handleTrucks}>
+      <Card variant="outlined" className="inventory-card" onClick={() => setCurrentView('manageTruck')}>
         <CardContent>
           <LocalShippingIcon className="card-icon" />
           <Typography variant="h5" component="h2">Truck Inventory</Typography>
@@ -24,7 +37,7 @@ const Inventory = () => {
       </Card>
 
       {/* Food Inventory */}
-      <Card variant="outlined" className="inventory-card" onClick={handleFood}>
+      <Card variant="outlined" className="inventory-card" onClick={() => setCurrentView('manageFood')}>
         <CardContent>
           <FastfoodIcon className="card-icon" />
           <Typography variant="h5" component="h2">Food Inventory</Typography>
@@ -33,7 +46,7 @@ const Inventory = () => {
       </Card>
 
       {/* Equipment Inventory */}
-      <Card variant="outlined" className="inventory-card" onClick={handleEquipment}>
+      <Card variant="outlined" className="inventory-card" onClick={() => setCurrentView('manageEquipment')}>
         <CardContent>
           <BuildIcon className="card-icon" />
           <Typography variant="h5" component="h2">Equipment Inventory</Typography>
@@ -43,6 +56,12 @@ const Inventory = () => {
 
       {/* Additional inventory features */}
       {/* ... Add more cards for other features like Supply Ordering, Inventory Analysis, etc. */}
+    </>
+  );
+
+  return (
+    <div className="inventory-page">
+      {renderView()}
     </div>
   );
 };
