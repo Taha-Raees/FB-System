@@ -9,8 +9,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import './FoodInventory.scss';
+import BackButton from '@/Buttons/BackButton/BackButton';
 
-const FoodInventory = () => {
+const FoodInventory = ({ onBack }) => {
     const products = [
         { id: 1, name: 'Apple Juice',category:"Drink", quantity: 24, description: 'Bottled apple juice', expiry: '2022-12-31' },
         { id: 2, name: 'Orange Juice',category:"Drink", quantity: 30, description: 'Bottled orange juice', expiry: '2023-01-15' },
@@ -23,6 +24,7 @@ const FoodInventory = () => {
   return (
     <Grid container className="food-inventory" spacing={2}>
       <Grid item xs={12}>
+      <BackButton onBack={onBack} />
         <div className="inventory-controls">
           <div className="search-filter-section">
             <SearchIcon />
