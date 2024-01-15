@@ -12,7 +12,7 @@ import 'react-popup/style.css'; // The path may vary based on the actual structu
 const localizer = momentLocalizer(moment); // Setup the localizer by providing the moment Object to the correct localizer.
 
 class Calendar extends Component {
-
+    
     componentDidMount() {
         this.props.fetchEvents();
     }

@@ -1,15 +1,20 @@
-import React, { Component } from 'react';
-import Calendar from './calender'
+import React from 'react';
+import dynamic from 'next/dynamic';
 
-class App extends Component {
+// Dynamically import the Calendar component with SSR disabled
+const DynamicCalendar = dynamic(
+  () => import('@/Components/calender'), // Adjust the import path as needed
+  { ssr: false }
+);
 
-    render() {
-        return (
-            <div>
-                <Calendar />
-            </div>
-        );
-    }
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <DynamicCalendar />
+      </div>
+    );
+  }
 }
 
 export default App;
