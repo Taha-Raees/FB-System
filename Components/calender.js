@@ -8,6 +8,7 @@ import Input from './input';
 import moment from 'moment';
 import { fetchEvents, createEvent, updateEvent, deleteEvent } from '../actions';
 import 'react-popup/style.css'; // The path may vary based on the actual structure of the package
+import './calender.css'
 
 const localizer = momentLocalizer(moment); // Setup the localizer by providing the moment Object to the correct localizer.
 
