@@ -4,6 +4,9 @@ import { NavigationProvider } from '@/ContextApi/NavigationContext'; // Adjust t
 import GetStarted from '@/Components/GetStarted/GetStarted';
 import Dashboard from '@/Components/Dashboard/Dashboard';
 import "./Main.scss";
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-popup/style.css'; 
+
 
 const Home = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -19,6 +22,7 @@ const Home = () => {
   return (
     <NavigationProvider>
       <div className="main">
+      
         {isSignedIn ? (
           <Dashboard onSignOut={handleSignOut} />
         ) : (

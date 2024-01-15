@@ -1,74 +1,46 @@
-import React, { useState } from 'react';
-import { Button, TextField, Card, CardContent, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import './CreateEvent.scss';
-import BackButton from '@/Buttons/BackButton/BackButton';
+import React, { useEffect } from 'react';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import {thunk} from 'redux-thunk'; // Corrected import
+import App from '@/Components/app';
+import rootReducer from '@/reducers';
+import dynamic from 'next/dynamic';
 
+// Dynamically import keymaster with SSR disabled
+const Keymaster = dynamic(
+  () => import('keymaster'),
+  { ssr: false }
+);
 
-const CreateEvent = ({ onBack }) => {
-    const [eventName, setEventName] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
-    const [location, setLocation] = useState('');
+// Create Redux store with thunk middleware
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
-    const locations = ['Location 1', 'Location 2', 'Location 3']; // Example locations
+const CreateEvent = () => {
+  useEffect(() => {
+    let keymasterInstance;
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Handle the form submission logic here
-        console.log({ eventName, description, date, location });
-        // You might want to send this data to a backend server or manage state
+  const initialize = async () => {
+    keymasterInstance = await Keymaster;
+    // use keymasterInstance 
+  }
+
+  initialize();
+    return () => {
+      // Cleanup if necessary when the component unmounts
+      if (keymasterInstance) {
+        // Unbind keymaster bindings or perform other cleanup
+      }
     };
+  }, []);
 
-    return (
-        <Card className="create-event-card">
-            <CardContent>
-            <BackButton onBack={onBack} />
-                <Typography variant="h5">Create New Event</Typography>
-                <form onSubmit={handleSubmit}>
-                    <TextField
-                        label="Event Name"
-                        value={eventName}
-                        onChange={(e) => setEventName(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                    />
-                    <TextField
-                        label="Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        multiline
-                        rows={4}
-                    />
-                    <TextField
-                        label="Date"
-                        type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{ shrink: true }}
-                    />
-                    <FormControl fullWidth margin="normal">
-                        <InputLabel>Location</InputLabel>
-                        <Select
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            label="Location"
-                        >
-                            {locations.map((loc, index) => (
-                                <MenuItem key={index} value={loc}>{loc}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <Button type="submit" style={{ backgroundColor: '#ffa239' }} variant="contained">
-                        Create Event
-                    </Button>
-                </form>
-            </CardContent>
-        </Card>
-    );
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
 };
 
 export default CreateEvent;
+
+
+

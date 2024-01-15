@@ -10,13 +10,25 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.3",
-    "@mui/material": "^5.15.3",
+    "@mui/lab": "^5.0.0-alpha.160",
+    "@mui/material": "^5.15.4",
+    "@mui/x-date-pickers": "^6.19.0",
+    "date-fns": "^3.2.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
     "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.2.0",
+    "react-big-calendar": "^1.8.6",
+    "react-dom": "^18.2.0",
+    "react-popup": "^0.11.2",
+    "react-redux": "^9.1.0",
+    "reactjs-popup": "^2.0.6",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
     "sass": "^1.69.7"
   },
   "devDependencies": {
