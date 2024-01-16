@@ -25,7 +25,7 @@ class Input extends Component {
 
     render() {
         return (
-            <input type="text" placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />
+            <input type={this.props.type||"text"} placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />
         )
     }
 }

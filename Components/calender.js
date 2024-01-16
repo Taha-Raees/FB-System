@@ -63,6 +63,8 @@ class Calendar extends Component {
             slotInfo.id = moment().format('x');
             slotInfo.title = null;
             slotInfo.location = null;
+            slotInfo.startDate = moment(slotInfo.start).format('YYYY-MM-DD');
+            slotInfo.endDate = moment(slotInfo.start).format('YYYY-MM-DD');
             popupTitle = "Create Event";
             newEvent = true;
         }
@@ -73,12 +75,20 @@ class Calendar extends Component {
         let locationChange = function (value) {
             slotInfo.location = value;
         };
+        let startDateChange = function (value) {
+            slotInfo.startDate = value;
+        };
+        let endDateChange = function (value) {
+            slotInfo.endDate = value;
+        };
         
         Popup.create({
             title: popupTitle,
             content: <div>
                         <Input onChange={titleChange} placeholder="Event Title" defaultValue={slotInfo.title} />
                         <Input onChange={locationChange} placeholder="Event Location" defaultValue={slotInfo.location} />
+                        <Input onChange={startDateChange} placeholder="Start Date" defaultValue={slotInfo.startDate} type="date" />
+                        <Input onChange={endDateChange} placeholder="End Date"defaultValue={slotInfo.endDate} type="date"/>
                     </div>,
             buttons: {
                 left: ['cancel'],
@@ -99,9 +109,17 @@ class Calendar extends Component {
     }
 
     eventStyleGetter = (event, start, end, isSelected) => {
-        let current_time = moment().format('YYYY MM DD');
-        let event_time = moment(event.start).format('YYYY MM DD');
-        let background = (current_time>event_time) ? '#DE6987' : '#8CBD4C';
+        let current_time = moment().format('YYYY-MM-DD');
+        let event_start = moment(event.start).format('YYYY-MM-DD');
+        let event_end = moment(event.end).format('YYYY-MM-DD');
+    
+        let background = '#8CBD4C'; // Default color for upcoming events
+        if (current_time > event_end) {
+            background = '#DE6987'; // Past events color
+        } else if (current_time >= event_start && current_time <= event_end) {
+            background = '#FED766'; // Ongoing events color
+        }
+    
         return {
             style: {
                 backgroundColor: background
@@ -112,21 +130,25 @@ class Calendar extends Component {
     render() {
         return (
             <div className="calendar-container">
-                <BigCalendar
-                    popup
-                    selectable
-                    localizer={localizer}
-                    defaultView='month' 
-                    components={{ toolbar: CustomToolbar }}
-                    views={['month']}
-                    style={{ height: 600 }}
-                    events={this.props.events}
-                    eventPropGetter={this.eventStyleGetter}
-                    onSelectEvent={this.onSelectEventHandler}
-                    onSelectSlot={this.onSelectEventSlotHandler}
-                />
-                <Popup />
-            </div>
+            <BigCalendar
+                popup
+                selectable
+                localizer={localizer}
+                defaultView='month'
+                components={{ toolbar: CustomToolbar }}
+                views={['month', 'week', 'day', 'agenda']} // Ensure all views are available
+                style={{ height: 600 }}
+                events={this.props.events.map(event => ({
+                    ...event,
+                    start: new Date(event.startDate),
+                    end: new Date(moment(event.endDate).add(1, 'days')) // Adjust end date
+                }))}
+                eventPropGetter={this.eventStyleGetter}
+                onSelectEvent={this.onSelectEventHandler}
+                onSelectSlot={this.onSelectEventSlotHandler}
+            />
+            <Popup />
+        </div>
         );
     }
 }
