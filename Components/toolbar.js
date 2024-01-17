@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchEvents, pastEvents, upcomingEvents } from '../actions';
+import { fetchEvents, pastEvents, upcomingEvents, ongoingEvents } from '../actions';
+
 import './toolbar.css';
 
 const navigate = {
@@ -24,6 +25,10 @@ class CustomToolbar extends Component {
     onClickUpcomingEvents() {
         this.props.upcomingEvents();
     };
+    onClickOngoingEvents() {
+        this.props.ongoingEvents();
+    };
+    
 
     render() {
         let { localizer: { messages }, label } = this.props;
@@ -45,6 +50,9 @@ class CustomToolbar extends Component {
                 <span className="rbc-btn-group">
                     <button type="button" className="btn btn-upcoming" onClick={(e) => this.onClickUpcomingEvents()}>Upcoming</button>
                 </span>
+                <span className="rbc-btn-group">
+                    <button type="button" className="btn btn-ongoing" onClick={(e) => this.onClickOngoingEvents()}>Ongoing</button>
+                </span>
             </div>
         )
     }
@@ -63,8 +71,10 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ 
         fetchEvents,
         pastEvents, 
-        upcomingEvents 
+        upcomingEvents,
+        ongoingEvents // Add this line
     }, dispatch);
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomToolbar);

@@ -25,6 +25,10 @@ body {
   color: #fff !important;
   background: #8CBD4C !important;
 }
+.btn-ongoing {
+  color: #fff !important;
+  background: #FED766 !important;
+}
 .rbc-toolbar {
   margin-bottom: 15px;
 }

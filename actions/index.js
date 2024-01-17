@@ -10,6 +10,24 @@ export const DELETE_EVENT = 'delete_event';
 export const PAST_EVENTS = 'past_events';
 export const UPCOMING_EVENTS = 'upcoming_events';
 
+// New action type
+export const ONGOING_EVENTS = 'ongoing_events';
+
+// Action creator for ongoing events
+export function ongoingEvents() {
+    let events = JSON.parse(localStorage.getItem('events')); // Get data from Storage
+    let current_time = moment().format('YYYY MM DD');
+    let ongoingEvents = _.filter(events, (event) => {
+        let start = moment(event.start).format('YYYY MM DD');
+        let end = moment(event.end).format('YYYY MM DD');
+        return current_time >= start && current_time <= end;
+    });
+    return {
+        type: ONGOING_EVENTS,
+        payload: ongoingEvents
+    }
+}
+
 //FETCH EVENTS FROM LOCAL STORAGE
 export function fetchEvents() {
     if(!localStorage.getItem('events')) {
