@@ -49,12 +49,6 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
           <Chat /><span>Messages</span>
         </div>
         <div
-          className={`menu-item ${activeMenuItem === 'Calendar' ? 'active' : ''}`}
-          onClick={() => handleMenuItemClick('Calendar')}
-        >
-          <CalendarToday /><span>Calendar</span>
-        </div>
-        <div
           className={`menu-item ${activeMenuItem === 'Setting' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Setting')}
         >
