@@ -1,3 +1,6 @@
-.events{
-    margin-top: 30px;
-}
+.events {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 83vh; /* Optional: sets the height of the container to the full viewport height */
+  }
