@@ -1,14 +1,34 @@
-// ConversationList.scss
+// src/components/ConversationList.scss
 .conversation-list {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  background-color: #ebebeb;
+
+  .search-container {
+    padding: 10px;
+    background-color: #f0f0f0;
+
+    .search-input {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #e89735;
+        box-shadow: 0 0 8px rgba(232, 151, 53, 0.2);
+      }
+    }
+  }
 
   .conversation {
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #e89735;
 
     &:hover {
       background-color: #f7f7f7;
@@ -30,10 +50,11 @@
       .conversation-name {
         font-weight: 500;
         margin-bottom: 5px;
+        color: #e89735;
       }
 
       .conversation-snippet {
-        color: #999;
+        color: #383838;
         margin: 0;
       }
     }

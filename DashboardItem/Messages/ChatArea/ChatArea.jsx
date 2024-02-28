@@ -1,6 +1,7 @@
 import React from 'react';
 import mockData from '../MockData'; // Ensure the path to mockData.js is correct
 import './ChatArea.scss';
+import { Send } from '@mui/icons-material';
 
 function ChatArea() {
   const { currentChat } = mockData;
@@ -17,7 +18,8 @@ function ChatArea() {
       </div>
       <div className="message-input">
         <input type="text" placeholder="Write a message..." />
-        <button>Send</button>
+        <button className='message-input-button'>
+          <Send/>Send</button>
       </div>
     </div>
   );

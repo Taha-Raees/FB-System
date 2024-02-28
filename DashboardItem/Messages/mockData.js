@@ -7,7 +7,7 @@ const mockData = {
     currentChat: {
       id: 1,
       messages: [
-        { id: 1, from: "Caesar", message: "Handsome lad like you. There must be some special girl", time: "4:38 AM" },
+        { id: 1, from: "Caesar", message: "loren ispsum", time: "4:38 AM" },
         { id: 2, from: "You", message: "Come on, what's her name?", time: "8:54 AM" },
         // ... add other messages in the conversation
       ],
