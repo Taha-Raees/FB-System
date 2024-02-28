@@ -5,7 +5,7 @@ import DashboardContent from '@/DashboardItem/DashboardContent/DashboardContent'
 import Inventory from '@/DashboardItem/Inventory/Inventory';
 import Staffing from '@/DashboardItem/Staffing/Staffing';
 import "./dashboard.scss";
-
+import MessagingApp from '@/DashboardItem/Messages/MessagingApp';
 
 const Dashboard = ({ onSignOut }) => {
   const [activeMenuItem, setActiveMenuItem] = useState('Dashboard');
@@ -38,6 +38,8 @@ const Dashboard = ({ onSignOut }) => {
         return <Inventory />;
       case 'Staffing':
         return <Staffing />;
+      case 'Messages':
+        return <MessagingApp />;
       default:
         return <DashboardContent />;
     }
