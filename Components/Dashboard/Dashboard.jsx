@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '@/Components/Sidebar/Sidebar';
-import Navbar from '@/Components/Navbar/Navbar';
 import Events from '@/DashboardItem/Events/Events';
 import DashboardContent from '@/DashboardItem/DashboardContent/DashboardContent';
 import Inventory from '@/DashboardItem/Inventory/Inventory';
 import Staffing from '@/DashboardItem/Staffing/Staffing';
 import "./dashboard.scss";
 
+
 const Dashboard = ({ onSignOut }) => {
   const [activeMenuItem, setActiveMenuItem] = useState('Dashboard');
   const [showBackButton, setShowBackButton] = useState(false);
+
+  useEffect(() => {
+    // On load, check if there's an active menu item state persisted
+    const savedActiveMenuItem = localStorage.getItem("activeMenuItem");
+    if (savedActiveMenuItem) {
+      setActiveMenuItem(savedActiveMenuItem);
+      setShowBackButton(savedActiveMenuItem !== 'Dashboard'); // Assuming you want the back button visible for non-dashboard menu items
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save the active menu item state whenever it changes
+    localStorage.setItem("activeMenuItem", activeMenuItem);
+  }, [activeMenuItem]);
 
   const handleBack = () => {
     setActiveMenuItem('Dashboard');
@@ -33,7 +47,6 @@ const Dashboard = ({ onSignOut }) => {
     <div className="dashboard">
       <Sidebar activeMenuItem={activeMenuItem} setActiveMenuItem={setActiveMenuItem} onSignOut={onSignOut} />
       <div className="container">
-        <Navbar showBackButton={showBackButton} onBack={handleBack} />
         {renderContent()}
       </div>
     </div>
@@ -41,4 +54,5 @@ const Dashboard = ({ onSignOut }) => {
 };
 
 export default Dashboard;
+
 

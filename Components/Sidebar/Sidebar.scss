@@ -4,8 +4,98 @@
   min-width: 15vw;
   height: 100vh;
   background-color: #ffffff;
-  border-right: 1px solid #ff9c2a;
+  border-right: 1px solid #dddddd;
   overflow-y: auto;
+
+  &.collapsed {
+    min-width: 3vw;
+    .logo {
+      justify-content: center;
+      margin-top: -50px;
+      img {
+        display: none;
+      }
+    }
+    
+    .menu-item, .user-item {
+      justify-content: center;
+      
+      span {
+        display: none;
+      }
+
+      // Vertical line for collapsed state
+      &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 30px; // Vertical line height
+        width: 2px; // Vertical line width
+        background-color: #ff9c2a; // Vertical line color
+        display: none; // Initially hidden, shown on active
+      }
+
+      &.active::before {
+        display: block; // Show vertical line for active items
+      }
+
+      // Remove horizontal line for active items in collapsed state
+      &.active::after {
+        width: 0 !important;
+      }
+    }
+
+    // Horizontal line on hover for collapsed state
+    .menu-item:hover::after, .user-item:hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 1px;
+      background-color: #ff9c2a;
+      display: block; // Show on hover
+    }
+  }
+
+  .menu-item, .user-item {
+    position: relative;
+    padding: 10px;
+    color: #4f4f4f;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+
+    // Horizontal line for non-collapsed state
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: 0; // Initially hidden
+      height: 1px;
+      background-color: #ff9c2a;
+      transition: width 0.3s ease;
+    }
+
+    &:hover::after, &.active::after {
+      width: 70%; // Show horizontal line on hover and when active
+    }
+
+    &.active {
+      color: #ff9c2a;
+      font-weight: bold;
+    }
+
+    span {
+      margin-left: 10px;
+    }
+  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -20,47 +110,12 @@
     align-items: center;
     height: 10em;
     margin-top: -0.5em;
+    cursor: pointer;
   }
 
-  .menu,.user {
+  .menu, .user {
     display: flex;
     flex-direction: column;
-  }
-
-  .menu-item, .user-item {
-    position: relative;
-    padding: 10px;
-    color: #4f4f4f;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 0;
-      width: 0;
-      height: 1px;
-      background-color: #ff9c2a;
-      transition: width 0.3s ease;
-    }
-
-    &:hover::after, &.active::after {
-      width: 70%;
-    }
-
-    &.active {
-      color: #ff9c2a;
-      font-weight: bold;
-    }
-  
-
-    span {
-      margin-left: 10px;
-    }
   }
 
   hr {
@@ -68,14 +123,8 @@
   }
 
   @media (max-width: 768px) {
-    width: 5vw;
-
-    .logo{
+    .logo {
       visibility: hidden;
-    }
-    
-    .menu-item span, .user-item span {
-      display: none;
     }
 
     .menu-item, .user-item {

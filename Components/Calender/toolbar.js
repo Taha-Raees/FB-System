@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchEvents, pastEvents, upcomingEvents, ongoingEvents } from '../actions';
+import { fetchEvents, pastEvents, upcomingEvents, ongoingEvents } from '../../actions';
 
 import './toolbar.css';
 

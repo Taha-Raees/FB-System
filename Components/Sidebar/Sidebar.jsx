@@ -1,8 +1,10 @@
-import React from 'react';
-import { Home, Event, Person, Inventory, Chat, CalendarToday, Settings, ExitToApp, HelpOutline } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Home, Event, Person, Inventory, Chat, CalendarToday, Settings, ExitToApp, HelpOutline, MenuOpen, AccountCircleOutlined, Menu } from '@mui/icons-material';
 import './Sidebar.scss';
 
+
 const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleMenuItemClick = (itemName) => {
     if (itemName === 'Sign Out') {
@@ -13,9 +15,10 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
   };
 
   return (
-    <div className="sidebar">
-      <div className="logo">
-        <img src="/images/Logo.png" alt="Company Logo" width={200} height={200} />
+    <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+      <div className="logo" onClick={() => setCollapsed(!collapsed)}>
+        {/* Toggle collapse icon */}
+        {collapsed ? <Menu/> : <img src="/images/Logo.png" alt="Company Logo" width={200} height={200} />}
       </div>
       <div className="menu">
         <div
@@ -49,14 +52,26 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
           <Chat /><span>Messages</span>
         </div>
         <div
-          className={`menu-item ${activeMenuItem === 'Setting' ? 'active' : ''}`}
-          onClick={() => handleMenuItemClick('Setting')}
+          className={`menu-item ${activeMenuItem === 'Calendar' ? 'active' : ''}`}
+          onClick={() => handleMenuItemClick('Calendar')}
         >
-          <Settings /><span>Setting</span>
+          <CalendarToday /><span>Calendar</span>
+        </div>
+        <div
+          className={`menu-item ${activeMenuItem === 'Settings' ? 'active' : ''}`}
+          onClick={() => handleMenuItemClick('Settings')}
+        >
+          <Settings /><span>Settings</span>
         </div>
       </div>
       <hr />
       <div className="user">
+      <div
+          className={`user-item ${activeMenuItem === 'Account' ? 'active' : ''}`}
+          onClick={() => handleMenuItemClick('Account')}
+        >
+          <AccountCircleOutlined /><span>Account</span>
+        </div>
         <div
           className={`user-item ${activeMenuItem === 'Sign Out' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Sign Out')}
@@ -75,5 +90,4 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
 };
 
 export default Sidebar;
-
 

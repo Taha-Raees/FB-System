@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 
 // Dynamically import the Calendar component with SSR disabled
 const DynamicCalendar = dynamic(
-  () => import('@/Components/calender'), // Adjust the import path as needed
+  () => import('@/Components/Calender/calender'), // Adjust the import path as needed
   { ssr: false }
 );
 

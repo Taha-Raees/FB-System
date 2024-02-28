@@ -6,7 +6,7 @@ import CustomToolbar from './toolbar';
 import Popup from 'react-popup';
 import Input from './input';
 import moment from 'moment';
-import { fetchEvents, createEvent, updateEvent, deleteEvent } from '../actions';
+import { fetchEvents, createEvent, updateEvent, deleteEvent } from '../../actions';
 import 'react-popup/style.css'; // The path may vary based on the actual structure of the package
 import './calender.css'
 
