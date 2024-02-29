@@ -1,7 +1,7 @@
 // src/components/ConversationList.js
 import React, { useState } from 'react';
 import './ConversationList.scss';
-import mockData from '../MockData';
+import mockData from '../mockData';
 
 const ConversationList = () => {
   const [searchTerm, setSearchTerm] = useState('');

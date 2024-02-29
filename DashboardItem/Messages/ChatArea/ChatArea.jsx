@@ -1,5 +1,5 @@
 import React from 'react';
-import mockData from '../MockData'; // Ensure the path to mockData.js is correct
+import mockData from '../mockData'; // Ensure the path to mockData.js is correct
 import './ChatArea.scss';
 import { Send } from '@mui/icons-material';
 
