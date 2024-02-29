@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Event, Person, Inventory, Chat, CalendarToday, Settings, ExitToApp, HelpOutline, MenuOpen, AccountCircleOutlined, Menu } from '@mui/icons-material';
+import { Home, Event, Person, Inventory, Chat, CalendarToday, Settings, ExitToApp, HelpOutline, AccountTree, AccountCircleOutlined, Menu } from '@mui/icons-material';
 import './Sidebar.scss';
 
 
@@ -46,16 +46,16 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
           <Inventory /><span>Inventory</span>
         </div>
         <div
+          className={`menu-item ${activeMenuItem === 'Workflow' ? 'active' : ''}`}
+          onClick={() => handleMenuItemClick('Workflow')}
+        >
+          <AccountTree /><span>Workflow</span>
+        </div>
+        <div
           className={`menu-item ${activeMenuItem === 'Messages' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Messages')}
         >
           <Chat /><span>Messages</span>
-        </div>
-        <div
-          className={`menu-item ${activeMenuItem === 'Calendar' ? 'active' : ''}`}
-          onClick={() => handleMenuItemClick('Calendar')}
-        >
-          <CalendarToday /><span>Calendar</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Settings' ? 'active' : ''}`}

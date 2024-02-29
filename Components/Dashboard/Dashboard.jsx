@@ -6,6 +6,7 @@ import Inventory from '@/DashboardItem/Inventory/Inventory';
 import Staffing from '@/DashboardItem/Staffing/Staffing';
 import "./dashboard.scss";
 import MessagingApp from '@/DashboardItem/Messages/MessagingApp';
+import KanbanBoard from '@/DashboardItem/Workflow/KanbanBoard';
 
 const Dashboard = ({ onSignOut }) => {
   const [activeMenuItem, setActiveMenuItem] = useState('Dashboard');
@@ -40,6 +41,8 @@ const Dashboard = ({ onSignOut }) => {
         return <Staffing />;
       case 'Messages':
         return <MessagingApp />;
+      case 'Workflow':
+        return <KanbanBoard />;
       default:
         return <DashboardContent />;
     }
