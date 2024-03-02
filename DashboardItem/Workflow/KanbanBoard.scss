@@ -1,49 +1,22 @@
-// src/components/MainContent.scss
-.main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    gap: 20px;
-    background-color: #F0F2F5; // Background color of the main content area
-  
-    .board-title-dropdown {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-  
-      // Styles for the title and the dropdown
-      .title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #333;
-      }
-  
-      // Placeholder for dropdown styles
-    }
-  
-    .column-container {
-      display: flex;
-      overflow-x: auto;
-      width: 100%;
-  
-      // Styles for the columns
-      .column {
-        min-width: 280px;
-        background-color: #fff;
-        margin-right: 10px;
-        border-radius: 6px;
-        box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
-      }
-    }
-  
-    .add-column-button {
-      background-color: #5AAC44;
-      color: #fff;
-      &:hover {
-        background-color: darken(#5AAC44, 5%);
-      }
+.kanban-board {
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding: 20px;
+  gap: 20px; // This ensures space between columns
+
+  .add-stage-btn {
+    background-color: #5aac44;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+
+    &:hover {
+      background-color: darken(#5aac44, 10%);
     }
   }
-  
+}

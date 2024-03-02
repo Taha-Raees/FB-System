@@ -22,7 +22,9 @@ class Calendar extends Component {
         const date = moment(slotInfo.start).format('MMMM D, YYYY');
         return (
             <div>
-                <p>Date: <strong>{date}</strong></p>
+                <p>Start Date: <strong>{date}</strong></p>
+                <p>End Date: {slotInfo.endDate}</p>
+
                 <p>Location: {slotInfo.location}</p>
             </div>
         );
@@ -137,7 +139,7 @@ class Calendar extends Component {
                 defaultView='month'
                 components={{ toolbar: CustomToolbar }}
                 views={['month', 'week', 'day', 'agenda']} // Ensure all views are available
-                style={{ height: 600 }}
+                style={{ backgroundColor: '#fff' , paddingTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px',borderRadius: '5px'}}
                 events={this.props.events.map(event => ({
                     ...event,
                     start: new Date(event.startDate),

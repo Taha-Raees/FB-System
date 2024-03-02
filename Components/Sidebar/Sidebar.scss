@@ -1,14 +1,22 @@
 .sidebar {
+  transition: min-width 0.5s ease; // Animate the width change
   display: flex;
   flex-direction: column;
   min-width: 15vw;
-  height: 100vh;
+  height: 100%;
   background-color: #ffffff;
   border-right: 1px solid #dddddd;
   overflow-y: auto;
 
   &.collapsed {
     min-width: 3vw;
+    .logo, .menu-item, .user-item span {
+      transition: opacity 0.5s ease; // Animate the opacity change
+    }
+    
+    .logo img, .menu-item span, .user-item span {
+      opacity: 0; // Hide text and logo image in collapsed state
+    }
     .logo {
       justify-content: center;
       margin-top: -50px;
@@ -18,6 +26,7 @@
     }
     
     .menu-item, .user-item {
+      transition: background-color 0.3s ease, color 0.3s ease; // Smooth background and color transition for hover and active states
       justify-content: center;
       
       span {
@@ -121,15 +130,66 @@
   hr {
     margin-top: 30vh;
   }
-
-  @media (max-width: 768px) {
+}
+@media (max-width: 768px) {
+  .sidebar {
+    width: 2vw;
+    .logo, .menu-item, .user-item span {
+      transition: opacity 0.5s ease; // Animate the opacity change
+    }
+    
+    .logo img, .menu-item span, .user-item span {
+      opacity: 0; // Hide text and logo image in collapsed state
+    }
     .logo {
-      visibility: hidden;
+      justify-content: center;
+      display: none;
+    }
+    .menu{
+      margin-top: 10em;
+    }
+    .menu-item, .user-item {
+      transition: background-color 0.3s ease, color 0.3s ease; // Smooth background and color transition for hover and active states
+      justify-content: center;
+      
+      span {
+        display: none;
+      }
+
+      // Vertical line for collapsed state
+      &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 30px; // Vertical line height
+        width: 2px; // Vertical line width
+        background-color: #ff9c2a; // Vertical line color
+        display: none; // Initially hidden, shown on active
+      }
+
+      &.active::before {
+        display: block; // Show vertical line for active items
+      }
+
+      // Remove horizontal line for active items in collapsed state
+      &.active::after {
+        width: 0 !important;
+      }
     }
 
-    .menu-item, .user-item {
-      justify-content: center;
-      margin-bottom: 15px;
+    // Horizontal line on hover for collapsed state
+    .menu-item:hover::after, .user-item:hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 1px;
+      background-color: #ff9c2a;
+      display: block; // Show on hover
     }
   }
 }

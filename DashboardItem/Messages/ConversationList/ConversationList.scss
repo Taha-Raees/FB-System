@@ -3,8 +3,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  background-color: #ebebeb;
-
+  background: linear-gradient(to bottom, #ffd67590 0%, rgb(255, 255, 255) 100%);
   .search-container {
     padding: 10px;
 
@@ -14,7 +13,7 @@
       border: 1px solid #ccc;
       border-radius: 20px;
       font-size: 1rem;
-
+      transition: border-color 0.3s ease;
       &:focus {
         outline: none;
         border-color: #e89735;
@@ -28,9 +27,11 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #e89735;
-
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     &:hover {
-      background-color: #f7f7f7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: #f7f7f7
     }
 
     .conversation-avatar {
@@ -40,6 +41,7 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
+        border: 2px solid #ffb121;
       }
     }
 
@@ -47,20 +49,35 @@
       flex-grow: 1;
 
       .conversation-name {
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 5px;
         color: #e89735;
+        font-size: 1rem;
       }
 
       .conversation-snippet {
         color: #383838;
         margin: 0;
+
       }
     }
 
     .conversation-time {
       color: #999;
       font-size: 0.75rem;
+    }
+  }
+  .newMessage{
+    position: fixed;
+    bottom: 6vh;
+    .add-comment-button {
+      position: absolute;
+      left: 11em;
+    color: #fba63f;
+      &:hover {
+       color: #3a4ff0; // Change color on hover
+       cursor: pointer; // Change cursor to pointer on hover
+      }
     }
   }
 }

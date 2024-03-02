@@ -3,6 +3,12 @@
     font: inherit;
     margin: 0;
   }
+  .calendar-container{
+    background-color: #fefefe00;
+    padding: 1.5em;
+    width:80vw ;
+    height: 95vh ;
+  }
   button.rbc-btn {
     overflow: visible;
     text-transform: none;
@@ -59,7 +65,7 @@
     color: #999999;
   }
   .rbc-off-range-bg {
-    background: #e5e5e5;
+    background: #ffeded;
   }
   .rbc-header {
     overflow: hidden;
@@ -205,10 +211,11 @@
     padding: 2px 5px;
     background-color: #3174ad;
     border-radius: 5px;
-    color: #fff;
+    color: #ffffff;
     cursor: pointer;
     width: 100%;
     text-align: left;
+    font-weight: 300;
   }
   .rbc-slot-selecting .rbc-event {
     cursor: inherit;

@@ -1,7 +1,7 @@
 const mockData = {
     conversations: [
-      { id: 1, name: "Zack Fox", message: "Have you ever heard of...", time: "10:49 AM" },
-      { id: 2, name: "Kathryn Cooper", message: "Thank you!", time: "6:34 PM" },
+      { id: 1, name: "Zack Fox",gender:'male', message: "Have you ever heard of...", time: "10:49 AM" },
+      { id: 2, name: "Kathryn Cooper",gender:'female', message: "Thank you!", time: "6:34 PM" },
       // ... add other conversations
     ],
     currentChat: {
