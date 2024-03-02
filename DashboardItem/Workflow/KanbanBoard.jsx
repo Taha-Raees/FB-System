@@ -5,9 +5,18 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const KanbanBoard = () => {
   const [stages, setStages] = useState([
-    { id: 1, title: 'IN REVIEW', cards: [{ id: 1, content: 'Example Card' }] },
-    { id: 2, title: 'DONE', cards: [] }
+    { id: 1, title: 'UNASSIGNED', cards: [{ id: 1, content: 'Example Card' }] },
+    { id: 2, title: 'TODO', cards: [] },
+    { id: 3, title: 'IN PROGRESS', cards: [] },
+    { id: 4, title: 'DONE', cards: [] },
   ]);
+  const editStageTitle = (stageId, newTitle) => {
+    setStages(stages =>
+      stages.map(stage =>
+        stage.id === stageId ? { ...stage, title: newTitle } : stage
+      )
+    );
+  };
 
   const addStage = () => {
     const newStageId = Math.max(0, ...stages.map(s => s.id)) + 1;
@@ -115,14 +124,15 @@ const KanbanBoard = () => {
           >
             {stages.map((stage, index) => (
               <BoardColumn
-                key={stage.id}
-                stage={stage}
-                index={index}
-                addCardToStage={addCardToStage}
-                deleteCard={deleteCard}
-                editCard={editCard}
-                deleteStage={deleteStage}
-              />
+              key={stage.id}
+              stage={stage}
+              index={index}
+              addCardToStage={addCardToStage}
+              deleteCard={deleteCard}
+              editCard={editCard}
+              deleteStage={deleteStage}
+              editStageTitle={editStageTitle} // Add this line
+            />
             ))}
             {provided.placeholder}
             <button className="add-stage-btn" onClick={addStage}>Add Stage</button>

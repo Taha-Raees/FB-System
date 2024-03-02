@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Card from '@/DashboardItem/Workflow/KanbanComp/Card/Card'; // Card component is provided below
 import './BoardColumn.scss';
+import { Add, Delete } from '@mui/icons-material';
+import AddCardButton from '@/Buttons/AddCardButton/AddCardButton';
 
 const BoardColumn = ({ stage, addCardToStage, deleteCard, editCard, deleteStage, index }) => {
   const [newCardContent, setNewCardContent] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(stage.title);
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+    if (isEditing) {
+      editStageTitle(stage.id, editedTitle);
+    }
+  };
 
-  const handleAddCard = () => {
-    addCardToStage(stage.id, newCardContent);
-    setNewCardContent('');
+  const handleTitleChange = (e) => {
+    setEditedTitle(e.target.value);
   };
 
   return (
@@ -20,9 +29,16 @@ const BoardColumn = ({ stage, addCardToStage, deleteCard, editCard, deleteStage,
           {...provided.draggableProps}
         >
           <div className="column-header" {...provided.dragHandleProps}>
-            <h2>{stage.title}</h2>
-            <button onClick={() => deleteStage(stage.id)}>Delete Stage</button>
-          </div>
+          <div className="title-count">{isEditing ? (
+          <input type="text" value={editedTitle} onChange={handleTitleChange} onBlur={toggleEdit} autoFocus />
+        ) : (
+          <h2 onClick={toggleEdit}>{stage.title}</h2>
+        )}
+        <span className="card-count">{stage.cards.length}</span></div>
+        <div className="buttons"><AddCardButton onAddCardToStage={(content) => addCardToStage(stage.id, content)} />
+        <Delete className='del-stage-btn' onClick={() => deleteStage(stage.id)}/></div>
+      </div>
+      <hr />
           <Droppable droppableId={String(stage.id)} type="card">
             {(provided, snapshot) => (
               <div
@@ -44,13 +60,6 @@ const BoardColumn = ({ stage, addCardToStage, deleteCard, editCard, deleteStage,
               </div>
             )}
           </Droppable>
-          <input
-            type="text"
-            placeholder="New card content"
-            value={newCardContent}
-            onChange={e => setNewCardContent(e.target.value)}
-          />
-          <button onClick={handleAddCard}>Add Card</button>
         </div>
       )}
     </Draggable>
@@ -58,6 +67,3 @@ const BoardColumn = ({ stage, addCardToStage, deleteCard, editCard, deleteStage,
 };
 
 export default BoardColumn;
-
-
-
