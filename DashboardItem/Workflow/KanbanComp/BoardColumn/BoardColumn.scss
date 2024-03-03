@@ -62,7 +62,7 @@
         color: #a30909;
         cursor: pointer;    
         &:hover {
-          color: darken(#a30909, 10%);
+          color: darken(#e1e1e1, 10%);
         }
       }
      .del-stage-btn {
@@ -70,7 +70,7 @@
         border: none;
         cursor: pointer;
         &:hover {
-          color: darken(#c1c7d0, 10%);
+          color: darken(#eaeaea, 10%);
         }
       }
     }

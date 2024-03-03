@@ -132,7 +132,7 @@ const KanbanBoard = () => {
             editStageTitle={editStageTitle}
           />
         ))}
-        <button className="add-stage-btn" onClick={addStage}><Add/><span>Add New</span></button>
+        <span className="add-stage-btn" onClick={addStage}><Add/><p>New Stage</p></span>
       </div>
       
     </DragDropContext>

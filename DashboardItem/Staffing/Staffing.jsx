@@ -25,15 +25,6 @@ const Staffing = () => {
           <Typography variant="body2">Manage staff profiles and contact information.</Typography>
         </CardContent>
       </Card>
-
-      {/* Schedule Management */}
-      <Card variant="outlined" className="staffing-card" onClick={handleScheduleManagement}>
-        <CardContent>
-          <ScheduleIcon className="card-icon" />
-          <Typography variant="h5" component="h2">Schedule Management</Typography>
-          <Typography variant="body2">Organize and view staff schedules.</Typography>
-        </CardContent>
-      </Card>
       
       {/* Task Assignments */}
       <Card variant="outlined" className="staffing-card" onClick={handleTaskAssignments}>

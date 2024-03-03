@@ -51,9 +51,7 @@ const Dashboard = ({ onSignOut }) => {
   return (
     <div className="dashboard">
       <Sidebar activeMenuItem={activeMenuItem} setActiveMenuItem={setActiveMenuItem} onSignOut={onSignOut} />
-      <div className="container">
-        {renderContent()}
-      </div>
+      {renderContent()}
     </div>
   );
 };
