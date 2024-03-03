@@ -3,14 +3,14 @@
   align-items: flex-start;
   overflow-x: auto;
   padding: 20px;
-  gap: 20px; // This ensures space between columns
+  gap: 15px; // This ensures space between columns
 
   .add-stage-btn {
     background-color: #5aac44;
     color: white;
     border: none;
     border-radius: 13px;
-    padding: 3px 3px;
+    padding: 3px 3px 3px 10px;
     display: flex;
     align-items: center;
     margin-top: 5px;
