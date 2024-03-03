@@ -4,7 +4,8 @@
   justify-content: center;
   gap: 20px;
   padding: 20px;
-  width: 100%;
+  min-width: 83vw;
+  max-width: 100em;
   .inventory-card {
     width: 300px;
     height: 180px;

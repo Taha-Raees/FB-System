@@ -28,6 +28,8 @@
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    background: #ffffffe4;
+   
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
@@ -65,7 +67,7 @@
     color: #999999;
   }
   .rbc-off-range-bg {
-    background: #ffeded;
+     background-color: #fac6c669;
   }
   .rbc-header {
     overflow: hidden;
@@ -104,7 +106,7 @@
     z-index: 4;
   }
   .rbc-today {
-    background-color: #eaf6ff;
+    background-color: #c2d6fe8f;
   }
   .rbc-toolbar {
     display: -webkit-flex;

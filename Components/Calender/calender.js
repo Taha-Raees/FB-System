@@ -139,7 +139,7 @@ class Calendar extends Component {
                 defaultView='month'
                 components={{ toolbar: CustomToolbar }}
                 views={['month', 'week', 'day', 'agenda']} // Ensure all views are available
-                style={{ backgroundColor: '#fff' , paddingTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px',borderRadius: '5px'}}
+                style={{ backgroundColor: '#ffffffe4' , paddingTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px',borderRadius: '5px'}}
                 events={this.props.events.map(event => ({
                     ...event,
                     start: new Date(event.startDate),
