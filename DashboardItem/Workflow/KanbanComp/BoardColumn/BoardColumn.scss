@@ -1,12 +1,19 @@
 .board-column {
-  background-color: #ebecf0;
   border-radius: 3px;
-  width: 272px; // Fixed width for each column
+  width: 272px;
   margin: 0 4px;
   display: flex;
   flex-direction: column;
   max-height: 80vh;
   overflow-y: auto;
+  .cards-container {
+    min-height: 5px; /* Ensure there's enough space for dropping */
+    padding: 0px; /* Add padding to prevent the container from collapsing */
+    background: #7171713c;
+    margin: 0px 8px;
+    border-radius: 3px; /* Keeps the design consistent with the rest of your layout */
+    overflow: auto; /* Allows the container to scroll if there are many cards */
+  }
   hr{
     margin: 0px 8px;
     margin-bottom: 8px;
@@ -21,12 +28,22 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      input {
+        border: none;
+    
+        &:focus {
+          outline: none;;
+          background-color: transparent;
+        }
+      }
       .card-count{
-        background-color: #ffffff;
+        background-color: #fc9841;
+        color: #ffffff;
         border-radius: 50%;
-        width: 20px;
+        width: 15px;
         text-align: center;
-        font-size: 14px;
+        font-size: 12px;
+        font-weight: 300;
       }
     }
     h2 {
@@ -39,14 +56,10 @@
       display: flex;
       align-items: center;
       gap: 0;
-      
+      scale: 0.8;
       .add-card-btn {
         color: #a30909;
-        scale: 0.8;
-      
-        cursor: pointer;
-        
-    
+        cursor: pointer;    
         &:hover {
           color: darken(#a30909, 10%);
         }
@@ -55,8 +68,6 @@
         color: #3161b6;
         border: none;
         cursor: pointer;
-        scale: 0.8;
-  
         &:hover {
           color: darken(#c1c7d0, 10%);
         }

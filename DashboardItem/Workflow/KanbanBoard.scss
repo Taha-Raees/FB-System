@@ -9,12 +9,17 @@
     background-color: #5aac44;
     color: white;
     border: none;
-    border-radius: 3px;
-    padding: 6px 12px;
+    border-radius: 13px;
+    padding: 3px 3px;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 500;
+    scale: 0.8;
 
+    
     &:hover {
       background-color: darken(#5aac44, 10%);
     }

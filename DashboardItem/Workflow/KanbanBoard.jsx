@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import BoardColumn from './KanbanComp/BoardColumn/BoardColumn'; // BoardColumn component is provided below
 import './KanbanBoard.scss';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Add } from '@mui/icons-material';
 
 const KanbanBoard = () => {
   const [stages, setStages] = useState([
@@ -66,21 +67,22 @@ const KanbanBoard = () => {
     );
   };
   const onDragEnd = result => {
-    const { destination, source, draggableId } = result;
-
+    const { destination, source } = result;
+  
     if (!destination) {
       return;
     }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
+  
+    const startStageId = parseInt(source.droppableId, 10);
+    const finishStageId = parseInt(destination.droppableId, 10);
+  
+    const startStage = stages.find(stage => stage.id === startStageId);
+    const finishStage = stages.find(stage => stage.id === finishStageId);
+  
+    if (!startStage || !finishStage) {
+      console.error('Stage not found:', { startStageId, finishStageId });
+      return; // Stop the function if stages are not found
     }
-
-    const startStage = stages.find(stage => stage.id === parseInt(source.droppableId));
-    const finishStage = stages.find(stage => stage.id === parseInt(destination.droppableId));
 
     if (startStage === finishStage) {
       // Moving within the same stage
@@ -104,41 +106,35 @@ const KanbanBoard = () => {
 
       const newStartStage = { ...startStage, cards: startCards };
       const newFinishStage = { ...finishStage, cards: finishCards };
+      
 
       setStages(stages =>
         stages.map(stage =>
           stage.id === startStage.id ? newStartStage : stage.id === finishStage.id ? newFinishStage : stage
         )
+        
       );
     }
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="board" type="column" direction="horizontal">
-        {(provided, snapshot) => (
-          <div
-            className="kanban-board"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {stages.map((stage, index) => (
-              <BoardColumn
-              key={stage.id}
-              stage={stage}
-              index={index}
-              addCardToStage={addCardToStage}
-              deleteCard={deleteCard}
-              editCard={editCard}
-              deleteStage={deleteStage}
-              editStageTitle={editStageTitle} // Add this line
-            />
-            ))}
-            {provided.placeholder}
-            <button className="add-stage-btn" onClick={addStage}>Add Stage</button>
-          </div>
-        )}
-      </Droppable>
+      <div className="kanban-board">
+        {stages.map((stage, index) => (
+          <BoardColumn
+            key={stage.id}
+            stage={stage}
+            index={index}
+            addCardToStage={addCardToStage}
+            deleteCard={deleteCard}
+            editCard={editCard}
+            deleteStage={deleteStage}
+            editStageTitle={editStageTitle}
+          />
+        ))}
+        <button className="add-stage-btn" onClick={addStage}><Add/><span>Add New</span></button>
+      </div>
+      
     </DragDropContext>
   );
 };
