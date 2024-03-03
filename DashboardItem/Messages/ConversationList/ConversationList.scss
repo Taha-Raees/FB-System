@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  background: #f4f4f4;
+  background-color: #ffffff2f;
   .search-container {
     padding: 10px;
 
@@ -11,9 +11,10 @@
       width: 90%;
       padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 20px;
+      border-radius: 6px;
       font-size: 1rem;
       transition: border-color 0.3s ease;
+      background-color: transparent;
       &:focus {
         outline: none;
         border-color: #e89735;
@@ -74,7 +75,7 @@
       left: 10em;
     color: #fcae29;
       &:hover {
-       color: #4372ff; // Change color on hover
+       color: #08153b; // Change color on hover
        cursor: pointer; // Change cursor to pointer on hover
       }
     }

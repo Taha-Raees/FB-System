@@ -1,61 +1,64 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 20px; // Added padding for small screens
-   // Optional: background color for the page
+.GetStarted{
 
-  .content {
-    background-color: rgba(255, 255, 255, 0.85);
-    text-align: center;
-    border-radius: 10px; // More rounded corners
-    padding: 40px; // Added padding inside the content box
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Soft shadow for depth
-    width: 100%; // For responsiveness
-    max-width: 600px; // Maximum width
-
-    .logo {
-      margin-bottom: 20px;
-    }
-
-    .title {
-      font-size: 2.5rem; // Larger font size for title
-      color: #333333; // Darker color for better readability
-      margin-bottom: 16px;
-    }
-
-    .subtitle {
-      font-size: 1.2rem; // Slightly larger for readability
-      color: #555555; // Darker shade
-      margin-bottom: 30px; // More space before the button
-      padding: 0 30px; // Padding for better text alignment
-    }
-
-    .button {
-      padding: 12px 24px; // Slightly more padding
-      background-color: #ffa239;
-      color: white;
-      font-size: 1.1rem; // Larger font size for the button
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s, box-shadow 0.3s;
-      border: none; // Remove default border
-      outline: none; // Remove default outline
-    
-      &:hover {
-        background-color: #f48c06; // Adjusted hover color
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Shadow effect on hover
-        border: none; // Ensure border is none on hover
-        outline: none; // Ensure outline is none on hover
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px; // Added padding for small screens
+     // Optional: background color for the page
+  
+    .content {
+      background-color: rgba(255, 255, 255, 0);
+      text-align: center;
+      border-radius: 10px; // More rounded corners
+      padding: 40px; // Added padding inside the content box
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Soft shadow for depth
+      width: 100%; // For responsiveness
+      max-width: 600px; // Maximum width
+  
+      .logo {
+        margin-bottom: 20px;
       }
-    
-      &:focus {
-        outline: none; // Remove outline on focus as well
+  
+      .title {
+        font-size: 2.5rem; // Larger font size for title
+        color: #999999; // Darker color for better readability
+        margin-bottom: 16px;
       }
+  
+      .subtitle {
+        font-size: 1.2rem; // Slightly larger for readability
+        color: #aeaeae; // Darker shade
+        margin-bottom: 30px; // More space before the button
+        padding: 0 30px; // Padding for better text alignment
+      }
+  
+      .button {
+        padding: 12px 24px; // Slightly more padding
+        background-color: #ffa239;
+        color: white;
+        font-size: 1.1rem; // Larger font size for the button
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        border: none; // Remove default border
+        outline: none; // Remove default outline
+      
+        &:hover {
+          background-color: #f48c06; // Adjusted hover color
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Shadow effect on hover
+          border: none; // Ensure border is none on hover
+          outline: none; // Ensure outline is none on hover
+        }
+      
+        &:focus {
+          outline: none; // Remove outline on focus as well
+        }
+      }
+      
     }
-    
-  }
+  }  
 }
 
   

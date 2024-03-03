@@ -3,10 +3,10 @@
   justify-content: center;
   align-items: center;
   height: 100vh;// Optional: background color for the entire page
-
   .loginForm {
       padding: 20px;
-      background-color: rgba(255, 255, 255, 0.85);
+      background-color: rgba(255, 255, 255, 0);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       text-align: center;
       width: 100%; // For responsiveness
@@ -15,6 +15,7 @@
         margin-top: -20px;
       }
       h1 {
+        color: #999999;
           margin-bottom: 20px;
       }
   }
