@@ -6,6 +6,7 @@ import "./Main.scss";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-popup/style.css'; 
 
+
 const Home = () => {
   const [isSignedIn, setIsSignedIn] = useState(null); // Start with null to indicate loading state
 
