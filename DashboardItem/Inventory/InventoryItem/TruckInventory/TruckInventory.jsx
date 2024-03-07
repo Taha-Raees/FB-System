@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { fetchProducts, addProduct, updateProduct, deleteProduct } from '@/app/apiService';
 import {
   Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Grid, Typography,
@@ -11,51 +12,102 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import './TruckInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
-import NewProduct from '@/Buttons/NewProduct/NewProduct';
+import NewProduct from '@/Buttons/NewProductTruck/NewProduct';
 
 const TruckInventory = ({ onBack }) => {
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Buns&Sons', category: "Roadrunner", description: 'Beef Burger and Pulled Pork', Maintenance: '2022-12-31' },
-    { id: 2, name: 'Brenwerk', category: "XXL", description: 'Currywurst', Maintenance: '2023-01-15' },
-    { id: 3, name: 'AsiaBox', category: "Roadrunner", description: 'Noodles', Maintenance: '2022-08-10' }
-  ]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const productsData = await fetchProducts();
+        setProducts(productsData);
+        console.log(productsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   const [editingId, setEditingId] = useState(null);
   const [editingField, setEditingField] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const productCount = products.length;
   const [editingProduct, setEditingProduct] = useState(null);
-  const handleAddProduct = (newProduct) => {
-    setProducts([...products, { ...newProduct, id: Math.max(...products.map(p => p.id)) + 1 }]);
-    setShowProductModal(false);
-  };
-  const handleEditProduct = (updatedProduct) => {
-    setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-    setShowProductModal(false);
-    setEditingProduct(null);
-  };
+    // Add a new product
+    const handleAddProduct = async (newProduct) => {
+      try {
+        const addedProduct = await addProduct(newProduct);
+        setProducts([...products, addedProduct]);
+        setShowProductModal(false);
+      } catch (error) {
+        console.error("Error adding product:", error);
+      }
+    };
 
-  const handleDeleteProduct = (productId) => {
-    setProducts(products.filter(p => p.id !== productId));
-  };
+    // Update a product
+    const handleEditProduct = async (product) => {
+      try {
+        const updatedProduct = await updateProduct(product.id, product);
+        setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+        setShowProductModal(false);
+        setEditingId(null);
+        setEditingProduct(null);
+      } catch (error) {
+        console.error("Error updating product:", error);
+      }
+    };
 
-  // Handlers for inline editing
-  const handleEditChange = (event, productId, field) => {
-    const newValue = event.target.value;
-    setProducts(products.map(p => p.id === productId ? { ...p, [field]: newValue } : p));
-  };
-
-  const handleEditKeyPress = (event, productId, field) => {
-    if (event.key === 'Enter') {
-      setEditingId(null);
-      setEditingField('');
+  // Delete a product
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await deleteProduct(productId);
+      setProducts(products.filter(p => p.id !== productId));
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
   };
 
-  const handleEditBlur = () => {
+  // Handlers for inline editing
+ // Assuming the existence of the updateProduct function as you described.
+
+// Handlers for inline editing
+const handleEditChange = (event, productId, field) => {
+  const newValue = event.target.value;
+  setProducts(products.map(p => p.id === productId ? { ...p, [field]: newValue } : p));
+};
+
+const saveChanges = async (productId, field, newValue) => {
+  try {
+    const updatedProduct = await updateProduct(productId, { [field]: newValue });
+    setProducts(products.map(p => p.id === productId ? { ...p, ...updatedProduct } : p));
+    // Optionally, refresh your products list from the backend to ensure consistency.
+  } catch (error) {
+    console.error("Error updating product:", error);
+    // Handle the error, e.g., show an error message to the user.
+  }
+};
+
+const handleEditKeyPress = (event, productId, field) => {
+  if (event.key === 'Enter') {
+    const newValue = event.target.value;
+    saveChanges(productId, field, newValue);
     setEditingId(null);
     setEditingField('');
-  };
+  }
+};
+
+const handleEditBlur = (event, productId, field) => {
+  const newValue = event.target.value;
+  saveChanges(productId, field, newValue);
+  setEditingId(null);
+  setEditingField('');
+};
+
+// Render function and other component logic remains the same.
+
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
@@ -133,7 +185,6 @@ const TruckInventory = ({ onBack }) => {
                 <TableCell>Name</TableCell>
               <TableCell>Category</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Maintenance</TableCell>
               <TableCell>Actions</TableCell>
               </TableRow>
           </TableHead>
@@ -152,9 +203,6 @@ const TruckInventory = ({ onBack }) => {
                     </TableCell>
                     <TableCell onClick={() => { setEditingId(product.id); setEditingField('description'); }}>
                       {renderEditableCell(product.description, product.id, 'description')}
-                    </TableCell>
-                    <TableCell onClick={() => { setEditingId(product.id); setEditingField('Maintenance'); }}>
-                      {renderEditableCell(product.Maintenance, product.id, 'Maintenance')}
                     </TableCell>
                     <TableCell>
                      <IconButton onClick={() => handleDeleteProduct(product.id)}><DeleteIcon /></IconButton>
