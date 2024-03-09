@@ -7,7 +7,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import './EquipmentInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
-import NewProduct from '@/Buttons/NewProduct/NewProduct';
+import NewProduct from '@/Buttons/NewProductFood/NewProduct';
 
 const EquipmentInventory = ({ onBack }) => {
   // Initial products list

@@ -1,142 +1,216 @@
-import React, { useState } from 'react';
-import { Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Typography, InputAdornment } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow, Paper, Grid, Typography,
+  InputAdornment
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import './FoodInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
-import NewProduct from '@/Buttons/NewProduct/NewProduct';
+import NewProduct from '@/Buttons/NewProductFood/NewProduct';
+import { fetchFoodItems, addFoodItem, updateFoodItem, deleteFoodItem } from '@/app/apiService'; // Make sure these functions are defined
+import { FilterList } from '@mui/icons-material';
 
 const FoodInventory = ({ onBack }) => {
-  // Initial products list
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Apple Juice',category:"Drink", quantity: 24, description: 'Bottled apple juice', expiry: '2022-12-31' },
-        { id: 2, name: 'Orange Juice',category:"Drink", quantity: 30, description: 'Bottled orange juice', expiry: '2023-01-15' },
-        { id: 3, name: 'Milk',category:"Drink", quantity: 10, description: 'Fresh milk', expiry: '2022-08-10' }
-  ]);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [foodItems, setFoodItems] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [editingField, setEditingField] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
-  const productCount = products.length;
-  const handleAddProduct = (newProduct) => {
-    setProducts([...products, { ...newProduct, id: Math.max(...products.map(p => p.id)) + 1 }]);
-    setShowProductModal(false);
-  };
-
-  const handleEditProduct = (updatedProduct) => {
-    setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-    setShowProductModal(false);
-    setEditingProduct(null);
-  };
-
-  const handleDeleteProduct = (productId) => {
-    setProducts(products.filter(p => p.id !== productId));
-  };
-
-  const openEditModal = (product) => {
-    setEditingProduct(product);
-    setShowProductModal(true);
-  };
   const [searchQuery, setSearchQuery] = useState('');
+  const [editingProduct, setEditingProduct] = useState(null);
+  const productCount = foodItems.length;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchFoodItems();
+        setFoodItems(data);
+      } catch (error) {
+        console.error("Error fetching food items:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleAddProduct = async (newFoodItem) => {
+    try {
+        const foodItemToSend = {
+            ...newFoodItem,
+            quantity: parseInt(newFoodItem.quantity, 10) // Ensure quantity is an integer
+        };
+        const addedProduct = await addFoodItem(foodItemToSend);
+        setFoodItems([...foodItems, addedProduct]);
+        setShowProductModal(false);
+    } catch (error) {
+        console.error("Error adding food item:", error);
+        console.error(error.response ? error.response.data : error.message);
+    }
+};
+
+const handleEditChange = async (event, foodItemId, field) => {
+  let newValue = event.target.value;
+  // Check if the field is 'quantity' and convert newValue to an integer
+  if (field === 'quantity') {
+      newValue = parseInt(newValue, 10);
+  }
+
+  setFoodItems(foodItems.map(item => 
+      item.id === foodItemId ? { ...item, [field]: newValue } : item
+  ));
+};
+
+
+const saveChanges = async (foodItemId, field, newValue) => {
+  try {
+    // Check if the field is 'quantity' and convert newValue to an integer
+    const valueToSend = field === 'quantity' ? parseInt(newValue, 10) : newValue;
+    await updateFoodItem(foodItemId, { [field]: valueToSend });
+    // If your API returns the updated object, you can update the state with it
+  } catch (error) {
+    console.error("Error updating food item:", error);
+  }
+};
+
+
+  const handleEditKeyPress = (event, foodItemId, field) => {
+    if (event.key === 'Enter') {
+      const newValue = event.target.value;
+      saveChanges(foodItemId, field, newValue);
+      setEditingId(null);
+      setEditingField('');
+    }
+  };
+
+  const handleDeleteProduct = async (foodItemId) => {
+    try {
+      await deleteFoodItem(foodItemId);
+      setFoodItems(foodItems.filter(item => item.id !== foodItemId));
+    } catch (error) {
+      console.error("Error deleting food item:", error);
+    }
+  };
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchQuery) ||
-    product.description.toLowerCase().includes(searchQuery)
-    // Add more fields to filter by if needed
+  const filteredFoodItems = foodItems.filter(item =>
+    item.name.toLowerCase().includes(searchQuery) ||
+    item.expiry.toLowerCase().includes(searchQuery)
   );
+
+  const renderEditableCell = (text, foodItemId, field) => {
+    return editingId === foodItemId && editingField === field ? (
+      <TextField
+        className="editable-cell-input"
+        value={text}
+        onChange={(event) => handleEditChange(event, foodItemId, field)}
+        onKeyPress={(event) => handleEditKeyPress(event, foodItemId, field)}
+        onBlur={() => { setEditingId(null); setEditingField(''); }} // Alternatively, you can call saveChanges here if you want to save on blur
+        autoFocus
+        size="small"
+        fullWidth
+        spellCheck={false}
+      />
+    ) : (
+      <div onClick={() => { setEditingId(foodItemId); setEditingField(field); }}>
+        {text}
+      </div>
+    );
+  };
 
   return (
     <Grid container className="food-inventory" spacing={2}>
-      <Grid item xs={12}>
-      <BackButton onBack={onBack} />
+      <Grid item xs={12} className='controls'>
+        <BackButton onBack={onBack} />
         <div className="inventory-controls">
           <div className="search-filter-section">
             <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+              label="Search"
+              variant="outlined"
+              size="small"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
             <IconButton>
-              <FilterListIcon />
+              <FilterList/>
             </IconButton>
           </div>
           <div className="inventory-stats">
             <Typography variant="subtitle1">
-              {`${productCount} of ${productCount} results`}
+              {`${filteredFoodItems.length} of ${productCount} results`}
             </Typography>
           </div>
-          <div>
-      <Button onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>New Product</Button>
-      
-      </div>
+          <Button className='new-product-button' onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>
+            New Food Item
+          </Button>
         </div>
       </Grid>
       <Grid item xs={12}>
-      <TableContainer component={Paper} className="inventory-table-container">
+        <TableContainer component={Paper} className="inventory-table-container">
           <Table stickyHeader>
-          <TableHead>
-          <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox />
-                </TableCell>
+            <TableHead>
+              <TableRow>
                 <TableCell>Name</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Quantity</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Expiry</TableCell>
-              <TableCell>Actions</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Expiry</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-          </TableHead>
-          <TableBody>
-  {filteredProducts.length > 0 ? (
-    filteredProducts.map((product) => (
-        <TableRow key={product.id}>
-        <TableCell padding="checkbox">
-          <Checkbox />
-        </TableCell>
-        <TableCell>{product.name}</TableCell>
-        <TableCell>{product.category}</TableCell>
-        <TableCell>{product.quantity}</TableCell>
-        <TableCell>{product.description}</TableCell>
-        <TableCell>{product.expiry}</TableCell>
-        <TableCell>
-          <IconButton onClick={() => openEditModal(product)}><EditIcon /></IconButton>
-          <IconButton onClick={() => handleDeleteProduct(product.id)}><DeleteIcon /></IconButton>
-        </TableCell>
-      </TableRow>
-    ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={7} align="center">No items found</TableCell>
-    </TableRow>
-  )}
-</TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {filteredFoodItems.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell>
+                    {renderEditableCell(item.name, item.id, 'name')}
+                  </TableCell>
+                  <TableCell>
+                    {renderEditableCell(item.category, item.id, 'category')}
+                  </TableCell>
+                   <TableCell>
+                    {renderEditableCell(item.quantity, item.id, 'quantity')}
+                  </TableCell>
+                  <TableCell>
+                    {renderEditableCell(item.expiry, item.id, 'expiry')}
+                  </TableCell>
+                 
+                  <TableCell>
+                    <IconButton onClick={() => handleDeleteProduct(item.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {filteredFoodItems.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">No food items found</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Grid>
       
-      <NewProduct
-  open={showProductModal}
-  onClose={() => { setShowProductModal(false); setEditingProduct(null); }}
-  onAddProduct={editingProduct ? handleEditProduct : handleAddProduct} // Ensure correct function is passed
-  product={editingProduct}
-/>
+      {showProductModal && (
+        <NewProduct
+          open={showProductModal}
+          onClose={() => { setShowProductModal(false); setEditingProduct(null); }}
+          onAddProduct={handleAddProduct}
+          product={editingProduct}
+        />
+      )}
     </Grid>
   );
+  
 };
 
 export default FoodInventory;

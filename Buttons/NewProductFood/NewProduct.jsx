@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
 
 const NewProduct = ({ open, onClose, onAddProduct }) => {
-  const [product, setProduct] = useState({ name: '', category: '', quantity: 0, description: '', expiry: '' });
+  const [foodItem, setfoodItem] = useState({ name: '', category: '', quantity: 0, expiry: '' });
 
   const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
+    setfoodItem({ ...foodItem, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = () => {
-    onAddProduct(product);
+    
+    if (!foodItem.name || !foodItem.category || !foodItem.quantity|| !foodItem.expiry) {
+      alert("Please fill out all fields correctly.");
+      return;
+    }
+    onAddProduct(foodItem);
     onClose(); // Close the dialog after submission
   };
 
@@ -20,8 +25,7 @@ const NewProduct = ({ open, onClose, onAddProduct }) => {
         <TextField name="name" label="Name" fullWidth margin="dense" onChange={handleChange} />
         <TextField name="category" label="Category" fullWidth margin="dense" onChange={handleChange} />
         <TextField name="quantity" label="Quantity" type="number" fullWidth margin="dense" onChange={handleChange} />
-        <TextField name="description" label="Description" fullWidth margin="dense" onChange={handleChange} />
-        <TextField name="expiry" label="Expiry Date" type="date" fullWidth margin="dense" onChange={handleChange} InputLabelProps={{ shrink: true }} />
+        <TextField name="expiry" label="Expiry Date"  fullWidth margin="dense" onChange={handleChange} />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

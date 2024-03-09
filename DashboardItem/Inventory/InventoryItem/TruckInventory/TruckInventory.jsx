@@ -179,9 +179,7 @@ const handleEditBlur = (event, productId, field) => {
           <Table stickyHeader>
           <TableHead>
           <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox />
-                </TableCell>
+                
                 <TableCell>Name</TableCell>
               <TableCell>Category</TableCell>
               <TableCell>Description</TableCell>
@@ -192,9 +190,7 @@ const handleEditBlur = (event, productId, field) => {
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell padding="checkbox">
-                      <Checkbox />
-                    </TableCell>
+                   
                     <TableCell onClick={() => { setEditingId(product.id); setEditingField('name'); }}>
                       {renderEditableCell(product.name, product.id, 'name')}
                     </TableCell>
