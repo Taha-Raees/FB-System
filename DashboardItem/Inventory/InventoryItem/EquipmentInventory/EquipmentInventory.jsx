@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Typography, InputAdornment } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { fetchequipments, addequipment, updateequipment, deleteequipment } from '@/app/apiService';
+import {
+  Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow, Paper, Grid, Typography,
+  InputAdornment
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,132 +12,192 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
 import './EquipmentInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
-import NewProduct from '@/Buttons/NewProductFood/NewProduct';
+import NewProduct from '@/Buttons/NewProductEquipment/NewProduct';
 
 const EquipmentInventory = ({ onBack }) => {
-  // Initial products list
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Buns&Sons',category:"Roadrunner", description: 'Beef Burger and Pulled Pork', Maintenance: '2022-12-31' },
-        { id: 2, name: 'Brenwerk',category:"XXL", description: 'Currywurst', Maintenance: '2023-01-15' },
-        { id: 3, name: 'AsiaBox',category:"Roadrunner", description: 'Noodles', Maintenance: '2022-08-10' }
-  ]);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [equipments, setEquipments] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+  const [editingField, setEditingField] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
-  const productCount = products.length;
-  const handleAddProduct = (newProduct) => {
-    setProducts([...products, { ...newProduct, id: Math.max(...products.map(p => p.id)) + 1 }]);
-    setShowProductModal(false);
-  };
-
-  const handleEditProduct = (updatedProduct) => {
-    setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-    setShowProductModal(false);
-    setEditingProduct(null);
-  };
-
-  const handleDeleteProduct = (productId) => {
-    setProducts(products.filter(p => p.id !== productId));
-  };
-
-  const openEditModal = (product) => {
-    setEditingProduct(product);
-    setShowProductModal(true);
-  };
   const [searchQuery, setSearchQuery] = useState('');
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const equipmentsData = await fetchequipments();
+        setEquipments(equipmentsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Adjusted handleAddProduct to ensure quantity is an integer
+const handleAddProduct = async (newEquipment) => {
+  try {
+    const equipmentToSend = {
+      ...newEquipment,
+      quantity: parseInt(newEquipment.quantity, 10) // Ensure quantity is an integer
+    };
+    const addedEquipment = await addequipment(equipmentToSend);
+    setEquipments([...equipments, addedEquipment]);
+    setShowProductModal(false);
+  } catch (error) {
+    console.error("Error adding equipment:", error);
+  }
+};
+
+// Updated handleEditChange to handle quantity conversion for equipments
+const handleEditChange = (event, equipmentId, field) => {
+  let newValue = event.target.value;
+  // Convert newValue to an integer if the field is 'quantity'
+  if (field === 'quantity') {
+    newValue = parseInt(newValue, 10);
+  }
+  setEquipments(equipments.map(e => 
+    e.id === equipmentId ? { ...e, [field]: newValue } : e
+  ));
+};
+
+// Adjusted saveChanges to ensure quantity is processed as an integer when updating
+const saveChanges = async (equipmentId, field, newValue) => {
+  try {
+    // Convert newValue to an integer if the field is 'quantity'
+    const valueToSend = field === 'quantity' ? parseInt(newValue, 10) : newValue;
+    const updatedEquipment = await updateequipment(equipmentId, { [field]: valueToSend });
+    setEquipments(equipments.map(e => 
+      e.id === equipmentId ? { ...e, ...updatedEquipment } : e
+    ));
+  } catch (error) {
+    console.error("Error updating equipment:", error);
+  }
+};
+
+
+  const handleEditKeyPress = (event, equipmentId, field) => {
+    if (event.key === 'Enter') {
+      const newValue = event.target.value;
+      saveChanges(equipmentId, field, newValue);
+      setEditingId(null);
+      setEditingField('');
+    }
+  };
+
+  const handleEditBlur = (event, equipmentId, field) => {
+    const newValue = event.target.value;
+    saveChanges(equipmentId, field, newValue);
+    setEditingId(null);
+    setEditingField('');
+  };
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchQuery) ||
-    product.description.toLowerCase().includes(searchQuery)
-    // Add more fields to filter by if needed
+  const filteredEquipments = equipments.filter(equipment =>
+    equipment.name.toLowerCase().includes(searchQuery) ||
+    equipment.description.toLowerCase().includes(searchQuery)
   );
+
+  const renderEditableCell = (text, equipmentId, field) => {
+    if (editingId === equipmentId && editingField === field) {
+      return (
+        <TextField
+          className="editable-cell-input"
+          value={text}
+          onChange={(event) => handleEditChange(event, equipmentId, field)}
+          onKeyPress={(event) => handleEditKeyPress(event, equipmentId, field)}
+          onBlur={(event) => handleEditBlur(event, equipmentId, field)}
+          autoFocus
+          size="small"
+          fullWidth
+          spellCheck={false}
+        />
+      );
+    }
+    return text;
+  };
 
   return (
     <Grid container className="equipment-inventory" spacing={2}>
-      <Grid item xs={12}>
-      <BackButton onBack={onBack} />
+      <Grid item xs={12} className='controls'>
+        <BackButton onBack={onBack} />
         <div className="inventory-controls">
           <div className="search-filter-section">
             <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+              label="Search"
+              variant="outlined"
+              size="small"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
             <IconButton>
               <FilterListIcon />
             </IconButton>
           </div>
           <div className="inventory-stats">
-            <Typography variant="subtitle1">
-              {`${productCount} of ${productCount} results`}
-            </Typography>
+          <Typography variant="subtitle1">
+            {`${filteredEquipments.length} of ${equipments.length} results`}
+          </Typography>
           </div>
-          <div>
-      <Button onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>New Product</Button>
-      
-      </div>
+          <Button onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>New Equipment</Button>
         </div>
       </Grid>
       <Grid item xs={12}>
-      <TableContainer component={Paper} className="inventory-table-container">
+        <TableContainer component={Paper}  className="inventory-table-container">
           <Table stickyHeader>
-          <TableHead>
-          <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox />
-                </TableCell>
+            <TableHead>
+              <TableRow>
                 <TableCell>Name</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Maintenance</TableCell>
-              <TableCell>Actions</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-          </TableHead>
-          <TableBody>
-  {filteredProducts.length > 0 ? (
-    filteredProducts.map((product) => (
-        <TableRow key={product.id}>
-        <TableCell padding="checkbox">
-          <Checkbox />
-        </TableCell>
-        <TableCell>{product.name}</TableCell>
-        <TableCell>{product.category}</TableCell>
-        <TableCell>{product.description}</TableCell>
-        <TableCell>{product.Maintenance}</TableCell>
-        <TableCell>
-          <IconButton onClick={() => openEditModal(product)}><EditIcon /></IconButton>
-          <IconButton onClick={() => handleDeleteProduct(product.id)}><DeleteIcon /></IconButton>
-        </TableCell>
-      </TableRow>
-    ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={7} align="center">No items found</TableCell>
-    </TableRow>
-  )}
-</TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {filteredEquipments.length > 0 ? (
+                filteredEquipments.map((equipment) => (
+                  <TableRow key={equipment.id}>
+                    <TableCell onClick={() => { setEditingId(equipment.id); setEditingField('name'); }}>
+                      {renderEditableCell(equipment.name, equipment.id, 'name')}
+                    </TableCell>
+                    <TableCell onClick={() => { setEditingId(equipment.id); setEditingField('description'); }}>
+                      {renderEditableCell(equipment.description, equipment.id, 'description')}
+                    </TableCell>
+                    <TableCell onClick={() => { setEditingId(equipment.id); setEditingField('quantity'); }}>
+                      {renderEditableCell(equipment.quantity, equipment.id, 'quantity')}
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleDeleteProduct(equipment.id)}><DeleteIcon /></IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6} align="center">No items found</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Grid>
-      
+
       <NewProduct
-  open={showProductModal}
-  onClose={() => { setShowProductModal(false); setEditingProduct(null); }}
-  onAddProduct={editingProduct ? handleEditProduct : handleAddProduct} // Ensure correct function is passed
-  product={editingProduct}
-/>
+        open={showProductModal}
+        onClose={() => { setShowProductModal(false); setEditingProduct(null); }}
+        onAddProduct={editingProduct ? handleEditProduct : handleAddProduct}
+        product={editingProduct}
+      />
     </Grid>
   );
 };

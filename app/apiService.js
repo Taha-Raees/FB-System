@@ -50,8 +50,9 @@ export const addProduct = async (product) => {
     }
     return true;
   };
-// apiService/foodItem
 
+
+// apiService/foodItem
 
 export const fetchFoodItems = async () => {
   try {
@@ -100,6 +101,59 @@ export const addFoodItem = async (foodItem) => {
     });
     if (!response.ok) {
       throw new Error('Failed to delete foodItem');
+    }
+    return true;
+  };
+
+// apiService/equipment
+
+export const fetchequipments = async () => {
+  try {
+    const response = await fetch(`${baseURL}/inventorys`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching equipment:", error);
+    throw error; // Re-throwing the error is important for the caller to handle it
+  }
+};
+
+// Add a equipment
+export const addequipment = async (equipment) => {
+    const response = await fetch(`${baseURL}/inventorys`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(equipment),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to add equipment');
+    }
+    console.log(JSON.stringify(equipment));
+    return response.json();
+  };
+  
+  // Update a foodItem
+  export const updateequipment = async (id, equipment) => {
+    const response = await fetch(`${baseURL}/inventorys/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(equipment),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update equipment');
+    }
+    return response.json();
+  };
+  
+  // Delete a foodItem
+  export const deleteequipment = async (id) => {
+    const response = await fetch(`${baseURL}/inventorys/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete equipment');
     }
     return true;
   };

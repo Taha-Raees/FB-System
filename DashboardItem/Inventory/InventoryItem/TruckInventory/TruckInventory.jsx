@@ -165,7 +165,7 @@ const handleEditBlur = (event, productId, field) => {
           </div>
           <div className="inventory-stats">
             <Typography variant="subtitle1">
-              {`${productCount} of ${productCount} results`}
+              {`${filteredProducts.length} of ${productCount} results`}
             </Typography>
           </div>
           <div>

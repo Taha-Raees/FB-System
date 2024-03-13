@@ -35,6 +35,14 @@
       }
     }
   }
+  .inventory-table-container {
+    max-height: 65vh; background-color: #f5f5f58f;
+    overflow-y: auto;
+    .MuiTableCell-head {
+      
+      margin-right: 8px;
+    }
+}
   
   // Responsive adjustments for mobile devices
   @media only screen and (max-width: 600px) {
