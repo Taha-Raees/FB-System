@@ -43,6 +43,8 @@ const Dashboard = ({ onSignOut }) => {
         return <MessagingApp />;
       case 'Workflow':
         return <KanbanBoard />;
+      case 'Finance':
+        return <DashboardContent />;
       default:
         return <DashboardContent />;
     }

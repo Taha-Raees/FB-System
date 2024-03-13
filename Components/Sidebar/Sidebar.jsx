@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Event, Person, Inventory, Chat, CalendarToday, Settings, ExitToApp, HelpOutline, AccountTree, AccountCircleOutlined, Menu } from '@mui/icons-material';
+import { Home, Event, Person, Inventory, Chat, CalendarToday, Settings, ExitToApp, HelpOutline, AccountTree, AccountCircleOutlined, Menu, Euro } from '@mui/icons-material';
 import './Sidebar.scss';
 
 
@@ -50,6 +50,12 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
           onClick={() => handleMenuItemClick('Workflow')}
         >
           <AccountTree /><span>Workflow</span>
+        </div>
+        <div
+          className={`menu-item ${activeMenuItem === 'Finance' ? 'active' : ''}`}
+          onClick={() => handleMenuItemClick('Finance')}
+        >
+          <Euro/><span>Finance</span>
         </div>
         <div
           className={`menu-item ${activeMenuItem === 'Messages' ? 'active' : ''}`}
