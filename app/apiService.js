@@ -157,3 +157,20 @@ export const addequipment = async (equipment) => {
     }
     return true;
   };
+  // Function to update the clock
+export const updateClock = async (clockId, timestamp) => {
+  try {
+    const response = await fetch(`${baseURL}/clock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clockId, timestamp }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update clock');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating clock:", error);
+    throw error;
+  }
+};
