@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import GetStarted from '@/Components/GetStarted/GetStarted';
 import Dashboard from '@/Components/Dashboard/Dashboard';
+import{ scheduleClockUpdate } from '@/Components/Clock/clock';
 import "./Main.scss";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-popup/style.css'; 
@@ -9,6 +10,9 @@ import 'react-popup/style.css';
 
 const Home = () => {
   const [isSignedIn, setIsSignedIn] = useState(null); // Start with null to indicate loading state
+  useEffect(() => {
+    scheduleClockUpdate();
+  }, []);
 
   useEffect(() => {
     // Immediately check and set sign-in status from localStorage
