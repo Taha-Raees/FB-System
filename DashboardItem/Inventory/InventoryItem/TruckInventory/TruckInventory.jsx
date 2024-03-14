@@ -3,7 +3,7 @@ import { fetchProducts, addProduct, updateProduct, deleteProduct } from '@/app/a
 import {
   Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Grid, Typography,
-  InputAdornment
+  InputAdornment, CircularProgress
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,26 +16,27 @@ import NewProduct from '@/Buttons/NewProductTruck/NewProduct';
 
 const TruckInventory = ({ onBack }) => {
   const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const productsData = await fetchProducts();
-        setProducts(productsData);
-        console.log(productsData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editingField, setEditingField] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const productCount = products.length;
   const [editingProduct, setEditingProduct] = useState(null);
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchData = async () => {
+      try {
+        const productsData = await fetchProducts();
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      setIsLoading(false);
+    };
+  
+    fetchData();
+  }, []);
     // Add a new product
     const handleAddProduct = async (newProduct) => {
       try {
@@ -142,72 +143,69 @@ const handleEditBlur = (event, productId, field) => {
   return (
     <Grid container className="truck-inventory" spacing={2}>
       <Grid className='controls' item xs={12}>
-      <BackButton onBack={onBack} />
+        <BackButton onBack={onBack} />
         <div className="inventory-controls">
           <div className="search-filter-section">
             <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+              label="Search"
+              variant="outlined"
+              size="small"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
             <IconButton>
               <FilterListIcon />
             </IconButton>
           </div>
           <div className="inventory-stats">
             <Typography variant="subtitle1">
-              {`${filteredProducts.length} of ${productCount} results`}
+              {`${filteredProducts.length} of ${products.length} results`}
             </Typography>
           </div>
-          <div>
-      <Button  className='new-product-button ' onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>New Product</Button>
-      
-      </div>
+          <Button onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>
+            New Product
+          </Button>
         </div>
       </Grid>
       <Grid item xs={12}>
         <TableContainer component={Paper} className="inventory-table-container">
           <Table stickyHeader>
-          <TableHead>
-          <TableRow>
-                
+            <TableHead>
+              <TableRow>
                 <TableCell>Name</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Actions</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-          </TableHead>
+            </TableHead>
             <TableBody>
-              {filteredProducts.length > 0 ? (
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    <CircularProgress />
+                  </TableCell>
+                </TableRow>
+              ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <TableRow key={product.id}>
-                   
-                    <TableCell onClick={() => { setEditingId(product.id); setEditingField('name'); }}>
-                      {renderEditableCell(product.name, product.id, 'name')}
-                    </TableCell>
-                    <TableCell onClick={() => { setEditingId(product.id); setEditingField('category'); }}>
-                      {renderEditableCell(product.category, product.id, 'category')}
-                    </TableCell>
-                    <TableCell onClick={() => { setEditingId(product.id); setEditingField('description'); }}>
-                      {renderEditableCell(product.description, product.id, 'description')}
-                    </TableCell>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>{product.category}</TableCell>
+                    <TableCell>{product.description}</TableCell>
                     <TableCell>
-                     <IconButton onClick={() => handleDeleteProduct(product.id)}><DeleteIcon /></IconButton>
+                      <IconButton onClick={() => handleDeleteProduct(product.id)}><DeleteIcon /></IconButton>
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  {/* No items found cell */}
+                  <TableCell colSpan={4} align="center">No products found</TableCell>
                 </TableRow>
               )}
             </TableBody>
@@ -215,12 +213,14 @@ const handleEditBlur = (event, productId, field) => {
         </TableContainer>
       </Grid>
       
-      <NewProduct
-  open={showProductModal}
-  onClose={() => { setShowProductModal(false); setEditingProduct(null); }}
-  onAddProduct={editingProduct ? handleEditProduct : handleAddProduct} // Ensure correct function is passed
-  product={editingProduct}
-/>
+      {showProductModal && (
+        <NewProduct
+          open={showProductModal}
+          onClose={() => { setShowProductModal(false); setEditingProduct(null); }}
+          onAddProduct={handleAddProduct}
+          product={editingProduct}
+        />
+      )}
     </Grid>
   );
 };
