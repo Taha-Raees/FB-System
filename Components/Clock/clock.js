@@ -14,5 +14,5 @@ export function scheduleClockUpdate() {
   };
 
   update(); // Update immediately
-  setInterval(update, 60*1000); // Schedule subsequent updates every second
+  setInterval(update, 30*1000); // Schedule subsequent updates every second
 }
