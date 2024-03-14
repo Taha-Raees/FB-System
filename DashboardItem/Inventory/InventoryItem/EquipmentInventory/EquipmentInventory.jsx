@@ -3,7 +3,7 @@ import { fetchequipments, addequipment, updateequipment, deleteequipment } from 
 import {
   Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Grid, Typography,
-  InputAdornment, CircularProgress
+  InputAdornment
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,7 +16,6 @@ import NewProduct from '@/Buttons/NewProductEquipment/NewProduct';
 
 const EquipmentInventory = ({ onBack }) => {
   const [equipments, setEquipments] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editingField, setEditingField] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
@@ -25,54 +24,58 @@ const EquipmentInventory = ({ onBack }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       try {
         const equipmentsData = await fetchequipments();
         setEquipments(equipmentsData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-      setIsLoading(false);
     };
 
     fetchData();
   }, []);
 
-  const handleAddProduct = async (newEquipment) => {
-    try {
-      const equipmentToSend = {
-        ...newEquipment,
-        quantity: parseInt(newEquipment.quantity, 10)
-      };
-      const addedEquipment = await addequipment(equipmentToSend);
-      setEquipments([...equipments, addedEquipment]);
-      setShowProductModal(false);
-    } catch (error) {
-      console.error("Error adding equipment:", error);
-    }
-  };
+  // Adjusted handleAddProduct to ensure quantity is an integer
+const handleAddProduct = async (newEquipment) => {
+  try {
+    const equipmentToSend = {
+      ...newEquipment,
+      quantity: parseInt(newEquipment.quantity, 10) // Ensure quantity is an integer
+    };
+    const addedEquipment = await addequipment(equipmentToSend);
+    setEquipments([...equipments, addedEquipment]);
+    setShowProductModal(false);
+  } catch (error) {
+    console.error("Error adding equipment:", error);
+  }
+};
 
-  const handleEditChange = (event, equipmentId, field) => {
-    let newValue = event.target.value;
-    if (field === 'quantity') {
-      newValue = parseInt(newValue, 10);
-    }
+// Updated handleEditChange to handle quantity conversion for equipments
+const handleEditChange = (event, equipmentId, field) => {
+  let newValue = event.target.value;
+  // Convert newValue to an integer if the field is 'quantity'
+  if (field === 'quantity') {
+    newValue = parseInt(newValue, 10);
+  }
+  setEquipments(equipments.map(e => 
+    e.id === equipmentId ? { ...e, [field]: newValue } : e
+  ));
+};
+
+// Adjusted saveChanges to ensure quantity is processed as an integer when updating
+const saveChanges = async (equipmentId, field, newValue) => {
+  try {
+    // Convert newValue to an integer if the field is 'quantity'
+    const valueToSend = field === 'quantity' ? parseInt(newValue, 10) : newValue;
+    const updatedEquipment = await updateequipment(equipmentId, { [field]: valueToSend });
     setEquipments(equipments.map(e => 
-      e.id === equipmentId ? { ...e, [field]: newValue } : e
+      e.id === equipmentId ? { ...e, ...updatedEquipment } : e
     ));
-  };
+  } catch (error) {
+    console.error("Error updating equipment:", error);
+  }
+};
 
-  const saveChanges = async (equipmentId, field, newValue) => {
-    try {
-      const valueToSend = field === 'quantity' ? parseInt(newValue, 10) : newValue;
-      const updatedEquipment = await updateequipment(equipmentId, { [field]: valueToSend });
-      setEquipments(equipments.map(e => 
-        e.id === equipmentId ? { ...e, ...updatedEquipment } : e
-      ));
-    } catch (error) {
-      console.error("Error updating equipment:", error);
-    }
-  };
 
   const handleEditKeyPress = (event, equipmentId, field) => {
     if (event.key === 'Enter') {
@@ -99,21 +102,24 @@ const EquipmentInventory = ({ onBack }) => {
     equipment.description.toLowerCase().includes(searchQuery)
   );
 
-  const renderEditableCell = (text, equipmentId, field) => (
-    editingId === equipmentId && editingField === field ? (
-      <TextField
-        className="editable-cell-input"
-        value={text}
-        onChange={(event) => handleEditChange(event, equipmentId, field)}
-        onKeyPress={(event) => handleEditKeyPress(event, equipmentId, field)}
-        onBlur={(event) => handleEditBlur(event, equipmentId, field)}
-        autoFocus
-        size="small"
-        fullWidth
-        spellCheck={false}
-      />
-    ) : text
-  );
+  const renderEditableCell = (text, equipmentId, field) => {
+    if (editingId === equipmentId && editingField === field) {
+      return (
+        <TextField
+          className="editable-cell-input"
+          value={text}
+          onChange={(event) => handleEditChange(event, equipmentId, field)}
+          onKeyPress={(event) => handleEditKeyPress(event, equipmentId, field)}
+          onBlur={(event) => handleEditBlur(event, equipmentId, field)}
+          autoFocus
+          size="small"
+          fullWidth
+          spellCheck={false}
+        />
+      );
+    }
+    return text;
+  };
 
   return (
     <Grid container className="equipment-inventory" spacing={2}>
@@ -140,15 +146,15 @@ const EquipmentInventory = ({ onBack }) => {
             </IconButton>
           </div>
           <div className="inventory-stats">
-            <Typography variant="subtitle1">
-              {`${filteredEquipments.length} of ${equipments.length} results`}
-            </Typography>
+          <Typography variant="subtitle1">
+            {`${filteredEquipments.length} of ${equipments.length} results`}
+          </Typography>
           </div>
           <Button onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>New Equipment</Button>
         </div>
       </Grid>
       <Grid item xs={12}>
-        <TableContainer component={Paper} className="inventory-table-container">
+        <TableContainer component={Paper}  className="inventory-table-container">
           <Table stickyHeader>
             <TableHead>
               <TableRow>
@@ -159,13 +165,7 @@ const EquipmentInventory = ({ onBack }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={4} style={{ textAlign: 'center' }}>
-                    <CircularProgress />
-                  </TableCell>
-                </TableRow>
-              ) : filteredEquipments.length > 0 ? (
+              {filteredEquipments.length > 0 ? (
                 filteredEquipments.map((equipment) => (
                   <TableRow key={equipment.id}>
                     <TableCell onClick={() => { setEditingId(equipment.id); setEditingField('name'); }}>
@@ -178,32 +178,28 @@ const EquipmentInventory = ({ onBack }) => {
                       {renderEditableCell(equipment.quantity, equipment.id, 'quantity')}
                     </TableCell>
                     <TableCell>
-                      <IconButton onClick={() => deleteequipment(equipment.id).then(() => setEquipments(equipments.filter(e => e.id !== equipment.id)))}><DeleteIcon /></IconButton>
+                      <IconButton onClick={() => handleDeleteProduct(equipment.id)}><DeleteIcon /></IconButton>
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} align="center">No items found</TableCell>
+                  <TableCell colSpan={6} align="center">No items found</TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </TableContainer>
       </Grid>
-  
+
       <NewProduct
         open={showProductModal}
         onClose={() => { setShowProductModal(false); setEditingProduct(null); }}
-        onAddProduct={handleAddProduct}
+        onAddProduct={editingProduct ? handleEditProduct : handleAddProduct}
         product={editingProduct}
       />
     </Grid>
-  );  
+  );
 };
 
-  export default EquipmentInventory;
-
-
-
-
+export default EquipmentInventory;

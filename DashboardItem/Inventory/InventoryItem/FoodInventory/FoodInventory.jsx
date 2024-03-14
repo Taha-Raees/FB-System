@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Grid, Typography,
-  InputAdornment, CircularProgress
+  InputAdornment
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -15,7 +15,6 @@ import { FilterList } from '@mui/icons-material';
 
 const FoodInventory = ({ onBack }) => {
   const [foodItems, setFoodItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editingField, setEditingField] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
@@ -24,16 +23,14 @@ const FoodInventory = ({ onBack }) => {
   const productCount = foodItems.length;
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
       try {
         const data = await fetchFoodItems();
         setFoodItems(data);
       } catch (error) {
         console.error("Error fetching food items:", error);
       }
-      setIsLoading(false);
     };
-  
+
     fetchData();
   }, []);
 
@@ -145,19 +142,15 @@ const saveChanges = async (foodItemId, field, newValue) => {
               }}
             />
             <IconButton>
-              <FilterList />
+              <FilterList/>
             </IconButton>
           </div>
           <div className="inventory-stats">
             <Typography variant="subtitle1">
-              {`${foodItems.filter(item =>
-                item.name.toLowerCase().includes(searchQuery) ||
-                item.category.toLowerCase().includes(searchQuery) ||
-                item.expiry.toLowerCase().includes(searchQuery)
-              ).length} of ${foodItems.length} results`}
+              {`${filteredFoodItems.length} of ${productCount} results`}
             </Typography>
           </div>
-          <Button onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>
+          <Button className='new-product-button' onClick={() => setShowProductModal(true)} startIcon={<AddIcon />}>
             New Food Item
           </Button>
         </div>
@@ -175,22 +168,21 @@ const saveChanges = async (foodItemId, field, newValue) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={5} style={{ textAlign: 'center' }}>
-                    <CircularProgress />
-                  </TableCell>
-                </TableRow>
-              ) : foodItems.filter(item =>
-                item.name.toLowerCase().includes(searchQuery) ||
-                item.category.toLowerCase().includes(searchQuery) ||
-                item.expiry.toLowerCase().includes(searchQuery)
-              ).map((item) => (
+              {filteredFoodItems.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.category}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>{item.expiry}</TableCell>
+                  <TableCell>
+                    {renderEditableCell(item.name, item.id, 'name')}
+                  </TableCell>
+                  <TableCell>
+                    {renderEditableCell(item.category, item.id, 'category')}
+                  </TableCell>
+                   <TableCell>
+                    {renderEditableCell(item.quantity, item.id, 'quantity')}
+                  </TableCell>
+                  <TableCell>
+                    {renderEditableCell(item.expiry, item.id, 'expiry')}
+                  </TableCell>
+                 
                   <TableCell>
                     <IconButton onClick={() => handleDeleteProduct(item.id)}>
                       <DeleteIcon />
@@ -198,9 +190,9 @@ const saveChanges = async (foodItemId, field, newValue) => {
                   </TableCell>
                 </TableRow>
               ))}
-              {!isLoading && foodItems.length === 0 && (
+              {filteredFoodItems.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} align="center">No food items found</TableCell>
+                  <TableCell colSpan={4} align="center">No food items found</TableCell>
                 </TableRow>
               )}
             </TableBody>
