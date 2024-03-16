@@ -13,30 +13,32 @@ import SearchIcon from '@mui/icons-material/Search';
 import './TruckInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
 import NewProduct from '@/Buttons/NewProductTruck/NewProduct';
+import { CircularProgress } from '@mui/material';
 
 const TruckInventory = ({ onBack }) => {
   const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const productsData = await fetchProducts();
-        setProducts(productsData);
-        console.log(productsData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
   const [editingId, setEditingId] = useState(null);
   const [editingField, setEditingField] = useState('');
   const [showProductModal, setShowProductModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const productCount = products.length;
   const [editingProduct, setEditingProduct] = useState(null);
-    // Add a new product
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true); // Start loading before fetching data
+      try {
+        const productsData = await fetchProducts();
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false); // Stop loading after fetching data
+      }
+    }; fetchData();
+  }, []);
+ // Initialize the loading state as true  
+  // Add a new product
     const handleAddProduct = async (newProduct) => {
       try {
         const addedProduct = await addProduct(newProduct);
@@ -186,8 +188,14 @@ const handleEditBlur = (event, productId, field) => {
               <TableCell>Actions</TableCell>
               </TableRow>
           </TableHead>
-            <TableBody>
-              {filteredProducts.length > 0 ? (
+          <TableBody>
+          {isLoading ? (
+                <TableRow  >
+                  <TableCell colSpan={5} sx={{ backgroundColor: 'transparent', textAlign: 'center', color: 'grey.500' }}>
+                    <CircularProgress sx={{  color: '#ff9c2a' }} /> {/* Render loading indicator while data is fetching */}
+                  </TableCell>
+                </TableRow>
+              ) : filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <TableRow key={product.id}>
                    
@@ -205,12 +213,14 @@ const handleEditBlur = (event, productId, field) => {
                     </TableCell>
                   </TableRow>
                 ))
-              ) : (
-                <TableRow>
-                  {/* No items found cell */}
-                </TableRow>
-              )}
-            </TableBody>
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">
+                      No items found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
           </Table>
         </TableContainer>
       </Grid>

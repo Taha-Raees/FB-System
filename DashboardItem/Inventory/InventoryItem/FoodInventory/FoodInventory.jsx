@@ -12,6 +12,8 @@ import BackButton from '@/Buttons/BackButton/BackButton';
 import NewProduct from '@/Buttons/NewProductFood/NewProduct';
 import { fetchFoodItems, addFoodItem, updateFoodItem, deleteFoodItem } from '@/app/apiService'; // Make sure these functions are defined
 import { FilterList } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
+
 
 const FoodInventory = ({ onBack }) => {
   const [foodItems, setFoodItems] = useState([]);
@@ -21,19 +23,24 @@ const FoodInventory = ({ onBack }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
   const productCount = foodItems.length;
+  const [isLoading, setIsLoading] = useState(false); // initialize loading state
+
   useEffect(() => {
+    setIsLoading(true); // start loading
     const fetchData = async () => {
       try {
         const data = await fetchFoodItems();
         setFoodItems(data);
       } catch (error) {
         console.error("Error fetching food items:", error);
+      } finally {
+        setIsLoading(false); // stop loading regardless of the result
       }
     };
 
     fetchData();
   }, []);
-
+  
   const handleAddProduct = async (newFoodItem) => {
     try {
         const foodItemToSend = {
@@ -51,13 +58,17 @@ const FoodInventory = ({ onBack }) => {
 
 const handleEditChange = async (event, foodItemId, field) => {
   let newValue = event.target.value;
-  // Check if the field is 'quantity' and convert newValue to an integer
-  if (field === 'quantity') {
-      newValue = parseInt(newValue, 10);
+  // If the field is 'quantity' and the newValue is not empty, convert to an integer
+  if (field === 'quantity' && newValue) {
+    newValue = parseInt(newValue, 10);
+    // If newValue is an empty string, do not convert to number to prevent NaN
+    if (isNaN(newValue)) {
+      newValue = ''; // Set it to an empty string or some default value like 0
+    }
   }
 
-  setFoodItems(foodItems.map(item => 
-      item.id === foodItemId ? { ...item, [field]: newValue } : item
+  setFoodItems(foodItems.map(item =>
+    item.id === foodItemId ? { ...item, [field]: newValue } : item
   ));
 };
 
@@ -168,8 +179,15 @@ const saveChanges = async (foodItemId, field, newValue) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredFoodItems.map((item) => (
-                <TableRow key={item.id}>
+  {isLoading ? (
+    <TableRow>
+      <TableCell colSpan={6} align="center">
+        <CircularProgress  sx={{  color: '#ff9c2a' }}/>
+      </TableCell>
+    </TableRow>
+  ) : (filteredFoodItems.length > 0 ? (
+    filteredFoodItems.map((item) => (
+      <TableRow key={item.id}>
                   <TableCell>
                     {renderEditableCell(item.name, item.id, 'name')}
                   </TableCell>
@@ -188,14 +206,14 @@ const saveChanges = async (foodItemId, field, newValue) => {
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
-                </TableRow>
-              ))}
-              {filteredFoodItems.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={4} align="center">No food items found</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
+                  </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={6} align="center">No items found</TableCell>
+    </TableRow>
+  ))}
+</TableBody>
           </Table>
         </TableContainer>
       </Grid>

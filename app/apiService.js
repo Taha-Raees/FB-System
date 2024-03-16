@@ -179,3 +179,59 @@ export const addequipment = async (equipment) => {
       throw error;
     }
   };
+  // Create a user
+export const createUser = async (userData) => {
+  const response = await fetch(`${baseURL}/users`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create user');
+  }
+  return response.json();
+};
+
+// Read all users
+export const fetchUsers = async () => {
+  const response = await fetch(`${baseURL}/users`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch users');
+  }
+  return response.json();
+};
+
+// Read a specific user by ID
+export const fetchUserById = async (id) => {
+  const response = await fetch(`${baseURL}/users/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch user');
+  }
+  return response.json();
+};
+
+// Update a user
+export const updateUser = async (id, userData) => {
+  const response = await fetch(`${baseURL}/users/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update user');
+  }
+  return response.json();
+};
+
+// Delete a user
+export const deleteUser = async (id) => {
+  const response = await fetch(`${baseURL}/users/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete user');
+  }
+  // No content to return, so just confirm deletion was successful
+  return true;
+};
+

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { Home, Event, Person, Inventory, Chat, CalendarToday, Settings, ExitToApp, HelpOutline, AccountTree, AccountCircleOutlined, Menu, Euro } from '@mui/icons-material';
 import './Sidebar.scss';
 
 
 const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
   const [collapsed, setCollapsed] = useState(false);
-
+  const username = localStorage.getItem('username');
+  const lastname = localStorage.getItem('lastname');
   const handleMenuItemClick = (itemName) => {
     if (itemName === 'Sign Out') {
       onSignOut(); // handle sign out
@@ -76,7 +77,7 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
           className={`user-item ${activeMenuItem === 'Account' ? 'active' : ''}`}
           onClick={() => handleMenuItemClick('Account')}
         >
-          <AccountCircleOutlined /><span>Account</span>
+          <AccountCircleOutlined /><span style={{fontSize:'15px'}}>{username} {lastname}</span>
         </div>
         <div
           className={`user-item ${activeMenuItem === 'Sign Out' ? 'active' : ''}`}

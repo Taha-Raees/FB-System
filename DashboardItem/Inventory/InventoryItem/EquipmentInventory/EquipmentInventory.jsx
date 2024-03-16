@@ -13,6 +13,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import './EquipmentInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
 import NewProduct from '@/Buttons/NewProductEquipment/NewProduct';
+import { CircularProgress } from '@mui/material';
+
 
 const EquipmentInventory = ({ onBack }) => {
   const [equipments, setEquipments] = useState([]);
@@ -21,19 +23,23 @@ const EquipmentInventory = ({ onBack }) => {
   const [showProductModal, setShowProductModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // New state for loading indicator
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const equipmentsData = await fetchequipments();
         setEquipments(equipmentsData);
+        setIsLoading(false); // End loading
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false); // End loading even if there is an error
       }
     };
 
     fetchData();
   }, []);
+
 
   // Adjusted handleAddProduct to ensure quantity is an integer
 const handleAddProduct = async (newEquipment) => {
@@ -53,10 +59,16 @@ const handleAddProduct = async (newEquipment) => {
 // Updated handleEditChange to handle quantity conversion for equipments
 const handleEditChange = (event, equipmentId, field) => {
   let newValue = event.target.value;
-  // Convert newValue to an integer if the field is 'quantity'
+
   if (field === 'quantity') {
-    newValue = parseInt(newValue, 10);
+    // Check if newValue is not an empty string before converting to number
+    newValue = newValue !== '' ? parseInt(newValue, 10) : '';
+    // Handle case where newValue is not a number
+    if (isNaN(newValue)) {
+      newValue = ''; // or a default value like 0
+    }
   }
+
   setEquipments(equipments.map(e => 
     e.id === equipmentId ? { ...e, [field]: newValue } : e
   ));
@@ -165,7 +177,14 @@ const saveChanges = async (equipmentId, field, newValue) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredEquipments.length > 0 ? (
+      {isLoading ? (
+        <TableRow>
+          <TableCell colSpan={6} align="center">
+            <CircularProgress sx={{  color: '#ff9c2a' }} /> {/* Loading icon */}
+          </TableCell>
+        </TableRow>
+      ) : (
+        filteredEquipments.length > 0 ? (
                 filteredEquipments.map((equipment) => (
                   <TableRow key={equipment.id}>
                     <TableCell onClick={() => { setEditingId(equipment.id); setEditingField('name'); }}>
@@ -182,10 +201,11 @@ const saveChanges = async (equipmentId, field, newValue) => {
                     </TableCell>
                   </TableRow>
                 ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={6} align="center">No items found</TableCell>
-                </TableRow>
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} align="center">No items found</TableCell>
+                  </TableRow>
+                )
               )}
             </TableBody>
           </Table>
