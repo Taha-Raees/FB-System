@@ -18,6 +18,19 @@
           margin-right: 8px;
         }
       }
+      .dialog-content {
+        display: flex;
+        flex-direction: column;
+        
+        .MuiTextField-root,
+        .MuiSelect-root {
+          margin-top: 20px;
+        }
+      }
+      .dialog-actions {
+        justify-content: space-between;
+        padding: 8px 24px;
+      }
   
       .inventory-stats {
         margin-left: 8px;

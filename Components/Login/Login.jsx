@@ -31,6 +31,7 @@ const Login = ({ onSignIn }) => {
       localStorage.setItem("username", user.firstName); // Save username for session
       localStorage.setItem("lastname", user.lastName); // Save username for session
       localStorage.setItem("userRole", user.role); // Assuming the user object includes a role
+      localStorage.setItem("userId", user.id); // Assuming the user object includes a role
       setIsError(false);
       onSignIn();
     } else {

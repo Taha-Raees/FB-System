@@ -1,0 +1,64 @@
+.account-container {
+  padding: 20px;
+  background-color: #20232a; // Dark theme background
+  color: #61dafb; // Light blue text, typically used for React branding
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  max-width: 400px; // Match the card width
+  margin: 20px auto; // Center the container
+display: flex;
+flex-direction: column;
+gap: 20px;
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: .5rem;
+      color: #abb2bf; // Soft white for labels
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #282c34; // Slightly lighter dark background for input
+      border: 1px solid #61dafb; // Light blue border for input
+      color: #61dafb; // Light blue text for input
+      border-radius: 4px;
+      box-shadow: none; // No shadow to match the overall flat design
+
+      &:focus {
+        outline: none;
+        border-color: #98c379; // A different shade for focus, similar to the React logo
+      }
+    }
+  }
+
+  .error {
+    color: #e06c75; // Soft red for error messages
+    margin-bottom: 1rem;
+  }
+
+  button {
+    margin-top: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #61dafb; // Light blue to stand out
+    color: #20232a; // Dark text for contrast
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #4fa8e4; // A darker shade of blue for hover
+    }
+  }
+
+  // Add a hover effect to the entire container for consistency with the card design
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+}

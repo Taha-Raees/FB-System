@@ -7,6 +7,7 @@ import Staffing from '@/DashboardItem/Staffing/Staffing';
 import "./dashboard.scss";
 import MessagingApp from '@/DashboardItem/Messages/MessagingApp';
 import KanbanBoard from '@/DashboardItem/Workflow/KanbanBoard';
+import Account from '@/DashboardItem/Account/Account';
 
 const Dashboard = ({ onSignOut }) => {
   const [activeMenuItem, setActiveMenuItem] = useState('Dashboard');
@@ -45,6 +46,8 @@ const Dashboard = ({ onSignOut }) => {
         return <KanbanBoard />;
       case 'Finance':
         return <DashboardContent />;
+      case 'Account':
+        return <Account />;
       default:
         return <DashboardContent />;
     }

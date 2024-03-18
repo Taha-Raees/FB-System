@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import {
   Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Grid, Typography,
-  InputAdornment
+  InputAdornment, Dialog, DialogActions, DialogContent, DialogTitle, CircularProgress, Select, MenuItem
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import './FoodInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
 import NewProduct from '@/Buttons/NewProductFood/NewProduct';
-import { fetchFoodItems, addFoodItem, updateFoodItem, deleteFoodItem } from '@/app/apiService'; // Make sure these functions are defined
-import { FilterList } from '@mui/icons-material';
-import { CircularProgress } from '@mui/material';
+import { fetchFoodItems, addFoodItem, updateFoodItem, deleteFoodItem, fetchSuppliers } from '@/app/apiServiceFood';
+
+import { FilterList, MoreHoriz } from '@mui/icons-material';
+import ItemDetails from '@/Buttons/ItemDetails';
 
 
 const FoodInventory = ({ onBack }) => {
@@ -24,7 +26,32 @@ const FoodInventory = ({ onBack }) => {
   const [editingProduct, setEditingProduct] = useState(null);
   const productCount = foodItems.length;
   const [isLoading, setIsLoading] = useState(false); // initialize loading state
+  const [suppliers, setSuppliers] = useState([]);
+  const [selectedItemDetails, setSelectedItemDetails] = useState(null);
+  
+  // Fetch suppliers on component mount
+  useEffect(() => {
+    const fetchAllSuppliers = async () => {
+      try {
+        const suppliersData = await fetchSuppliers();
+        setSuppliers(suppliersData);
+      } catch (error) {
+        console.error("Error fetching suppliers:", error);
+      }
+    };
 
+    fetchAllSuppliers();
+  }, []);
+
+  // Function to open item details popup
+  const openItemDetails = (item) => {
+    setSelectedItemDetails(item);
+  };
+
+  // Function to close item details popup
+  const closeItemDetails = () => {
+    setSelectedItemDetails(null);
+  };
   useEffect(() => {
     setIsLoading(true); // start loading
     const fetchData = async () => {
@@ -71,6 +98,21 @@ const handleEditChange = async (event, foodItemId, field) => {
     item.id === foodItemId ? { ...item, [field]: newValue } : item
   ));
 };
+  const saveItemDetails = async (updatedItem) => {
+    try {
+      // Assuming `updateFoodItem` is an API call that updates the item on your backend
+      const result = await updateFoodItem(updatedItem.id, updatedItem);
+  
+      // Update the local state with the updated item
+      // This assumes that `result` is the updated item; adjust according to your API response
+      setFoodItems(foodItems.map(item => item.id === updatedItem.id ? {...item, ...result} : item));
+  
+      // Close the item details dialog
+      closeItemDetails();
+    } catch (error) {
+      console.error("Error updating food item:", error);
+    }
+  };
 
 
 const saveChanges = async (foodItemId, field, newValue) => {
@@ -130,6 +172,9 @@ const saveChanges = async (foodItemId, field, newValue) => {
         {text}
       </div>
     );
+  };
+  const handleMoreHorizClick = (item) => {
+    openItemDetails(item); // Open the dialog with the details of the clicked item
   };
 
   return (
@@ -205,6 +250,9 @@ const saveChanges = async (foodItemId, field, newValue) => {
                     <IconButton onClick={() => handleDeleteProduct(item.id)}>
                       <DeleteIcon />
                     </IconButton>
+                    <IconButton onClick={() => handleMoreHorizClick(item)}>
+                      <MoreHoriz/>
+                    </IconButton>
                   </TableCell>
                   </TableRow>
     ))
@@ -225,6 +273,14 @@ const saveChanges = async (foodItemId, field, newValue) => {
           onAddProduct={handleAddProduct}
           product={editingProduct}
         />
+      )}
+      {selectedItemDetails && (
+         <ItemDetails
+         open={Boolean(selectedItemDetails)}
+         onClose={closeItemDetails}
+         item={selectedItemDetails || {}}
+         onSave={saveItemDetails}
+       />
       )}
     </Grid>
   );
