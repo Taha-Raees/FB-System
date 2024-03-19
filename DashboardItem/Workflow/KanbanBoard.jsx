@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
-import BoardColumn from './KanbanComp/BoardColumn/BoardColumn'; // BoardColumn component is provided below
+import React, { useState, useEffect } from 'react';
+import BoardColumn from './KanbanComp/BoardColumn/BoardColumn';
 import './KanbanBoard.scss';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { Add } from '@mui/icons-material';
 
 const KanbanBoard = () => {
-  const [stages, setStages] = useState([
-    { id: 1, title: 'UNASSIGNED', cards: [{ id: 1, content: 'Example Card' }] },
-    { id: 2, title: 'TODO', cards: [] },
-    { id: 3, title: 'IN PROGRESS', cards: [] },
-    { id: 4, title: 'DONE', cards: [] },
-  ]);
+  const LOCAL_STORAGE_KEY = 'kanbanBoardStages';
+
+  const saveToLocalStorage = (stages) => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(stages));
+  };
+
+  const loadFromLocalStorage = () => {
+    const storedStages = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return storedStages ? JSON.parse(storedStages) : null;
+  };
+
+  const [stages, setStages] = useState(() => {
+    const savedStages = loadFromLocalStorage();
+    return savedStages || [
+      { id: 1, title: 'UNASSIGNED', cards: [{ id: 1, content: 'Example Card' }] },
+      { id: 2, title: 'TODO', cards: [] },
+      { id: 3, title: 'IN PROGRESS', cards: [] },
+      { id: 4, title: 'DONE', cards: [] },
+    ];
+  });
+
+  useEffect(() => {
+    saveToLocalStorage(stages);
+  }, [stages]);
+
   const editStageTitle = (stageId, newTitle) => {
     setStages(stages =>
       stages.map(stage =>
@@ -66,26 +85,26 @@ const KanbanBoard = () => {
       )
     );
   };
+
   const onDragEnd = result => {
     const { destination, source } = result;
-  
+
     if (!destination) {
       return;
     }
-  
+
     const startStageId = parseInt(source.droppableId, 10);
     const finishStageId = parseInt(destination.droppableId, 10);
-  
+
     const startStage = stages.find(stage => stage.id === startStageId);
     const finishStage = stages.find(stage => stage.id === finishStageId);
-  
+
     if (!startStage || !finishStage) {
       console.error('Stage not found:', { startStageId, finishStageId });
       return; // Stop the function if stages are not found
     }
 
     if (startStage === finishStage) {
-      // Moving within the same stage
       const newCards = Array.from(startStage.cards);
       const [reorderedCard] = newCards.splice(source.index, 1);
       newCards.splice(destination.index, 0, reorderedCard);
@@ -98,7 +117,6 @@ const KanbanBoard = () => {
         )
       );
     } else {
-      // Moving from one stage to another
       const startCards = Array.from(startStage.cards);
       const [movedCard] = startCards.splice(source.index, 1);
       const finishCards = Array.from(finishStage.cards);
@@ -106,13 +124,11 @@ const KanbanBoard = () => {
 
       const newStartStage = { ...startStage, cards: startCards };
       const newFinishStage = { ...finishStage, cards: finishCards };
-      
 
       setStages(stages =>
         stages.map(stage =>
           stage.id === startStage.id ? newStartStage : stage.id === finishStage.id ? newFinishStage : stage
         )
-        
       );
     }
   };
@@ -134,7 +150,6 @@ const KanbanBoard = () => {
         ))}
         <span className="add-stage-btn" onClick={addStage}><Add/><p>New Stage</p></span>
       </div>
-      
     </DragDropContext>
   );
 };
