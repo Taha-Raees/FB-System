@@ -17,7 +17,7 @@
       background-color: transparent;
       &:focus {
         outline: none;
-        border-color: #e89735;
+        border-color: #AD9551;
         box-shadow: 0 0 8px rgba(232, 151, 53, 0.2);
       }
     }
@@ -51,7 +51,7 @@
       .conversation-name {
         font-weight: 500;
         margin-bottom: 5px;
-        color: #f6b04e;
+        color: #AD9551;
         font-size: 0.9rem;
       }
 
@@ -73,7 +73,7 @@
     .add-comment-button {
       position: absolute;
       left: 10em;
-    color: #fcae29;
+    color: #AD9551;
       &:hover {
        color: #08153b; // Change color on hover
        cursor: pointer; // Change cursor to pointer on hover

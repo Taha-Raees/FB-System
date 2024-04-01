@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { updateUser } from '@/app/apiService'; // Adjust the path as necessary
+import { updateUser } from '@/app/apiService/apiService'; // Adjust the path as necessary
 import './account.scss';
 
 const Account = () => {

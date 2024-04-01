@@ -1,5 +1,5 @@
 // clock.js
-import { updateClock } from '@/app/apiService';
+import { updateClock } from '@/app/apiService/apiService';
 
 const clockId = 1; // Adjust based on your clock record's ID
 

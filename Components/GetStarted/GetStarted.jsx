@@ -15,7 +15,7 @@ const GetStarted = ({ onSignIn }) => {
         <div className="GetStarted">
           <div className="container">
           <div className="content">
-            <h1 className="title">Welcome to F&B System</h1>
+            <h1 className="title">Welcome to G&G System</h1>
             <p className="subtitle">
               Your all-in-one business management suite: streamline your events, food trucks, inventory, and personnel with ease and precision.
             </p>

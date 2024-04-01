@@ -1,96 +1,96 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { eventData } from './demoData'
-
-//EXPORT ALL ACTION TYPES
-export const FETCH_EVENTS = 'fetch_events';
-export const CREATE_EVENT = 'create_event';
-export const UPDATE_EVENT = 'update_event';
-export const DELETE_EVENT = 'delete_event';
-export const PAST_EVENTS = 'past_events';
-export const UPCOMING_EVENTS = 'upcoming_events';
-
-// New action type
-export const ONGOING_EVENTS = 'ongoing_events';
-
-// Action creator for ongoing events
-export function ongoingEvents() {
-    let events = JSON.parse(localStorage.getItem('events')); // Get data from Storage
-    let current_time = moment().format('YYYY MM DD');
-    let ongoingEvents = _.filter(events, (event) => {
-        let start = moment(event.start).format('YYYY MM DD');
-        let end = moment(event.end).format('YYYY MM DD');
-        return current_time >= start && current_time <= end;
-    });
-    return {
-        type: ONGOING_EVENTS,
-        payload: ongoingEvents
+import {
+    fetchEvents as apiFetchEvents,
+    addEvent as apiAddEvent,
+    updateEvent as apiUpdateEvent,
+    deleteEvent as apiDeleteEvent
+  } from '@/app/apiService/apiEvent'; // Adjust the path as needed
+  export const FETCH_EVENTS = 'fetch_events';
+  export const CREATE_EVENT = 'create_event';
+  export const UPDATE_EVENT = 'update_event';
+  export const DELETE_EVENT = 'delete_event';
+  export const PAST_EVENTS = 'past_events';
+  export const UPCOMING_EVENTS = 'upcoming_events';
+  export const ONGOING_EVENTS = 'ongoing_events';
+  export const ACTION_FAILED = 'ACTION_FAILED';
+  
+  export const fetchEventsFromAPI = () => async (dispatch) => {
+    try {
+      const events = await apiFetchEvents();
+      dispatch({ type: FETCH_EVENTS, payload: events });
+    } catch (error) {
+      dispatch({ type: ACTION_FAILED, payload: error.toString() });
     }
-}
-
-//FETCH EVENTS FROM LOCAL STORAGE
-export function fetchEvents() {
-    if(!localStorage.getItem('events')) {
-        localStorage.setItem('events', JSON.stringify(eventData)); // If storage is empty set demo data
+  };
+  
+  export const createEventInAPI = (eventData) => async (dispatch) => {
+    try {
+      const newEvent = await apiAddEvent(eventData);
+      dispatch({ type: CREATE_EVENT, payload: newEvent });
+      dispatch(fetchEventsFromAPI());
+    } catch (error) {
+      dispatch({ type: ACTION_FAILED, payload: error.toString() });
     }
-    let events = JSON.parse(localStorage.getItem('events')); //Get data from Storage
-    return {
-        type: FETCH_EVENTS,
-        payload: events
+  };
+  
+  export const updateEventInAPI = (id, eventData) => async (dispatch) => {
+    try {
+      const updatedEvent = await apiUpdateEvent(id, eventData);
+      dispatch({ type: UPDATE_EVENT, payload: updatedEvent });
+      dispatch(fetchEventsFromAPI());
+    } catch (error) {
+      dispatch({ type: ACTION_FAILED, payload: error.toString() });
     }
-}
-
-//CREATE NEW EVENT ACTION
-export function createEvent(values) {
-    let events = JSON.parse(localStorage.getItem('events'));
-    events.push(values); //Push New Item
-    localStorage.setItem('events', JSON.stringify(events)); //Update Storage
-    return {
-        type: CREATE_EVENT,
-        payload: events
+  };
+  
+  export const deleteEventInAPI = (id) => async (dispatch) => {
+    try {
+      await apiDeleteEvent(id);
+      dispatch({ type: DELETE_EVENT, payload: id });
+      dispatch(fetchEventsFromAPI());
+    } catch (error) {
+      dispatch({ type: ACTION_FAILED, payload: error.toString() });
     }
-}
-
-//UPDATE EVENT ACTION
-export function updateEvent(values) {
-    let events = JSON.parse(localStorage.getItem('events')); //Get data from Storage
-    let index = _.findIndex(events, { 'id': values.id});
-    events[index] = values; //Update Item
-    localStorage.setItem('events', JSON.stringify(events)); //Update Storage
-    return {
-        type: UPDATE_EVENT,
-        payload: events
+  };
+  
+  export const fetchPastEvents = () => async (dispatch) => {
+    try {
+      const events = await apiFetchEvents();
+      // Considering 'now' as the beginning of today for comparison
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      
+      const pastEvents = events.filter(event => new Date(event.endDate) < now);
+      dispatch({ type: PAST_EVENTS, payload: pastEvents });
+    } catch (error) {
+      dispatch({ type: ACTION_FAILED, payload: error.toString() });
     }
-}
-
-//DELETE EVENT ACTION
-export function deleteEvent(id) {
-    let events = JSON.parse(localStorage.getItem('events')); //Get data from Storage
-    let index = _.findIndex(events, { 'id': id});
-    events.splice(index, 1); //Remove Item
-    localStorage.setItem('events', JSON.stringify(events)); //Update Storage
-    return {
-        type: DELETE_EVENT,
-        payload: events
+  };
+  
+  export const fetchUpcomingEvents = () => async (dispatch) => {
+    try {
+      const events = await apiFetchEvents();
+      // Considering 'now' as the end of today for comparison
+      const now = new Date();
+      now.setHours(23, 59, 59, 999);
+  
+      const upcomingEvents = events.filter(event => new Date(event.startDate) > now);
+      dispatch({ type: UPCOMING_EVENTS, payload: upcomingEvents });
+    } catch (error) {
+      dispatch({ type: ACTION_FAILED, payload: error.toString() });
     }
-}
-
-//GET ALL PAST EVENTS ACTION
-export function pastEvents() {
-    let events = JSON.parse(localStorage.getItem('events')); //Get data from Storage
-    events = _.filter(events, (item) => (moment().format('YYYY MM DD') > moment(item.start).format('YYYY MM DD')) ? true : false);
-    return {
-        type: PAST_EVENTS,
-        payload: events
+  };
+  
+  export const fetchOngoingEvents = () => async (dispatch) => {
+    try {
+      const events = await apiFetchEvents();
+      const now = new Date();
+      
+      const ongoingEvents = events.filter(event => new Date(event.startDate) <= now && new Date(event.endDate) >= now);
+      dispatch({ type: ONGOING_EVENTS, payload: ongoingEvents });
+    } catch (error) {
+      dispatch({ type: ACTION_FAILED, payload: error.toString() });
     }
-}
-
-//GET ALL UPCOMING EVENTS ACTION
-export function upcomingEvents() {
-    let events = JSON.parse(localStorage.getItem('events')); //Get data from Storage
-    events = _.filter(events, (item) => (moment().format('YYYY MM DD') < moment(item.start).format('YYYY MM DD')) ? true : false);
-    return {
-        type: UPCOMING_EVENTS,
-        payload: events
-    }
-}
+  };
+  

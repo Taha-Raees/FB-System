@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
-import { createSupplier, createItemSupplierRelation } from '@/app/apiServiceFood';
+import { createSupplier, createItemSupplierRelation } from '@/app/apiService/apiServiceFood';
 
 const NewSupplierDialog = ({ open, onClose, itemId, onSupplierAdded }) => {
   const [name, setName] = useState('');

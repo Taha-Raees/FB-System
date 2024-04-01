@@ -19,7 +19,7 @@
         border-radius: 5px;
         word-wrap: break-word;
         &.sent {
-          background-color: #ffbb00;
+          background-color: #AD9551;
           align-self: flex-end;
           width: auto;
           padding-left: 1em;
@@ -63,7 +63,7 @@
         background-color: transparent;
       &:focus {
         outline: none;
-        border: 2px solid #ffbe6e;
+        border: 2px solid #AD9551;
       }
       }
   
@@ -74,12 +74,12 @@
         padding: 10px 15px;
         border: none;
         border-radius: 5px;
-        background-color: rgb(255, 184, 91);
+        background-color: #AD9551;
         color: white;
         cursor: pointer;
   
         &:hover {
-          background-color: darken(rgb(255, 184, 91), 10%);
+          background-color: darken(#AD9551, 10%);
         }
       }
     }

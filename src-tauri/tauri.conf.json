@@ -8,7 +8,7 @@
   },
   
   "package": {
-    "productName": "fb-system",
+    "productName": "Gg-System",
     "version": "0.1.0"
   },
   "tauri": {
@@ -24,11 +24,11 @@
       },
       "externalBin": [],
       "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
+        "icons/Logo2.png",
+        "icons/Logo2.png",
+        "icons/Logo2.png",
+        "icons/Logo2.png",
+        "icons/Logo2.png"
       ],
       "identifier": "com.example.myapp",
       "longDescription": "",
@@ -59,7 +59,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "fb-system",
+        "title": "Gg-System",
         "width": 800
       }
     ]

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchUsers } from '@/app/apiService'; // Ensure this is the correct import path
+import { fetchUsers } from '@/app/apiService/apiService'; // Ensure this is the correct import path
 import "./Login.scss";
 import CircularProgress from '@mui/material/CircularProgress';
 

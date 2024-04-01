@@ -20,7 +20,7 @@
     .logo {
       justify-content: center;
       margin-top: -50px;
-      color: #ff9c2a;
+      color: #AD9551;
       img {
         display: none;
       }
@@ -43,7 +43,7 @@
         transform: translateY(-50%);
         height: 30px; // Vertical line height
         width: 2px; // Vertical line width
-        background-color: #ff9c2a; // Vertical line color
+        background-color: #AD9551; // Vertical line color
         display: none; // Initially hidden, shown on active
       }
 
@@ -66,7 +66,7 @@
       transform: translateX(-50%);
       width: 70%;
       height: 1px;
-      background-color: #ff9c2a;
+      background-color: #AD9551;
       display: block; // Show on hover
     }
   }
@@ -89,7 +89,7 @@
       bottom: 0;
       width: 0; // Initially hidden
       height: 1px;
-      background-color: #ff9c2a;
+      background-color: #AD9551;
       transition: width 0.3s ease;
     }
 
@@ -98,7 +98,7 @@
     }
 
     &.active {
-      color: #ff9c2a;
+      color: #AD9551;
       font-weight: bold;
     }
 
@@ -167,7 +167,7 @@
         transform: translateY(-50%);
         height: 30px; // Vertical line height
         width: 2px; // Vertical line width
-        background-color: #ff9c2a; // Vertical line color
+        background-color: #AD9551; // Vertical line color
         display: none; // Initially hidden, shown on active
       }
 
@@ -190,7 +190,7 @@
       transform: translateX(-50%);
       width: 70%;
       height: 1px;
-      background-color: #ff9c2a;
+      background-color: #AD9551;
       display: block; // Show on hover
     }
   }

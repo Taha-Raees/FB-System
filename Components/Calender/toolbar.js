@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchEvents, pastEvents, upcomingEvents, ongoingEvents } from '../../actions';
+import {fetchEventsFromAPI as fetchEvents,
+    fetchPastEvents as pastEvents,
+    fetchUpcomingEvents as upcomingEvents,
+    fetchOngoingEvents as ongoingEvents } from '../../actions';
 
 import './toolbar.css';
 
