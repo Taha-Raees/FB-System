@@ -11,7 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './FoodInventory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
 import NewProduct from '@/Buttons/NewProductFood/NewProduct';
-import { fetchFoodItems, addFoodItem, updateFoodItem, deleteFoodItem, fetchSuppliers } from '@/app/apiServiceFood';
+import { fetchFoodItems, addFoodItem, updateFoodItem, deleteFoodItem, fetchSuppliers } from '@/app/apiService/apiServiceFood';
 
 import { FilterList, MoreHoriz } from '@mui/icons-material';
 import ItemDetails from '@/Buttons/ItemDetails';

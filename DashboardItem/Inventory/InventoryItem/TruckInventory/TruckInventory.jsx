@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProducts, addProduct, updateProduct, deleteProduct } from '@/app/apiService';
+import { fetchProducts, addProduct, updateProduct, deleteProduct } from '@/app/apiService/apiService';
 import {
   Button, TextField, Checkbox, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Grid, Typography,

@@ -6,7 +6,10 @@ import CustomToolbar from './toolbar';
 import Popup from 'react-popup';
 import Input from './input';
 import moment from 'moment';
-import { fetchEvents, createEvent, updateEvent, deleteEvent } from '../../actions';
+import { fetchEventsFromAPI as fetchEvents,
+    createEventInAPI as createEvent,
+    updateEventInAPI as updateEvent,
+    deleteEventInAPI as deleteEvent } from '../../actions';
 import 'react-popup/style.css'; // The path may vary based on the actual structure of the package
 import './calender.css'
 
@@ -20,12 +23,12 @@ class Calendar extends Component {
 
     renderEventContent = (slotInfo) => {
         const date = moment(slotInfo.start).format('MMMM D, YYYY');
+        const endDate = moment(slotInfo.endDate).format('MMMM D, YYYY');
         return (
             <div>
                 <p>Start Date: <strong>{date}</strong></p>
-                <p>End Date: {slotInfo.endDate}</p>
-
-                <p>Location: {slotInfo.location}</p>
+                <p>End Date: <strong>{endDate}</strong></p>
+                <p>Location: <strong>{slotInfo.location}</strong></p>
             </div>
         );
     }
@@ -61,36 +64,39 @@ class Calendar extends Component {
     openPopupForm = (slotInfo) => {
         let newEvent = false;
         let popupTitle = "Update Event";
-        if(!slotInfo.hasOwnProperty('id')) {
-            slotInfo.id = moment().format('x');
-            slotInfo.title = null;
-            slotInfo.location = null;
-            slotInfo.startDate = moment(slotInfo.start).format('YYYY-MM-DD');
-            slotInfo.endDate = moment(slotInfo.start).format('YYYY-MM-DD');
-            popupTitle = "Create Event";
+        if (!slotInfo.hasOwnProperty('id')) {
+            // For new events, set default values
             newEvent = true;
+            popupTitle = "Create Event";
+            slotInfo = {
+                ...slotInfo,
+                id: Date.now().toString(), // Temporary ID; backend should assign a real ID
+                title: "",
+                location: "",
+                // Use moment to format JavaScript Date objects to ISO 8601 strings
+                startDate: moment(slotInfo.start).toISOString(),
+                endDate: moment(slotInfo.end).toISOString(),
+            };
+        } else {
+            // For existing events, format dates from JavaScript Date objects to ISO 8601 strings
+            slotInfo = {
+                ...slotInfo,
+                startDate: moment(slotInfo.start).toISOString(),
+                endDate: moment(slotInfo.end).toISOString(),
+            };
         }
-
-        let titleChange = function (value) {
-            slotInfo.title = value;
+    
+        let handleChange = (key, value) => {
+            slotInfo[key] = value;
         };
-        let locationChange = function (value) {
-            slotInfo.location = value;
-        };
-        let startDateChange = function (value) {
-            slotInfo.startDate = value;
-        };
-        let endDateChange = function (value) {
-            slotInfo.endDate = value;
-        };
-        
+    
         Popup.create({
             title: popupTitle,
             content: <div>
-                        <Input onChange={titleChange} placeholder="Event Title" defaultValue={slotInfo.title} />
-                        <Input onChange={locationChange} placeholder="Event Location" defaultValue={slotInfo.location} />
-                        <Input onChange={startDateChange} placeholder="Start Date" defaultValue={slotInfo.startDate} type="date" />
-                        <Input onChange={endDateChange} placeholder="End Date"defaultValue={slotInfo.endDate} type="date"/>
+                        <Input onChange={(value) => handleChange('title', value)} placeholder="Event Title" defaultValue={slotInfo.title} />
+                        <Input onChange={(value) => handleChange('location', value)} placeholder="Event Location" defaultValue={slotInfo.location} />
+                        <Input onChange={(value) => handleChange('startDate', value)} placeholder="Start Date" defaultValue={moment(slotInfo.startDate).format('YYYY-MM-DD')} type="date" />
+                        <Input onChange={(value) => handleChange('endDate', value)} placeholder="End Date" defaultValue={moment(slotInfo.endDate).format('YYYY-MM-DD')} type="date"/>
                     </div>,
             buttons: {
                 left: ['cancel'],
@@ -98,17 +104,24 @@ class Calendar extends Component {
                     text: 'Save',
                     className: 'success',
                     action: function () {
-                        if(newEvent) {
-                            this.props.createEvent(slotInfo);
+                        let eventData = {
+                            ...slotInfo,
+                            // Ensure dates are formatted as ISO 8601 strings for Prisma/Backend
+                            startDate: moment(slotInfo.startDate).toISOString(),
+                            endDate: moment(slotInfo.endDate).toISOString(),
+                        };
+                        if (newEvent) {
+                            this.props.createEvent(eventData);
                         } else {
-                            this.props.updateEvent(slotInfo);
+                            this.props.updateEvent(slotInfo.id, eventData);
                         }
                         Popup.close();
                     }.bind(this)
                 }]
             }
         });
-    }
+    };
+    
 
     eventStyleGetter = (event, start, end, isSelected) => {
         let current_time = moment().format('YYYY-MM-DD');
@@ -140,11 +153,11 @@ class Calendar extends Component {
                 components={{ toolbar: CustomToolbar }}
                 views={['month', 'week', 'day', 'agenda']} // Ensure all views are available
                 style={{ backgroundColor: '#ffffffe4' , paddingTop: '10px', paddingRight: '10px', paddingLeft: '10px', paddingBottom: '10px',borderRadius: '5px'}}
-                events={this.props.events.map(event => ({
+                events={Array.isArray(this.props.events) ? this.props.events.map(event => ({
                     ...event,
                     start: new Date(event.startDate),
                     end: new Date(moment(event.endDate).add(1, 'days')) // Adjust end date
-                }))}
+                  })) : []}
                 eventPropGetter={this.eventStyleGetter}
                 onSelectEvent={this.onSelectEventHandler}
                 onSelectSlot={this.onSelectEventSlotHandler}

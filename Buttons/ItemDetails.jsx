@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Select, MenuItem, TextField, List, ListItem, ListItemText
 } from '@mui/material';
-import { fetchItemSuppliersWithOrderHistoryByItemId, updateFoodItem, addOrderHistory } from '@/app/apiServiceFood';
+import { fetchItemSuppliersWithOrderHistoryByItemId, updateFoodItem, addOrderHistory } from '@/app/apiService/apiServiceFood';
 import NewSupplierDialog from './NewSupplierDialog';
 
 const ItemDetails = ({ open, onClose, item, onSave }) => {
