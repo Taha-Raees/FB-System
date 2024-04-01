@@ -19,7 +19,7 @@ const Sidebar = ({ activeMenuItem, setActiveMenuItem, onSignOut }) => {
     <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
       <div className="logo" onClick={() => setCollapsed(!collapsed)}>
         {/* Toggle collapse icon */}
-        {collapsed ? <Menu/> : <img src="/images/Logo.png" alt="Company Logo" width={200} height={200} />}
+        {collapsed ? <Menu/> : <img src="/images/Logo4.png" alt="Company Logo" width={200} height={200} />}
       </div>
       <div className="menu">
         <div

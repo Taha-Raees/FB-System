@@ -36,7 +36,7 @@
   
       .button {
         padding: 12px 24px; // Slightly more padding
-        background-color: #ffa239;
+        background-color: #AD9551;
         color: white;
         font-size: 1.1rem; // Larger font size for the button
         border-radius: 8px;
@@ -46,7 +46,7 @@
         outline: none; // Remove default outline
       
         &:hover {
-          background-color: #f48c06; // Adjusted hover color
+          background-color: #ae881f; // Adjusted hover color
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Shadow effect on hover
           border: none; // Ensure border is none on hover
           outline: none; // Ensure outline is none on hover
