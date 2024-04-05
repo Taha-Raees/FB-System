@@ -1,0 +1,22 @@
+// Keypad.scss
+.keypad {
+    .keypad-button {
+      width: 100%;
+      padding: 15px 0;
+      font-size: 1.25rem;
+      font-weight: bold;
+      &.delete-button {
+        background-color: #e74c3c;
+        &:hover {
+          background-color: darken(#e74c3c, 10%);
+        }
+      }
+      &.enter-button {
+        background-color: #2ecc71;
+        &:hover {
+          background-color: darken(#2ecc71, 10%);
+        }
+      }
+    }
+  }
+  

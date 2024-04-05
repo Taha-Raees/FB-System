@@ -1,0 +1,16 @@
+// CurrencyShortcuts.scss
+.currency-shortcuts {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 8px;
+    background-color: #2C3E50;
+    .shortcut-button {
+      margin: 4px;
+      color: #ecf0f1;
+      &:hover {
+        background-color: lighten(#3498db, 10%);
+      }
+    }
+  }
+  

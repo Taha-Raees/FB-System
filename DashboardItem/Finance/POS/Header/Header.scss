@@ -1,0 +1,50 @@
+// Header.scss
+.pos-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #34495e3f; // Dark shade, no transparency
+  color: white;
+  padding: 0rem 1rem;
+  position: relative; // Context for positioning pseudo-elements
+   // Bottom border
+  .header-tab {
+    flex-grow: 1;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative; // Establish positioning context for after pseudo-element
+    overflow: hidden; // Ensures the after pseudo-element is cut off when width is 0
+    font-weight: 100;
+    // After pseudo-element for underline
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0); // Start off scaled to 0
+      transform-origin: bottom center; // Scale from the center
+      width: 50%; // Full width of the tab
+      height: 2px; // Height of the underline
+      background-color: #AD9551; // Color of the underline
+      transition: transform 0.5s ease; // Animate the transform
+    }
+
+    // Hover effect: scale the after pseudo-element to full size
+    &:hover:after {
+      transform: translateX(-50%) scaleX(1); // Scale to full size
+    }
+    
+    &.active-tab {
+      font-weight: bold;
+
+      // Always show underline for active tab
+      &:after {
+        transform: translateX(-50%) scaleX(1); // Scale to full size
+      }
+    }
+  }
+  
+}
+
