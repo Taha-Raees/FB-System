@@ -4,15 +4,17 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import './Keypad.scss';
 
-const Keypad = ({ onKeypadPress }) => {
+const Keypad = ({ onKeypadPress , receivedAmount }) => {
   const keys = [
     '7', '8', '9', 
     '4', '5', '6', 
     '1', '2', '3', 
-    '0', '00', 'Delete'
+    '0', '.', 'Delete'
   ];
 
   return (
+   <div className="keypad-container">
+    <input type="text" value={receivedAmount} readOnly className="keypad-display" />
     <Grid container spacing={1} className="keypad">
       {keys.map((key) => (
         <Grid item xs={4} key={key}>
@@ -30,7 +32,7 @@ const Keypad = ({ onKeypadPress }) => {
           Enter
         </Button>
       </Grid>
-    </Grid>
+    </Grid></div>
   );
 };
 

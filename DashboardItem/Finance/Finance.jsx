@@ -28,7 +28,7 @@ const Finance = () => {
         <CardContent>
           <PointOfSaleIcon className="card-icon" />
           <Typography variant="h5" component="h2">POS</Typography>
-          <Typography variant="body2">Manage and track your fleet of trucks.</Typography>
+          <Typography variant="body2">Custome POS for each truck & event</Typography>
         </CardContent>
       </Card>
 

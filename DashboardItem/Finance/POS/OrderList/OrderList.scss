@@ -1,5 +1,19 @@
 // OrderList.scss
 .order-list {
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; // Ensure vertical alignment is centered
+
+    .item-description {
+      flex-grow: 1; // Allow the description to take up the available space
+    }
+
+    .item-price-delete {
+      display: flex;
+      align-items: center; // Align price and delete button to the right
+    }
+  }
   h1{
     font-size: 1.2rem;
     text-align: center;
@@ -9,25 +23,42 @@
     padding-bottom: 5px;
     border-bottom: 1px solid #bdc3c7;
   }
+  
     .MuiList-root {
       background-color: #ecf0f134;
       max-height: 300px;
       overflow-y: auto;
     }
     .MuiListItem-root {
-      justify-content: space-between;
+      justify-content: space-between; // Center align the items vertically
       color: #bdc3c7;
       border-bottom: 1px solid #bdc3c7;
+      
     }
     
     .total {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       padding: 10px;
-      font-size: 1.2rem;
+      font-size: 1rem;
       background-color: #bdc3c7b1;
+      gap: 10px;
       span {
+        font-weight: 300;
+      }
+      .change {
+        // Default style for change
         font-weight: 500;
+  
+        &.negative {
+          // Style for negative change amount
+          color: rgb(201, 25, 69);
+        }
+  
+        &.positive {
+          // Style for positive change amount (optional)
+          color: #4c3ca4; // Or another color indicating a positive value
+        }
       }
     }
   }

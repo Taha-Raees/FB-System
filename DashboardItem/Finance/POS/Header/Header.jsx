@@ -30,7 +30,7 @@ const Header = ({ onBack }) => {
         className={`header-tab ${activeTab === 'SIGNOUT' ? 'active-tab' : ''}`} 
         onClick={() => handleTabClick('SIGNOUT')}
       >
-        SIGNOUT
+        Go Back
       </div>
     </header>
   );
