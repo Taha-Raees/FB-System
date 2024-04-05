@@ -1,0 +1,43 @@
+
+.menu-grid {
+    height: 74vh;
+    max-width: 100%;
+    margin-top: 1rem;
+    overflow-x: auto;
+    
+    .summary-container {
+        margin: 1rem;
+        text-align: center;
+      
+        h2 {
+          margin-bottom: 0.5rem;
+        }
+      
+        .item-totals {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
+      
+          p {
+            background: #f0f0f0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+          }
+        }
+      }
+    .MuiTableContainer-root {
+        box-shadow: none; // Remove shadow if desired
+    }
+
+    .MuiTableCell-head {
+        font-weight: bold;
+    }
+
+    .MuiIconButton-root {
+        padding: 8px;
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+    }
+}

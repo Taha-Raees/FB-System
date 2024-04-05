@@ -34,6 +34,26 @@
       height: 87%;
       overflow-y: auto;
       border-bottom: 1px solid #AD9551;
+      
+    // Custom scrollbar for Webkit-based browsers
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: #2c3e50; // Scrollbar track color
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #AD9551; // Scrollbar thumb color
+      border-radius: 4px;
+      
+      &:hover {
+        background-color: #2980b9; // Scrollbar thumb color on hover
+      }
+    }
+
+    // Custom scrollbar for Firefox
+    scrollbar-width: thin;  
+    scrollbar-color: #AD9551 #2c3e50; // thumb and track color
+  
     }
     .MuiListItem-root {
       justify-content: space-between; // Center align the items vertically
