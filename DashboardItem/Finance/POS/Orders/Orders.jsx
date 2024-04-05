@@ -38,9 +38,9 @@ const Orders = ({ completedOrders }) => {
     };
 
     return (
-        <>
+        <div className="menu-grid">
         
-            <TableContainer component={Paper} className="menu-grid">
+            <TableContainer component={Paper} className='table-container' >
             <div className="summary-container">
                 <h2>Total Sales: €{totalSales}</h2>
                 <div className="item-totals">
@@ -110,7 +110,7 @@ const Orders = ({ completedOrders }) => {
                 </List>
             )}
         </DialogContent>
-    </Dialog></>
+    </Dialog></div>
     );
 };
 
