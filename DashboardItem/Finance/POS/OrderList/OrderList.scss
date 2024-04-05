@@ -1,9 +1,14 @@
 // OrderList.scss
 .order-list {
+ height: 100%;
+ border: 1px solid;
+ border-radius: 5px;
+ background-color: #ecf0f134;
   .list-item {
     display: flex;
     justify-content: space-between;
-    align-items: center; // Ensure vertical alignment is centered
+    align-items: center;
+    // Ensure vertical alignment is centered
 
     .item-description {
       flex-grow: 1; // Allow the description to take up the available space
@@ -21,13 +26,14 @@
     color: #AD9551;
     font-weight: 500;
     padding-bottom: 5px;
-    border-bottom: 1px solid #bdc3c7;
+    border-bottom: 1px solid #AD9551;
   }
   
     .MuiList-root {
-      background-color: #ecf0f134;
-      max-height: 300px;
+      background-color: #ecf0f100;
+      height: 87%;
       overflow-y: auto;
+      border-bottom: 1px solid #AD9551;
     }
     .MuiListItem-root {
       justify-content: space-between; // Center align the items vertically
@@ -41,10 +47,11 @@
       justify-content: space-between;
       padding: 10px;
       font-size: 1rem;
-      background-color: #bdc3c7b1;
+      background-color: #bdc3c700;
       gap: 10px;
       span {
         font-weight: 300;
+        color: #bdc3c7;
       }
       .change {
         // Default style for change
@@ -52,12 +59,12 @@
   
         &.negative {
           // Style for negative change amount
-          color: rgb(201, 25, 69);
+          color: #de2e5a;
         }
   
         &.positive {
           // Style for positive change amount (optional)
-          color: #4c3ca4; // Or another color indicating a positive value
+          color: #8270e9; // Or another color indicating a positive value
         }
       }
     }

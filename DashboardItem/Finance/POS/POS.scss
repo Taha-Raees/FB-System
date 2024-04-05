@@ -1,7 +1,7 @@
 // styles/globals.scss
 .pos{
     display: grid;
-    grid-template-columns: 1fr 3fr; // left side for orders, right side for menu and actions
+    grid-template-columns: 1.3fr 3fr; // left side for orders, right side for menu and actions
     grid-template-rows: auto 1fr auto auto; // header, main content, and keypad
     grid-template-areas: 
       "orderlist header"
