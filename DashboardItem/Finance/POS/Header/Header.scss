@@ -48,3 +48,12 @@
   
 }
 
+.event-pos-display {
+  display: flex;
+  flex-direction: column;
+    margin-left: auto; // Push to the end of the header
+    padding: 0.3rem 1rem; // Consistent padding with tabs
+    color: #ecf0f1; // Light color for text
+    font-size: 0.8rem;
+    font-weight: 200; // Smaller font size for this section
+  }

@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import FastfoodIcon from '@mui/icons-material/Fastfood';
-import BuildIcon from '@mui/icons-material/Build';
-
 import './Finance.scss';
 import POS from './POS/POS';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
@@ -15,7 +11,7 @@ const Finance = () => {
   const renderView = () => {
     switch(currentView) {
       case 'POS':
-        return <POS onBack={() => setCurrentView('menu')} />;
+        return <POS onBack={() => setCurrentView('menu')} startWithPopup />
       
       default:
         return renderMenu();

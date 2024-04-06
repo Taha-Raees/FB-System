@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./POS.scss";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -7,12 +7,32 @@ import OrderList from './OrderList/OrderList';
 import Menu from './Menu/Menu';
 import Keypad from './Keypad/Keypad';
 import Orders from './Orders/Orders';
+import SelectEventAndPosPopup from './SelectEventAndPosPopup';
 import { v4 as uuidv4 } from 'uuid'; 
 
 import CurrencyShortcuts from './CurrencyShortcuts/CurrencyShortcuts';
-const POS = ({ onBack }) => {
-    const [currentOrder, setCurrentOrder] = useState([]);
-    const [completedOrders, setCompletedOrders] = useState([]);
+const POS = ({ onBack, startWithPopup  }) => {
+        // Load initial state from localStorage or set to defaults
+        const loadInitialState = (key, defaultValue) => {
+            const saved = localStorage.getItem(key);
+            if (saved !== null) {
+                return JSON.parse(saved);
+            }
+            return defaultValue;
+        };
+    
+     // States for events, selectedEvent, selectedPos, and popup visibility
+     const [events, setEvents] = useState([
+        { id: 1, name: 'Event A', numOfPos: 3 },
+        { id: 2, name: 'Event B', numOfPos: 2 },
+        // ... more events
+    ]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [selectedPos, setSelectedPos] = useState(null);
+    const [showPopup, setShowPopup] = useState(startWithPopup);
+    const [currentOrder, setCurrentOrder] = useState(() => loadInitialState('currentOrder', []));
+    const [completedOrders, setCompletedOrders] = useState(() => loadInitialState('completedOrders', []));
+    const [eventPosOrders, setEventPosOrders] = useState(() => loadInitialState('eventPosOrders', {}));
     const [receivedAmount, setReceivedAmount] = useState('');
     const [activeTab, setActiveTab] = useState('MENU');
     const [snackbar, setSnackbar] = useState({
@@ -20,6 +40,36 @@ const POS = ({ onBack }) => {
         message: '',
         severity: 'info',
     });
+    useEffect(() => {
+        localStorage.setItem('currentOrder', JSON.stringify(currentOrder));
+    }, [currentOrder]);
+
+    useEffect(() => {
+        localStorage.setItem('completedOrders', JSON.stringify(completedOrders));
+    }, [completedOrders]);
+    useEffect(() => {
+        localStorage.setItem('eventPosOrders', JSON.stringify(eventPosOrders));
+    }, [eventPosOrders]);
+    // When the component mounts, if startWithPopup is true, show the selection popup
+    useEffect(() => {
+        if (startWithPopup) {
+            setShowPopup(true);
+        }
+    }, [startWithPopup]);
+    // When an event and POS is selected, load the corresponding data
+    const handleSelection = (eventId, posId) => {
+        const eventOrders = eventPosOrders[eventId] || {};
+        const posOrders = eventOrders[posId] || { currentOrder: [], completedOrders: [] };
+        
+        // Set the current and completed orders for the selected POS
+        setCurrentOrder(posOrders.currentOrder);
+        setCompletedOrders(posOrders.completedOrders);
+
+        // Update the selected event and POS states
+        setSelectedEvent(eventId);
+        setSelectedPos(posId);
+        setShowPopup(false); // Close the popup after selection
+    };
 
     const handleSnackbarClose = () => {
         setSnackbar({ ...snackbar, open: false });
@@ -74,6 +124,17 @@ const POS = ({ onBack }) => {
             setCurrentOrder([]);
             setReceivedAmount('');
             showSnackbar('Order is successfully entered', 'success');
+             // After completing an order, update the eventPosOrders with the new completed order
+             setEventPosOrders(prev => ({
+                ...prev,
+                [selectedEvent]: {
+                    ...prev[selectedEvent],
+                    [selectedPos]: {
+                        currentOrder: [],
+                        completedOrders: [...(prev[selectedEvent]?.[selectedPos]?.completedOrders || []), newOrder],
+                    },
+                },
+        }));
         } else {
             // Handle the case where the amount received is insufficient
             showSnackbar('Insufficient amount received. Please enter a sufficient amount.', 'error');
@@ -110,13 +171,26 @@ const POS = ({ onBack }) => {
   
     return (
       <div className="pos">
-         <Header className="pos-header" onTabChange={handleTabChange} onBack={onBack} />
+        <Header
+          onBack={onBack}
+         onTabChange={handleTabChange}
+         selectedEventName={events.find(event => event.id === selectedEvent)?.name}
+         selectedPosId={selectedPos}
+        />
          <OrderList className="order-list" orders={currentOrder} onOrderDeleted={handleOrderDeleted} receivedAmount={receivedAmount}  change={calculateChange()}/>
         {activeTab === 'MENU' && <Menu className="menu-grid" onAddToOrder={handleAddToOrder} />}
         {activeTab === 'ORDERS' && <Orders className="menu-grid" completedOrders={completedOrders} />}
         
         <Keypad  className="keypad" onKeypadPress={handleKeypadPress} receivedAmount={receivedAmount} />
         <CurrencyShortcuts className="currency-shortcuts" onShortcutSelected={handleShortcutSelected} />
+        
+            {showPopup && (
+                <SelectEventAndPosPopup
+                    events={events}
+                    onSelection={handleSelection}
+                    onClose={() => setShowPopup(false)}
+                />
+            )}
         {/* Snackbar for alerting insufficient amount */}
         <Snackbar 
                 open={snackbar.open} 

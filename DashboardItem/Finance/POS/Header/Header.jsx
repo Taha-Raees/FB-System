@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './Header.scss';
 
-const Header = ({ onBack, onTabChange }) => {
+const Header = ({ onBack, onTabChange, selectedEventName, selectedPosId  }) => {
   const [activeTab, setActiveTab] = useState('MENU');
 
   const handleTabClick = (tabName) => {
@@ -34,6 +34,12 @@ const Header = ({ onBack, onTabChange }) => {
       >
         Go Back
       </div>
+       {/* Additional section for event and POS */}
+       <div className="event-pos-display">
+        {selectedEventName && <span>{selectedEventName}</span>}
+        {selectedPosId && <span>POS: {selectedPosId}</span>}
+      </div>
+
     </header>
   );
 };
