@@ -9,8 +9,8 @@ import Keypad from './Keypad/Keypad';
 import Orders from './Orders/Orders';
 import SelectEventAndPosPopup from './SelectEventAndPosPopup';
 import { v4 as uuidv4 } from 'uuid'; 
-
 import CurrencyShortcuts from './CurrencyShortcuts/CurrencyShortcuts';
+
 const POS = ({ onBack, startWithPopup  }) => {
         // Load initial state from localStorage or set to defaults
         const loadInitialState = (key, defaultValue) => {
@@ -166,44 +166,50 @@ const POS = ({ onBack, startWithPopup  }) => {
     };
   
     const handleShortcutSelected = (amount) => {
-      // Handle shortcut logic here
-    };
+        // Convert current receivedAmount to number and add the shortcut amount
+        const updatedAmount = (parseFloat(receivedAmount) || 0) + amount;
+        setReceivedAmount(updatedAmount.toString());
+      };
   
-    return (
-      <div className="pos">
-        <Header
-          onBack={onBack}
-         onTabChange={handleTabChange}
-         selectedEventName={events.find(event => event.id === selectedEvent)?.name}
-         selectedPosId={selectedPos}
-        />
-         <OrderList className="order-list" orders={currentOrder} onOrderDeleted={handleOrderDeleted} receivedAmount={receivedAmount}  change={calculateChange()}/>
-        {activeTab === 'MENU' && <Menu className="menu-grid" onAddToOrder={handleAddToOrder} />}
-        {activeTab === 'ORDERS' && <Orders className="menu-grid" completedOrders={completedOrders} />}
-        
-        <Keypad  className="keypad" onKeypadPress={handleKeypadPress} receivedAmount={receivedAmount} />
-        <CurrencyShortcuts className="currency-shortcuts" onShortcutSelected={handleShortcutSelected} />
-        
-            {showPopup && (
-                <SelectEventAndPosPopup
-                    events={events}
-                    onSelection={handleSelection}
-                    onClose={() => setShowPopup(false)}
-                />
-            )}
-        {/* Snackbar for alerting insufficient amount */}
-        <Snackbar 
-                open={snackbar.open} 
-                autoHideDuration={6000} 
-                onClose={handleSnackbarClose}
-                onClick={handleSnackbarClose} // Snackbar will close when anywhere on the screen is clicked
-            >
-                <MuiAlert elevation={6} variant="filled" onClose={handleSnackbarClose} severity={snackbar.severity}>
-                    {snackbar.message}
-                </MuiAlert>
-            </Snackbar>
-      </div>
-    );
-}
+      return (
+        <div className="pos">
+          <Header
+            onBack={onBack}
+            onTabChange={handleTabChange}
+            selectedEventName={events.find(event => event.id === selectedEvent)?.name}
+            selectedPosId={selectedPos}
+          />
+          <OrderList
+            className="order-list"
+            orders={currentOrder}
+            onOrderDeleted={handleOrderDeleted}
+            receivedAmount={receivedAmount}
+            change={calculateChange()}
+          />
+          {activeTab === 'MENU' && <Menu className="menu-grid" onAddToOrder={handleAddToOrder} />}
+          {activeTab === 'ORDERS' && <Orders className="menu-grid" completedOrders={completedOrders} />}
+          <Keypad className="keypad" onKeypadPress={handleKeypadPress} receivedAmount={receivedAmount} />
+          <CurrencyShortcuts className="currency-shortcuts" onShortcutSelected={handleShortcutSelected} />
+          {showPopup && (
+            <SelectEventAndPosPopup
+              events={events}
+              onSelection={handleSelection}
+              onClose={() => setShowPopup(false)}
+            />
+          )}
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            onClick={handleSnackbarClose} // Snackbar will close when anywhere on the screen is clicked
+          >
+            <MuiAlert elevation={6} variant="filled" onClose={handleSnackbarClose} severity={snackbar.severity}>
+              {snackbar.message}
+            </MuiAlert>
+          </Snackbar>
+        </div>
+      );
+    };
+    
 
 export default POS
