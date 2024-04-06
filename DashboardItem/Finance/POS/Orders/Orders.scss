@@ -7,16 +7,18 @@
     
       .table-container{
         overflow-x: auto;
-        height: 60vh;
-        
-        border-radius: 5px;.summary-container {
+        height: 77vh;
+        background: #a9a9a9f5;
+        border-radius: 5px;
+        .summary-container {
         border-radius: 5px;
         border-bottom: none;
         text-align: center;
-      background: #ffffff;
+      
         h2 {
+            margin-top: 0.5rem;
           margin-bottom: 0.5rem;
-          color: #AD9551;
+          color: #000000;
         }
       
         .item-totals {
@@ -26,9 +28,10 @@
           gap: 1rem;
       
           p {
-            background: #f0f0f0;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            border-right:1px solid #000000;
+            padding-right: 0.5rem;
+            border-left:1px solid #000000;
+            padding-left: 0.5rem;
           }
         }
       }
