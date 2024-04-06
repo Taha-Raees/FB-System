@@ -55,7 +55,7 @@ const Orders = ({ completedOrders }) => {
                         <TableCell>Order ID</TableCell>
                         <TableCell align="right">Time</TableCell>
                         <TableCell align="right">Total</TableCell>
-                        <TableCell align="right">Actions</TableCell>
+                        <TableCell align="right">Details</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
