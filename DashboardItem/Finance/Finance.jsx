@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import './Finance.scss';
 import POS from './POS/POS';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import SalesAnalysis from './SalesAnalysis/SalesAnalysis';
+import { Insights } from '@mui/icons-material';
 
 const Finance = () => {
     const [currentView, setCurrentView] = useState('menu');
+    const [eventPosOrders, setEventPosOrders] = useState(() => {
+      const saved = localStorage.getItem('eventPosOrders');
+      return saved ? JSON.parse(saved) : {};
+  });
+  console.log('eventPosOrders:', eventPosOrders);
+   // Update localStorage whenever eventPosOrders changes
+   useEffect(() => {
+    localStorage.setItem('eventPosOrders', JSON.stringify(eventPosOrders));
+}, [eventPosOrders]);
   const renderView = () => {
     switch(currentView) {
       case 'POS':
-        return <POS onBack={() => setCurrentView('menu')} startWithPopup />
-      
+        return <POS onBack={() => setCurrentView('menu')} startWithPopup eventPosOrders={eventPosOrders}
+        setEventPosOrders={setEventPosOrders} />
+        case 'Analysis':
+          return <SalesAnalysis onBack={() => setCurrentView('menu')} eventPosOrders={eventPosOrders} />;
       default:
         return renderMenu();
     }
@@ -27,9 +40,14 @@ const Finance = () => {
           <Typography variant="body2">Custome POS for each truck & event</Typography>
         </CardContent>
       </Card>
-
-      {/* Additional inventory features */}
-      {/* ... Add more cards for other features like Supply Ordering, Inventory Analysis, etc. */}
+      {/* Additional card for navigating to Sales Analysis */}
+      <Card variant="outlined" className="inventory-card" onClick={() => setCurrentView('Analysis')}>
+            <CardContent>
+              <Insights className="card-icon"/> 
+              <Typography variant="h5" component="h2">Sales Analysis</Typography>
+              <Typography variant="body2">View sales data across all events and POS</Typography>
+            </CardContent>
+      </Card>
     </>
   );
 

@@ -7,9 +7,8 @@ const BackButton = ({ onBack }) => {
       <Button 
         startIcon={<ArrowBackIcon />} 
         onClick={onBack} 
-        style={{ color: '#ffa239' }} // Custom color applied
+        style={{ color: '#AD9551' }} // Custom color applied
       >
-        Back
       </Button>
     );
   };

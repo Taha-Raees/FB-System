@@ -1,0 +1,71 @@
+.sales-analysis {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+
+  .menu-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+
+    .menu {
+      width: 25%; // Adjusted for flexibility
+      margin: 8px;
+    }
+  }
+  
+  .MuiFormControl-root {
+    margin-bottom: 20px;
+  }
+  
+  .totals, .item-totals {
+    margin: 10px 0;
+    p {
+      margin: 5px 0;
+    }
+  }
+
+  .sales-distribution-chart {
+    margin-top: 20px;
+  }
+
+  .summary-container, .chart-container {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #fff;
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+
+    .summary-container, .chart-container {
+      flex: 1;
+
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  .list-total-heading {
+    font-weight: 600; // Make the heading bold
+    font-size: 1.2em; // Increase the font size
+    color: #637aff; // Adjust the color to match your theme
+    margin-bottom: 0.5em; // Add some space below the heading
+  }
+
+  .list-item {
+    border-bottom: 1px solid #eee; // Add a subtle separator between items
+    padding: 8px 0;
+    margin-right: 1em;
+    margin-left: 1em;
+    width: auto;
+    &:last-child {
+      border-bottom: none; // Remove the border for the last item
+    }
+  }
+}

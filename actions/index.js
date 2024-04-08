@@ -5,7 +5,8 @@ import {
     addEvent as apiAddEvent,
     updateEvent as apiUpdateEvent,
     deleteEvent as apiDeleteEvent
-  } from '@/app/apiService/apiEvent'; // Adjust the path as needed
+  } from '@/app/apiService/apiEvent';
+   // Adjust the path as needed
   export const FETCH_EVENTS = 'fetch_events';
   export const CREATE_EVENT = 'create_event';
   export const UPDATE_EVENT = 'update_event';

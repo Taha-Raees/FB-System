@@ -8,14 +8,14 @@ import Typography from '@mui/material/Typography';
 import './Menu.scss';
 
 const menuItems = [
-  { id: 1, name: 'BratWurst mit Brotchen', price: 5.0 },
-  { id: 2, name: 'BratWurst mit Pommes', price: 8.0 },
-  { id: 3, name: 'CurryWurst mit Brotchen', price: 5.5 },
-  { id: 4, name: 'CurryWurst mit Pommes', price: 8.5 },
-  { id: 5, name: 'Pommes', price: 6.0 },
-  { id: 6, name: 'Hamburger', price: 9.5 },
-  { id: 7, name: 'Cheese Burger', price: 10.5 },
-  { id: 8, name: 'Loaded Fries', price: 6.0 },
+  { id: 1, name: 'BratWurst mit Brotchen', price: 5.0 , costPrice: 2.0},
+  { id: 2, name: 'BratWurst mit Pommes', price: 8.0, costPrice: 2.0 },
+  { id: 3, name: 'CurryWurst mit Brotchen', price: 5.5, costPrice: 2.2 },
+  { id: 4, name: 'CurryWurst mit Pommes', price: 8.5, costPrice: 3.2 },
+  { id: 5, name: 'Pommes', price: 6.0, costPrice: 1.3 },
+  { id: 6, name: 'Hamburger', price: 9.5, costPrice: 3.0 },
+  { id: 7, name: 'Cheese Burger', price: 10.5, costPrice: 3.5 },
+  { id: 8, name: 'Loaded Fries', price: 6.0, costPrice: 2.0 },
   // ... other menu items
 ];
 

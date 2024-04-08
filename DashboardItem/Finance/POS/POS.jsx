@@ -10,8 +10,11 @@ import Orders from './Orders/Orders';
 import SelectEventAndPosPopup from './SelectEventAndPosPopup';
 import { v4 as uuidv4 } from 'uuid'; 
 import CurrencyShortcuts from './CurrencyShortcuts/CurrencyShortcuts';
+import {
+    fetchEvents
+  } from '@/app/apiService/apiEvent';
 
-const POS = ({ onBack, startWithPopup  }) => {
+const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
         // Load initial state from localStorage or set to defaults
         const loadInitialState = (key, defaultValue) => {
             const saved = localStorage.getItem(key);
@@ -22,7 +25,7 @@ const POS = ({ onBack, startWithPopup  }) => {
         };
     
      // States for events, selectedEvent, selectedPos, and popup visibility
-     const [events, setEvents] = useState([
+    const [events, setEvents] = useState([
         { id: 1, name: 'Event A', numOfPos: 3 },
         { id: 2, name: 'Event B', numOfPos: 2 },
         // ... more events
@@ -32,7 +35,6 @@ const POS = ({ onBack, startWithPopup  }) => {
     const [showPopup, setShowPopup] = useState(startWithPopup);
     const [currentOrder, setCurrentOrder] = useState(() => loadInitialState('currentOrder', []));
     const [completedOrders, setCompletedOrders] = useState(() => loadInitialState('completedOrders', []));
-    const [eventPosOrders, setEventPosOrders] = useState(() => loadInitialState('eventPosOrders', {}));
     const [receivedAmount, setReceivedAmount] = useState('');
     const [activeTab, setActiveTab] = useState('MENU');
     const [snackbar, setSnackbar] = useState({
@@ -187,7 +189,7 @@ const POS = ({ onBack, startWithPopup  }) => {
             change={calculateChange()}
           />
           {activeTab === 'MENU' && <Menu className="menu-grid" onAddToOrder={handleAddToOrder} />}
-          {activeTab === 'ORDERS' && <Orders className="menu-grid" completedOrders={completedOrders} />}
+          {activeTab === 'ORDERS' && <Orders className="menu-grid" completedOrders={completedOrders} setCompletedOrders={setCompletedOrders} />}
           <Keypad className="keypad" onKeypadPress={handleKeypadPress} receivedAmount={receivedAmount} />
           <CurrencyShortcuts className="currency-shortcuts" onShortcutSelected={handleShortcutSelected} />
           {showPopup && (
@@ -212,4 +214,4 @@ const POS = ({ onBack, startWithPopup  }) => {
     };
     
 
-export default POS
+export default POS 

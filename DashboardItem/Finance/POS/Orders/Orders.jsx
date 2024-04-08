@@ -15,8 +15,9 @@ import DialogContent from '@mui/material/DialogContent';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Button from '@mui/material/Button';
 
-const Orders = ({ completedOrders }) => {
+const Orders = ({ completedOrders,setCompletedOrders }) => {
   
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
@@ -35,6 +36,14 @@ const Orders = ({ completedOrders }) => {
 
     const handleClose = () => {
         setOpenDialog(false);
+    };
+    const handleReturnOrder = () => {
+        // Filter out the returned order
+        const updatedOrders = completedOrders.filter(order => order.id !== selectedOrder.id);
+        setCompletedOrders(updatedOrders);
+
+        // Close the dialog
+        handleClose();
     };
 
     return (
@@ -109,6 +118,9 @@ const Orders = ({ completedOrders }) => {
                     ))}
                 </List>
             )}
+             <Button variant="outlined" color="secondary" onClick={handleReturnOrder} style={{ marginTop: '20px' }}>
+                        Return Order
+                    </Button>
         </DialogContent>
     </Dialog></div>
     );
