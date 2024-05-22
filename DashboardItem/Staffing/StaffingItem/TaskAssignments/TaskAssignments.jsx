@@ -24,19 +24,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import './TaskAssignments.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
 
-const TaskAssignments = ({ staffMembers, setStaffMembers, onBack }) => {
-  const [tasks, setTasks] = useState([
-    { id: 1, name: 'Inventory Management', day: 'Monday', time: '09:00 AM', assignedTo: 1 },
-    { id: 2, name: 'Customer Service', day: 'Tuesday', time: '11:00 AM', assignedTo: 2 },
-    // Add more tasks as needed
-  ]);
-
+const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState({ id: null, name: '', day: '', time: '', assignedTo: '' });
+  const [editingTask, setEditingTask] = useState({ id: null, name: '', date: '', startTime: '', endTime: '', assignedTo: '' });
 
   const handleAddTask = () => {
-    setEditingTask({ id: null, name: '', day: '', time: '', assignedTo: '' });
+    setEditingTask({ id: null, name: '', date: '', startTime: '', endTime: '', assignedTo: '' });
     setIsTaskModalOpen(true);
   };
 
@@ -61,7 +55,7 @@ const TaskAssignments = ({ staffMembers, setStaffMembers, onBack }) => {
 
   const filteredTasks = tasks.filter(task =>
     task.name.toLowerCase().includes(searchQuery) ||
-    task.day.toLowerCase().includes(searchQuery) ||
+    task.date.toLowerCase().includes(searchQuery) ||
     staffMembers.find(member => member.id === task.assignedTo)?.name.toLowerCase().includes(searchQuery)
   );
 
@@ -95,8 +89,9 @@ const TaskAssignments = ({ staffMembers, setStaffMembers, onBack }) => {
           <TableHead>
             <TableRow>
               <TableCell>Task</TableCell>
-              <TableCell>Day</TableCell>
-              <TableCell>Time</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Start Time</TableCell>
+              <TableCell>End Time</TableCell>
               <TableCell>Assigned To</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -105,8 +100,9 @@ const TaskAssignments = ({ staffMembers, setStaffMembers, onBack }) => {
             {filteredTasks.map(task => (
               <TableRow key={task.id}>
                 <TableCell>{task.name}</TableCell>
-                <TableCell>{task.day}</TableCell>
-                <TableCell>{task.time}</TableCell>
+                <TableCell>{task.date}</TableCell>
+                <TableCell>{task.startTime}</TableCell>
+                <TableCell>{task.endTime}</TableCell>
                 <TableCell>{staffMembers.find(member => member.id === task.assignedTo)?.name || 'Unassigned'}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleEditTask(task)}>
@@ -130,22 +126,30 @@ const TaskAssignments = ({ staffMembers, setStaffMembers, onBack }) => {
           />
           <TextField
             margin="dense"
-            label="Day"
+            label="Date"
+            type="date"
             fullWidth
-            select
-            value={editingTask.day}
-            onChange={(e) => setEditingTask({ ...editingTask, day: e.target.value })}
-          >
-            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
-              <MenuItem key={day} value={day}>{day}</MenuItem>
-            ))}
-          </TextField>
+            InputLabelProps={{ shrink: true }}
+            value={editingTask.date}
+            onChange={(e) => setEditingTask({ ...editingTask, date: e.target.value })}
+          />
           <TextField
             margin="dense"
-            label="Time"
+            label="Start Time"
+            type="time"
             fullWidth
-            value={editingTask.time}
-            onChange={(e) => setEditingTask({ ...editingTask, time: e.target.value })}
+            InputLabelProps={{ shrink: true }}
+            value={editingTask.startTime}
+            onChange={(e) => setEditingTask({ ...editingTask, startTime: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="End Time"
+            type="time"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            value={editingTask.endTime}
+            onChange={(e) => setEditingTask({ ...editingTask, endTime: e.target.value })}
           />
           <TextField
             margin="dense"

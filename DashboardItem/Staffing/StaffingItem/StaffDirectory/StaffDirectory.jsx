@@ -24,8 +24,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import './StaffDirectory.scss';
 import BackButton from '@/Buttons/BackButton/BackButton';
 
-const StaffDirectory = ({ onBack,staffMembers,setStaffMembers }) => {
-  
+const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [editingMember, setEditingMember] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +34,7 @@ const StaffDirectory = ({ onBack,staffMembers,setStaffMembers }) => {
   };
 
   const handleAddMember = () => {
-    setEditingMember({ id: null, name: '', position: '', contact: '' });
+    setEditingMember({ id: null, name: '', position: '', contact: '', salary: '', startDate: '', contractEnd: '' });
     setIsModalOpen(true);
   };
 
@@ -101,6 +100,9 @@ const StaffDirectory = ({ onBack,staffMembers,setStaffMembers }) => {
               <TableCell>Name</TableCell>
               <TableCell>Position</TableCell>
               <TableCell>Contact</TableCell>
+              <TableCell>Salary</TableCell>
+              <TableCell>Start Date</TableCell>
+              <TableCell>Contract End</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -110,6 +112,9 @@ const StaffDirectory = ({ onBack,staffMembers,setStaffMembers }) => {
                 <TableCell>{member.name}</TableCell>
                 <TableCell>{member.position}</TableCell>
                 <TableCell>{member.contact}</TableCell>
+                <TableCell>{member.salary}</TableCell>
+                <TableCell>{member.startDate}</TableCell>
+                <TableCell>{member.contractEnd}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleEditMember(member)}>
                     <EditIcon />
@@ -146,6 +151,31 @@ const StaffDirectory = ({ onBack,staffMembers,setStaffMembers }) => {
             fullWidth
             value={editingMember?.contact || ''}
             onChange={(e) => setEditingMember({ ...editingMember, contact: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Salary"
+            fullWidth
+            value={editingMember?.salary || ''}
+            onChange={(e) => setEditingMember({ ...editingMember, salary: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Start Date"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            value={editingMember?.startDate || ''}
+            onChange={(e) => setEditingMember({ ...editingMember, startDate: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Contract End"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            value={editingMember?.contractEnd || ''}
+            onChange={(e) => setEditingMember({ ...editingMember, contractEnd: e.target.value })}
           />
         </DialogContent>
         <DialogActions>
