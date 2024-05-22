@@ -24,13 +24,25 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
             return defaultValue;
         };
     
-     // States for events, selectedEvent, selectedPos, and popup visibility
-    const [events, setEvents] = useState([
-        { id: 1, name: 'Event A', numOfPos: 3 },
-        { id: 2, name: 'Event B', numOfPos: 2 },
-        // ... more events
-    ]);
-    const [selectedEvent, setSelectedEvent] = useState(null);
+        const [events, setEvents] = useState([]);
+
+        // Function to fetch events from the API
+        const fetchEventsFromAPI = async () => {
+          try {
+            const fetchedEvents = await fetchEvents(); // Assuming fetchEvents is imported
+            setEvents(fetchedEvents);
+          } catch (error) {
+            console.error('Failed to fetch events:', error);
+            showSnackbar('Failed to fetch events', 'error');
+          }
+        };
+      
+        // ... other functions
+      
+        useEffect(() => {
+          fetchEventsFromAPI();
+        }, []); 
+        const [selectedEvent, setSelectedEvent] = useState({ id: null, title: '' });
     const [selectedPos, setSelectedPos] = useState(null);
     const [showPopup, setShowPopup] = useState(startWithPopup);
     const [currentOrder, setCurrentOrder] = useState(() => loadInitialState('currentOrder', []));
@@ -62,13 +74,13 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
     const handleSelection = (eventId, posId) => {
         const eventOrders = eventPosOrders[eventId] || {};
         const posOrders = eventOrders[posId] || { currentOrder: [], completedOrders: [] };
-        
+        const event = events.find(event => event.id === eventId);
         // Set the current and completed orders for the selected POS
         setCurrentOrder(posOrders.currentOrder);
         setCompletedOrders(posOrders.completedOrders);
 
         // Update the selected event and POS states
-        setSelectedEvent(eventId);
+        setSelectedEvent({ id: eventId, title: event?.title });
         setSelectedPos(posId);
         setShowPopup(false); // Close the popup after selection
     };
@@ -129,8 +141,8 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
              // After completing an order, update the eventPosOrders with the new completed order
              setEventPosOrders(prev => ({
                 ...prev,
-                [selectedEvent]: {
-                    ...prev[selectedEvent],
+                [selectedEvent.title]: {
+                    ...prev[selectedEvent.title],
                     [selectedPos]: {
                         currentOrder: [],
                         completedOrders: [...(prev[selectedEvent]?.[selectedPos]?.completedOrders || []), newOrder],
@@ -178,7 +190,7 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
           <Header
             onBack={onBack}
             onTabChange={handleTabChange}
-            selectedEventName={events.find(event => event.id === selectedEvent)?.name}
+            selectedEventName={selectedEvent.title}
             selectedPosId={selectedPos}
           />
           <OrderList

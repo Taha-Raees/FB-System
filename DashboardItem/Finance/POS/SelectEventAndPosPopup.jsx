@@ -29,7 +29,7 @@ const SelectEventAndPosPopup = ({ events, onSelection, onClose }) => {
                     </MenuItem>
                     {events.map(event => (
                         <MenuItem key={event.id} value={event.id}>
-                            {event.name}
+                            {event.title}
                         </MenuItem>
                     ))}
                 </Select>

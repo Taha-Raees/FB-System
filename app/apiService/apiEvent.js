@@ -50,3 +50,17 @@ export const deleteEvent = async (id) => {
   }
   return true;
 };
+
+// Fetch all POS systems for an event
+export const fetchPosSystems = async (eventId) => {
+  try {
+    const response = await fetch(`${baseURL}/event/${eventId}/posSystems`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching POS systems:", error);
+    throw error;
+  }
+};

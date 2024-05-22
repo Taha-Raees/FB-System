@@ -19,7 +19,7 @@ const SalesAnalysis = ({ eventPosOrders,onBack }) => {
 
     // Function to get event options for select dropdown
   
-  const eventOptions = Object.keys(eventPosOrders).map(eventId => ({ id: eventId, name: `Event ${eventId}` }));
+  const eventOptions = Object.keys(eventPosOrders).map(eventId => ({ id: eventId, name: eventId }));
     // Handle event selection change
     const handleEventChange = (event) => {
         setSelectedEvent(event.target.value);
