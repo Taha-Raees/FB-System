@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { fetchUsers } from '@/app/apiService/apiService'; // Ensure this is the correct import path
+import React, { useState } from 'react';
 import "./Login.scss";
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -7,32 +6,21 @@ const Login = ({ onSignIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
-  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        const fetchedUsers = await fetchUsers();
-        setUsers(fetchedUsers);
-      } catch (error) {
-        console.error("Error fetching users: ", error);
-      }
-    };
-    loadUsers();
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true); // Start loading
     
     try {
-      const user = users.find(u => u.email === username && u.password === password);
-      if (user) {
-        localStorage.setItem("username", user.firstName); // Save username for session
-        localStorage.setItem("lastname", user.lastName); // Save lastname for session
-        localStorage.setItem("userRole", user.role); // Assuming the user object includes a role
-        localStorage.setItem("userId", user.id); // Assuming the user object includes an id
+      // Hardcoded credentials
+      const hardcodedUser = { username: 'taharaees', password: '0343', firstName: 'Taha', lastName: 'Raees', role: 'Admin', id: 1 };
+      
+      if (username === hardcodedUser.username && password === hardcodedUser.password) {
+        localStorage.setItem("username", hardcodedUser.firstName); // Save username for session
+        localStorage.setItem("lastname", hardcodedUser.lastName); // Save lastname for session
+        localStorage.setItem("userRole", hardcodedUser.role); // Assuming the user object includes a role
+        localStorage.setItem("userId", hardcodedUser.id); // Assuming the user object includes an id
         setIsError(false);
         onSignIn();
       } else {
