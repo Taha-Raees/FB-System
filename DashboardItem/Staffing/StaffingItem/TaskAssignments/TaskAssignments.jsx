@@ -28,34 +28,55 @@ import BackButton from '@/Buttons/BackButton/BackButton';
 const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState({ id: null, name: '', date: '', startTime: '', endTime: '', assignedTo: '' });
+  const [editingTask, setEditingTask] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
 
   const handleAddTask = () => {
     setEditingTask({ id: null, name: '', date: '', startTime: '', endTime: '', assignedTo: '' });
+    setErrors({});
     setIsTaskModalOpen(true);
   };
 
   const handleEditTask = (task) => {
     setEditingTask(task);
+    setErrors({});
     setIsTaskModalOpen(true);
-  };
-
-  const handleSaveTask = () => {
-    if (editingTask.id) {
-      setTasks(tasks.map(task => (task.id === editingTask.id ? editingTask : task)));
-    } else {
-      const newTask = { ...editingTask, id: tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1 };
-      setTasks([...tasks, newTask]);
-    }
-    setIsTaskModalOpen(false);
   };
 
   const handleDeleteTask = (id) => {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value.toLowerCase());
+  const handleModalClose = () => {
+    setIsTaskModalOpen(false);
+    setEditingTask({ id: null, name: '', date: '', startTime: '', endTime: '', assignedTo: '' });
+    setErrors({});
+  };
+
+  const handleSaveTask = () => {
+    const newErrors = {};
+    if (!editingTask.name) newErrors.name = 'Task is required';
+    if (!editingTask.date) newErrors.date = 'Date is required';
+    if (!editingTask.startTime) newErrors.startTime = 'Start Time is required';
+    if (!editingTask.endTime) newErrors.endTime = 'End Time is required';
+    if (!editingTask.assignedTo) newErrors.assignedTo = 'Assign To is required';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    if (editingTask.id) {
+      setTasks(tasks.map(task => (task.id === editingTask.id ? editingTask : task)));
+    } else {
+      const newTask = { ...editingTask, id: tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1 };
+      setTasks([...tasks, newTask]);
+    }
+    handleModalClose();
   };
 
   const filteredTasks = tasks.filter(task =>
@@ -110,10 +131,10 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
                 <TableCell>{task.endTime}</TableCell>
                 <TableCell>{staffMembers.find(member => member.id === task.assignedTo)?.name || 'Unassigned'}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleEditTask(task)}>
+                  <IconButton  aria-label="edit" onClick={() => handleEditTask(task)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton onClick={() => handleDeleteTask(task.id)}>
+                  <IconButton aria-label="delete" onClick={() => handleDeleteTask(task.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -122,15 +143,17 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog open={isTaskModalOpen} onClose={() => setIsTaskModalOpen(false)}>
-        <DialogTitle>{editingTask.id ? 'Edit Task' : 'Add Task'}</DialogTitle>
+      <Dialog open={isTaskModalOpen} onClose={handleModalClose}>
+        <DialogTitle>{editingTask?.id ? 'Edit Task' : 'Add Task'}</DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
             label="Task"
             fullWidth
-            value={editingTask.name}
+            value={editingTask?.name || ''}
             onChange={(e) => setEditingTask({ ...editingTask, name: e.target.value })}
+            error={!!errors.name}
+            helperText={errors.name}
           />
           <TextField
             margin="dense"
@@ -138,8 +161,10 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
             type="date"
             fullWidth
             InputLabelProps={{ shrink: true }}
-            value={editingTask.date}
+            value={editingTask?.date || ''}
             onChange={(e) => setEditingTask({ ...editingTask, date: e.target.value })}
+            error={!!errors.date}
+            helperText={errors.date}
           />
           <TextField
             margin="dense"
@@ -147,8 +172,10 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
             type="time"
             fullWidth
             InputLabelProps={{ shrink: true }}
-            value={editingTask.startTime}
+            value={editingTask?.startTime || ''}
             onChange={(e) => setEditingTask({ ...editingTask, startTime: e.target.value })}
+            error={!!errors.startTime}
+            helperText={errors.startTime}
           />
           <TextField
             margin="dense"
@@ -156,16 +183,20 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
             type="time"
             fullWidth
             InputLabelProps={{ shrink: true }}
-            value={editingTask.endTime}
+            value={editingTask?.endTime || ''}
             onChange={(e) => setEditingTask({ ...editingTask, endTime: e.target.value })}
+            error={!!errors.endTime}
+            helperText={errors.endTime}
           />
           <TextField
             margin="dense"
             label="Assign To"
             fullWidth
             select
-            value={editingTask.assignedTo}
+            value={editingTask?.assignedTo || ''}
             onChange={(e) => setEditingTask({ ...editingTask, assignedTo: e.target.value })}
+            error={!!errors.assignedTo}
+            helperText={errors.assignedTo}
           >
             {staffMembers.map(member => (
               <MenuItem key={member.id} value={member.id}>{member.name}</MenuItem>
@@ -173,7 +204,7 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
           </TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsTaskModalOpen(false)} color="primary">
+          <Button onClick={handleModalClose} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSaveTask} color="primary">

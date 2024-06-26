@@ -5,5 +5,8 @@ module.exports = {
     '\\.(css|scss)$': 'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/$1',
   },
+  transform: {
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  },
   testEnvironment: 'jsdom',
 };

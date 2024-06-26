@@ -28,6 +28,7 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [editingMember, setEditingMember] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
@@ -50,9 +51,23 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
   const handleModalClose = () => {
     setIsModalOpen(false);
     setEditingMember(null);
+    setErrors({});
   };
 
   const handleSaveMember = () => {
+    const newErrors = {};
+    if (!editingMember.name) newErrors.name = 'Name is required';
+    if (!editingMember.position) newErrors.position = 'Position is required';
+    if (!editingMember.contact) newErrors.contact = 'Contact is required';
+    if (!editingMember.salary) newErrors.salary = 'Salary is required';
+    if (!editingMember.startDate) newErrors.startDate = 'Start Date is required';
+    if (!editingMember.contractEnd) newErrors.contractEnd = 'Contract End is required';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     if (editingMember.id) {
       setStaffMembers(staffMembers.map(member => (member.id === editingMember.id ? editingMember : member)));
     } else {
@@ -116,10 +131,10 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
                 <TableCell>{member.startDate}</TableCell>
                 <TableCell>{member.contractEnd}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleEditMember(member)}>
+                  <IconButton aria-label="edit" onClick={() => handleEditMember(member)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton onClick={() => handleDeleteMember(member.id)}>
+                  <IconButton aria-label="delete" onClick={() => handleDeleteMember(member.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -137,6 +152,8 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
             fullWidth
             value={editingMember?.name || ''}
             onChange={(e) => setEditingMember({ ...editingMember, name: e.target.value })}
+            error={!!errors.name}
+            helperText={errors.name}
           />
           <TextField
             margin="dense"
@@ -144,6 +161,8 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
             fullWidth
             value={editingMember?.position || ''}
             onChange={(e) => setEditingMember({ ...editingMember, position: e.target.value })}
+            error={!!errors.position}
+            helperText={errors.position}
           />
           <TextField
             margin="dense"
@@ -151,6 +170,8 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
             fullWidth
             value={editingMember?.contact || ''}
             onChange={(e) => setEditingMember({ ...editingMember, contact: e.target.value })}
+            error={!!errors.contact}
+            helperText={errors.contact}
           />
           <TextField
             margin="dense"
@@ -158,6 +179,8 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
             fullWidth
             value={editingMember?.salary || ''}
             onChange={(e) => setEditingMember({ ...editingMember, salary: e.target.value })}
+            error={!!errors.salary}
+            helperText={errors.salary}
           />
           <TextField
             margin="dense"
@@ -167,6 +190,8 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
             InputLabelProps={{ shrink: true }}
             value={editingMember?.startDate || ''}
             onChange={(e) => setEditingMember({ ...editingMember, startDate: e.target.value })}
+            error={!!errors.startDate}
+            helperText={errors.startDate}
           />
           <TextField
             margin="dense"
@@ -176,6 +201,8 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
             InputLabelProps={{ shrink: true }}
             value={editingMember?.contractEnd || ''}
             onChange={(e) => setEditingMember({ ...editingMember, contractEnd: e.target.value })}
+            error={!!errors.contractEnd}
+            helperText={errors.contractEnd}
           />
         </DialogContent>
         <DialogActions>
