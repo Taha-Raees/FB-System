@@ -56,8 +56,8 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
     if (editingMember.id) {
       setStaffMembers(staffMembers.map(member => (member.id === editingMember.id ? editingMember : member)));
     } else {
-      setEditingMember({ ...editingMember, id: staffMembers.length + 1 });
-      setStaffMembers([...staffMembers, editingMember]);
+      const newMember = { ...editingMember, id: staffMembers.length > 0 ? Math.max(...staffMembers.map(m => m.id)) + 1 : 1 };
+      setStaffMembers([...staffMembers, newMember]);
     }
     handleModalClose();
   };
@@ -95,15 +95,15 @@ const StaffDirectory = ({ onBack, staffMembers, setStaffMembers }) => {
       </div>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+         <TableHead sx={{ backgroundColor: 'rgba(25, 118, 210, 1)' }}>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Position</TableCell>
-              <TableCell>Contact</TableCell>
-              <TableCell>Salary</TableCell>
-              <TableCell>Start Date</TableCell>
-              <TableCell>Contract End</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Name</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Position</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Contact</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Salary</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Start Date</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Contract End</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

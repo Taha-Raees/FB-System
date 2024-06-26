@@ -19,6 +19,7 @@ import {
   InputAdornment
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import './TaskAssignments.scss';
@@ -43,10 +44,14 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
     if (editingTask.id) {
       setTasks(tasks.map(task => (task.id === editingTask.id ? editingTask : task)));
     } else {
-      setEditingTask({ ...editingTask, id: tasks.length + 1 });
-      setTasks([...tasks, { ...editingTask, id: tasks.length + 1 }]);
+      const newTask = { ...editingTask, id: tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1 };
+      setTasks([...tasks, newTask]);
     }
     setIsTaskModalOpen(false);
+  };
+
+  const handleDeleteTask = (id) => {
+    setTasks(tasks.filter(task => task.id !== id));
   };
 
   const handleSearchChange = (event) => {
@@ -86,14 +91,14 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
       </div>
       <TableContainer component={Paper} className="tasks-table-container">
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: 'rgba(25, 118, 210, 1)' }}>
             <TableRow>
-              <TableCell>Task</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Start Time</TableCell>
-              <TableCell>End Time</TableCell>
-              <TableCell>Assigned To</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Task</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Date</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Start Time</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>End Time</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Assigned To</TableCell>
+              <TableCell sx={{ color: '#FFFFFF' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -107,6 +112,9 @@ const TaskAssignments = ({ staffMembers, tasks, setTasks, onBack }) => {
                 <TableCell>
                   <IconButton onClick={() => handleEditTask(task)}>
                     <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDeleteTask(task.id)}>
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
