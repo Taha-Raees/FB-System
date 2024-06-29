@@ -10,7 +10,7 @@ import Loading from '@/Components/Loading/Loading';
 
 const Home = () => {
   const [isSignedIn, setIsSignedIn] = useState(null); // Start with null to indicate loading state
-  const [loading, setLoading] = useState(true); // State to manage the loading screen
+  const [loading, setLoading] = useState(true); // State to manage the loading screen.
 
   useEffect(() => {
     scheduleClockUpdate();

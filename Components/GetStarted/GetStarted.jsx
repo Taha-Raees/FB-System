@@ -22,7 +22,7 @@ const GetStarted = ({ onSignIn }) => {
                 Your all-in-one business management suite: streamline your events, food trucks, inventory, and personnel with ease and precision.
               </p>
               <button onClick={handleGetStartedClick} className="button">
-                Get Started
+                Get Started.
               </button>
               <div className="download-section">
                 <h2>Download Our App</h2>
