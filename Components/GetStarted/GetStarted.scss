@@ -1,67 +1,94 @@
-.GetStarted{
-
+.GetStarted {
   .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    padding: 20px; // Added padding for small screens
-     // Optional: background color for the page
-  
+    padding: 20px;
+
     .content {
       background-color: rgba(255, 255, 255, 0);
       text-align: center;
-      border-radius: 10px; // More rounded corners
-      padding: 40px; // Added padding inside the content box
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Soft shadow for depth
-      width: 100%; // For responsiveness
-      max-width: 600px; // Maximum width
-  
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+
       .logo {
         margin-bottom: 20px;
       }
-  
+
       .title {
-        font-size: 2.5rem; // Larger font size for title
-        color: #999999; // Darker color for better readability
+        font-size: 2.5rem;
+        color: #999999;
         margin-bottom: 16px;
       }
-  
+
       .subtitle {
-        font-size: 1.2rem; // Slightly larger for readability
-        color: #aeaeae; // Darker shade
-        margin-bottom: 30px; // More space before the button
-        padding: 0 30px; // Padding for better text alignment
+        font-size: 1.2rem;
+        color: #aeaeae;
+        margin-bottom: 30px;
+        padding: 0 30px;
       }
-  
+
       .button {
-        padding: 12px 24px; // Slightly more padding
-        background-color: #AD9551;
+        padding: 12px 24px;
+        background-color: #ad9551;
         color: white;
-        font-size: 1.1rem; // Larger font size for the button
+        font-size: 1.1rem;
         border-radius: 8px;
         cursor: pointer;
         transition: background-color 0.3s, box-shadow 0.3s;
-        border: none; // Remove default border
-        outline: none; // Remove default outline
-      
+        border: none;
+        outline: none;
+
         &:hover {
-          background-color: #ae881f; // Adjusted hover color
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Shadow effect on hover
-          border: none; // Ensure border is none on hover
-          outline: none; // Ensure outline is none on hover
+          background-color: #ae881f;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          border: none;
+          outline: none;
         }
-      
+
         &:focus {
-          outline: none; // Remove outline on focus as well
+          outline: none;
         }
       }
-      
-    }
-  }  
-}
 
-  
-  
-  
-  
+      .download-section {
+        margin-top: 30px;
+        text-align: center;
+
+        h2 {
+          font-size: 1.5rem;
+          color: #999999;
+          margin-bottom: 16px;
+        }
+
+        .download-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+
+          .MuiButton-root {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #000;
+            font-size: 1.1rem;
+            background-color: #f1f1f1;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+
+            &:hover {
+              background-color: #e0e0e0;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+          }
+        }
+      }
+    }
+  }
+}

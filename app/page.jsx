@@ -26,7 +26,7 @@ const Home = () => {
     // Ensure the loading screen is displayed for at least 5 seconds
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000); // 5 seconds delay
+    }, 3000); // 3 seconds delay
 
     return () => clearTimeout(timer); // Clean up the timer
   }, []);
