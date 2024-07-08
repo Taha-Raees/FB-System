@@ -76,6 +76,7 @@ class Calendar extends Component {
                 // Use moment to format JavaScript Date objects to ISO 8601 strings
                 startDate: moment(slotInfo.start).toISOString(),
                 endDate: moment(slotInfo.end).toISOString(),
+                numOfPos: ""
             };
         } else {
             // For existing events, format dates from JavaScript Date objects to ISO 8601 strings
@@ -96,7 +97,8 @@ class Calendar extends Component {
                         <Input onChange={(value) => handleChange('title', value)} placeholder="Event Title" defaultValue={slotInfo.title} />
                         <Input onChange={(value) => handleChange('location', value)} placeholder="Event Location" defaultValue={slotInfo.location} />
                         <Input onChange={(value) => handleChange('startDate', value)} placeholder="Start Date" defaultValue={moment(slotInfo.startDate).format('YYYY-MM-DD')} type="date" />
-                        <Input onChange={(value) => handleChange('endDate', value)} placeholder="End Date" defaultValue={moment(slotInfo.endDate).format('YYYY-MM-DD')} type="date"/>
+                        <Input onChange={(value) => handleChange('endDate', value)} placeholder="End Date" defaultValue={moment(slotInfo.endDate).format('YYYY-MM-DD')} type="date" />
+                        <Input onChange={(value) => handleChange('numOfPos', value)} placeholder="Number of POS" defaultValue={slotInfo.numOfPos || ''} type="number" />
                     </div>,
             buttons: {
                 left: ['cancel'],
@@ -106,7 +108,6 @@ class Calendar extends Component {
                     action: function () {
                         let eventData = {
                             ...slotInfo,
-                            // Ensure dates are formatted as ISO 8601 strings for Prisma/Backend
                             startDate: moment(slotInfo.startDate).toISOString(),
                             endDate: moment(slotInfo.endDate).toISOString(),
                         };
@@ -121,6 +122,7 @@ class Calendar extends Component {
             }
         });
     };
+    
     
 
     eventStyleGetter = (event, start, end, isSelected) => {

@@ -16,39 +16,40 @@ import {
 
 const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
         // Load initial state from localStorage or set to defaults
-        const loadInitialState = (key, defaultValue) => {
-            const saved = localStorage.getItem(key);
-            if (saved !== null) {
-                return JSON.parse(saved);
-            }
-            return defaultValue;
-        };
-    
-        const [events, setEvents] = useState([]);
-
-        // Function to fetch events from the API
-        const fetchEventsFromAPI = async () => {
-          try {
-            const fetchedEvents = await fetchEvents(); // Assuming fetchEvents is imported
-            setEvents(fetchedEvents);
-          } catch (error) {
-            console.error('Failed to fetch events:', error);
-            showSnackbar('Failed to fetch events', 'error');
-          }
-        };
-      
-        // ... other functions
-      
-        useEffect(() => {
-          fetchEventsFromAPI();
-        }, []); 
-        const [selectedEvent, setSelectedEvent] = useState({ id: null, title: '' });
+    const [events, setEvents] = useState([]);    
+    const [selectedEvent, setSelectedEvent] = useState({ id: null, title: '' });
     const [selectedPos, setSelectedPos] = useState(null);
     const [showPopup, setShowPopup] = useState(startWithPopup);
     const [currentOrder, setCurrentOrder] = useState(() => loadInitialState('currentOrder', []));
     const [completedOrders, setCompletedOrders] = useState(() => loadInitialState('completedOrders', []));
     const [receivedAmount, setReceivedAmount] = useState('');
     const [activeTab, setActiveTab] = useState('MENU');
+    const loadInitialState = (key, defaultValue) => {
+        const saved = localStorage.getItem(key);
+        if (saved !== null) {
+            return JSON.parse(saved);
+        }
+        return defaultValue;
+    };
+
+    
+
+    // Function to fetch events from the API
+    const fetchEventsFromAPI = async () => {
+      try {
+        const fetchedEvents = await fetchEvents(); // Assuming fetchEvents is imported
+        setEvents(fetchedEvents);
+      } catch (error) {
+        console.error('Failed to fetch events:', error);
+        showSnackbar('Failed to fetch events', 'error');
+      }
+    };
+  
+    // ... other functions
+  
+    useEffect(() => {
+      fetchEventsFromAPI();
+    }, []); 
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: '',
@@ -187,43 +188,23 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
   
       return (
         <div className="pos">
-          <Header
-            onBack={onBack}
-            onTabChange={handleTabChange}
-            selectedEventName={selectedEvent.title}
-            selectedPosId={selectedPos}
-          />
-          <OrderList
-            className="order-list"
-            orders={currentOrder}
-            onOrderDeleted={handleOrderDeleted}
-            receivedAmount={receivedAmount}
-            change={calculateChange()}
-          />
-          {activeTab === 'MENU' && <Menu className="menu-grid" onAddToOrder={handleAddToOrder} />}
-          {activeTab === 'ORDERS' && <Orders className="menu-grid" completedOrders={completedOrders} setCompletedOrders={setCompletedOrders} />}
-          <Keypad className="keypad" onKeypadPress={handleKeypadPress} receivedAmount={receivedAmount} />
-          <CurrencyShortcuts className="currency-shortcuts" onShortcutSelected={handleShortcutSelected} />
-          {showPopup && (
-            <SelectEventAndPosPopup
-              events={events}
-              onSelection={handleSelection}
-              onClose={() => setShowPopup(false)}
-            />
-          )}
-          <Snackbar
-            open={snackbar.open}
-            autoHideDuration={6000}
-            onClose={handleSnackbarClose}
-            onClick={handleSnackbarClose} // Snackbar will close when anywhere on the screen is clicked
-          >
-            <MuiAlert elevation={6} variant="filled" onClose={handleSnackbarClose} severity={snackbar.severity}>
-              {snackbar.message}
-            </MuiAlert>
-          </Snackbar>
+            <Header onBack={onBack} onTabChange={setActiveTab} selectedEventName={selectedEvent?.title} selectedPosId={selectedPos} />
+            <OrderList className="order-list" orders={currentOrder} onOrderDeleted={handleOrderDeleted} receivedAmount={receivedAmount} change={calculateChange()} />
+            {activeTab === 'MENU' && <Menu className="menu-grid" onAddToOrder={handleAddToOrder} />}
+            {activeTab === 'ORDERS' && <Orders className="menu-grid" completedOrders={completedOrders} setCompletedOrders={setCompletedOrders} />}
+            <Keypad className="keypad" onKeypadPress={handleKeypadPress} receivedAmount={receivedAmount} />
+            <CurrencyShortcuts className="currency-shortcuts" onShortcutSelected={handleShortcutSelected} />
+            {showPopup && (
+                <SelectEventAndPosPopup events={events} onSelection={handleSelection} onClose={() => setShowPopup(false)} />
+            )}
+            <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleSnackbarClose} onClick={handleSnackbarClose}>
+                <MuiAlert elevation={6} variant="filled" onClose={handleSnackbarClose} severity={snackbar.severity}>
+                    {snackbar.message}
+                </MuiAlert>
+            </Snackbar>
         </div>
-      );
-    };
+    );
+};
     
 
 export default POS 
