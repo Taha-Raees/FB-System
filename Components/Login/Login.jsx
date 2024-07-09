@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Login.scss";
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -7,15 +7,14 @@ const Login = ({ onSignIn }) => {
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isQuickLogin, setIsQuickLogin] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const hardcodedUser = { username: 'taharaees', password: '0343', firstName: 'Taha', lastName: 'Raees', role: 'Admin', id: 1 };
+
+  const handleSubmit = async () => {
     setIsLoading(true); // Start loading
-    
+
     try {
-      // Hardcoded credentials
-      const hardcodedUser = { username: 'taharaees', password: '0343', firstName: 'Taha', lastName: 'Raees', role: 'Admin', id: 1 };
-      
       if (username === hardcodedUser.username && password === hardcodedUser.password) {
         localStorage.setItem("username", hardcodedUser.firstName); // Save username for session
         localStorage.setItem("lastname", hardcodedUser.lastName); // Save lastname for session
@@ -34,6 +33,19 @@ const Login = ({ onSignIn }) => {
     }
   };
 
+  const handleQuickLogin = async () => {
+    setUsername(hardcodedUser.username);
+    setPassword(hardcodedUser.password);
+    setIsQuickLogin(true);
+  };
+
+  useEffect(() => {
+    if (isQuickLogin) {
+      handleSubmit();
+      setIsQuickLogin(false);
+    }
+  }, [username, password]);
+
   return (
     <div className="myBackground">
       {isLoading ? (
@@ -42,7 +54,7 @@ const Login = ({ onSignIn }) => {
           <p className="loadingMessage">Login may take up to 10 seconds due to server inactivity. Please wait...</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="loginForm">
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="loginForm">
           <h1>Login</h1>
           <input
             type="text"
@@ -60,6 +72,9 @@ const Login = ({ onSignIn }) => {
           />
           <button type="submit" className="loginButton">Log In</button>
           {isError && <p className="errorMessage">Incorrect username or password.</p>}
+          <button type="button" className="quickLoginButton" onClick={handleQuickLogin}>
+            Login as Taha Raees
+          </button>
         </form>
       )}
     </div>
