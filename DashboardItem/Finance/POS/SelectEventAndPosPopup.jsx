@@ -1,4 +1,3 @@
-// SelectEventAndPosPopup.jsx
 import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -6,13 +5,20 @@ import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import moment from 'moment';
 
 const SelectEventAndPosPopup = ({ events, onSelection, onClose }) => {
     const [selectedEventId, setSelectedEventId] = useState('');
     const [selectedPosId, setSelectedPosId] = useState('');
 
+    // Filter ongoing events
+    const currentDate = moment().format('YYYY-MM-DD');
+    const ongoingEvents = events.filter(event =>
+        moment(event.startDate).isSameOrBefore(currentDate) && moment(event.endDate).isSameOrAfter(currentDate)
+    );
+
     // Render POS options based on the selected event
-    const posOptions = [...Array(events.find(e => e.id === Number(selectedEventId))?.numOfPos || 0).keys()].map(n => n + 1);
+    const posOptions = [...Array(ongoingEvents.find(e => e.id === Number(selectedEventId))?.numOfPos || 0).keys()].map(n => n + 1);
 
     return (
         <Dialog open={true} onClose={onClose}>
@@ -27,7 +33,7 @@ const SelectEventAndPosPopup = ({ events, onSelection, onClose }) => {
                     <MenuItem value="" disabled>
                         Select Event
                     </MenuItem>
-                    {events.map(event => (
+                    {ongoingEvents.map(event => (
                         <MenuItem key={event.id} value={event.id}>
                             {event.title}
                         </MenuItem>

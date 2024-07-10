@@ -8,74 +8,49 @@ import Menu from './Menu/Menu';
 import Keypad from './Keypad/Keypad';
 import Orders from './Orders/Orders';
 import SelectEventAndPosPopup from './SelectEventAndPosPopup';
-import { v4 as uuidv4 } from 'uuid'; 
+import { v4 as uuidv4 } from 'uuid';
 import CurrencyShortcuts from './CurrencyShortcuts/CurrencyShortcuts';
-import {
-    fetchEvents
-  } from '@/app/apiService/apiEvent';
+import { fetchEvents, saveEventPosOrders } from '@/app/apiService/apiEvent';
+import moment from 'moment';
 
-const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
-        // Load initial state from localStorage or set to defaults
-        const loadInitialState = (key, defaultValue) => {
-            const saved = localStorage.getItem(key);
-            if (saved !== null) {
-                return JSON.parse(saved);
-            }
-            return defaultValue;
-        };
-    
-        const [events, setEvents] = useState([]);
-
-        // Function to fetch events from the API
-        const fetchEventsFromAPI = async () => {
-          try {
-            const fetchedEvents = await fetchEvents(); // Assuming fetchEvents is imported
-            setEvents(fetchedEvents);
-          } catch (error) {
-            console.error('Failed to fetch events:', error);
-            showSnackbar('Failed to fetch events', 'error');
-          }
-        };
-      
-        // ... other functions
-      
-        useEffect(() => {
-          fetchEventsFromAPI();
-        }, []); 
-        const [selectedEvent, setSelectedEvent] = useState({ id: null, title: '' });
-    const [selectedPos, setSelectedPos] = useState(null);
-    const [showPopup, setShowPopup] = useState(startWithPopup);
-    const [currentOrder, setCurrentOrder] = useState(() => loadInitialState('currentOrder', []));
-    const [completedOrders, setCompletedOrders] = useState(() => loadInitialState('completedOrders', []));
-    const [receivedAmount, setReceivedAmount] = useState('');
-    const [activeTab, setActiveTab] = useState('MENU');
+const POS = ({ onBack, startWithPopup, eventPosOrders, setEventPosOrders }) => {
+    const [events, setEvents] = useState([]);
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: '',
         severity: 'info',
     });
-    useEffect(() => {
-        localStorage.setItem('currentOrder', JSON.stringify(currentOrder));
-    }, [currentOrder]);
+
+    const fetchEventsFromAPI = async () => {
+        try {
+            const fetchedEvents = await fetchEvents(); // Assuming fetchEvents is imported
+            setEvents(fetchedEvents);
+        } catch (error) {
+            console.error('Failed to fetch events:', error);
+            showSnackbar('Failed to fetch events', 'error');
+        }
+    };
 
     useEffect(() => {
-        localStorage.setItem('completedOrders', JSON.stringify(completedOrders));
-    }, [completedOrders]);
-    useEffect(() => {
-        localStorage.setItem('eventPosOrders', JSON.stringify(eventPosOrders));
-    }, [eventPosOrders]);
-    // When the component mounts, if startWithPopup is true, show the selection popup
-    useEffect(() => {
-        if (startWithPopup) {
-            setShowPopup(true);
-        }
-    }, [startWithPopup]);
+        fetchEventsFromAPI();
+    }, []);
+
+    const [selectedEvent, setSelectedEvent] = useState({ id: null, title: '' });
+    const [selectedPos, setSelectedPos] = useState(null);
+    const [showPopup, setShowPopup] = useState(startWithPopup);
+    const [currentOrder, setCurrentOrder] = useState([]);
+    const [completedOrders, setCompletedOrders] = useState([]);
+    const [receivedAmount, setReceivedAmount] = useState('');
+    const [activeTab, setActiveTab] = useState('MENU');
+
     // When an event and POS is selected, load the corresponding data
     const handleSelection = (eventId, posId) => {
+        const currentDate = moment().format('YYYY-MM-DD'); // Use current date for order data
         const eventOrders = eventPosOrders[eventId] || {};
-        const posOrders = eventOrders[posId] || { currentOrder: [], completedOrders: [] };
+        const posOrders = eventOrders[currentDate] ? eventOrders[currentDate][posId] || { currentOrder: [], completedOrders: [] } : { currentOrder: [], completedOrders: [] };
         const event = events.find(event => event.id === eventId);
-        // Set the current and completed orders for the selected POS
+
+        // Set the current and completed orders for the selected POS and date
         setCurrentOrder(posOrders.currentOrder);
         setCompletedOrders(posOrders.completedOrders);
 
@@ -111,14 +86,17 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
             }
         });
     };
+
     const handleTabChange = (tabName) => {
         setActiveTab(tabName);
         // Perform other actions if needed when tab changes
     };
+
     const handleOrderDeleted = (id) => {
         setCurrentOrder(currentOrder => currentOrder.filter(order => order.id !== id));
     };
-    const handleOrderCompleted = () => {
+
+    const handleOrderCompleted = async () => {
         const total = calculateTotal();
         const change = calculateChange();
 
@@ -138,24 +116,43 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
             setCurrentOrder([]);
             setReceivedAmount('');
             showSnackbar('Order is successfully entered', 'success');
-             // After completing an order, update the eventPosOrders with the new completed order
-             setEventPosOrders(prev => ({
-                ...prev,
+
+            const currentDate = moment().format('YYYY-MM-DD'); // Use current date for order data
+
+            // After completing an order, update the eventPosOrders with the new completed order
+            const updatedEventPosOrders = {
+                ...eventPosOrders,
                 [selectedEvent.title]: {
-                    ...prev[selectedEvent.title],
-                    [selectedPos]: {
-                        currentOrder: [],
-                        completedOrders: [...(prev[selectedEvent]?.[selectedPos]?.completedOrders || []), newOrder],
+                    ...eventPosOrders[selectedEvent.title],
+                    [currentDate]: {
+                        ...eventPosOrders[selectedEvent.title]?.[currentDate],
+                        [selectedPos]: {
+                            currentOrder: [],
+                            completedOrders: [
+                                ...(eventPosOrders[selectedEvent.title]?.[currentDate]?.[selectedPos]?.completedOrders || []),
+                                newOrder
+                            ],
+                        },
                     },
                 },
-        }));
+            };
+
+            setEventPosOrders(updatedEventPosOrders);
+
+            // Save the updated eventPosOrders to the backend
+            try {
+                await saveEventPosOrders(updatedEventPosOrders);
+                showSnackbar('Event POS orders saved successfully', 'success');
+            } catch (error) {
+                showSnackbar('Failed to save Event POS orders', 'error');
+            }
         } else {
             // Handle the case where the amount received is insufficient
             showSnackbar('Insufficient amount received. Please enter a sufficient amount.', 'error');
-        
         }
     };
-     const handleKeypadPress = (key) => {
+
+    const handleKeypadPress = (key) => {
         if (key === 'Delete') {
             setReceivedAmount(receivedAmount.slice(0, -1)); // Remove last character
         } else if (key === 'Enter') {
@@ -178,13 +175,13 @@ const POS = ({ onBack, startWithPopup ,eventPosOrders, setEventPosOrders }) => {
         const received = parseFloat(receivedAmount); // No need for the || 0 here
         return (received - total).toFixed(2); // Calculate change normally
     };
-  
+
     const handleShortcutSelected = (amount) => {
         // Convert current receivedAmount to number and add the shortcut amount
         const updatedAmount = (parseFloat(receivedAmount) || 0) + amount;
         setReceivedAmount(updatedAmount.toString());
-      };
-  
+    };
+
       return (
         <div className="pos">
           <Header

@@ -64,3 +64,35 @@ export const fetchPosSystems = async (eventId) => {
     throw error;
   }
 };
+
+// Fetch eventPosOrders
+export const fetchEventPosOrders = async () => {
+  try {
+    const response = await fetch(`${baseURL}/eventPosOrders`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching eventPosOrders:", error);
+    throw error;
+  }
+};
+
+// Create or update eventPosOrders
+export const saveEventPosOrders = async (ordersData) => {
+  try {
+    const response = await fetch(`${baseURL}/eventPosOrders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ordersData }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to save eventPosOrders');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error saving eventPosOrders:", error);
+    throw error;
+  }
+};

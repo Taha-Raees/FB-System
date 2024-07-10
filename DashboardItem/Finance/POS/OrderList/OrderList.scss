@@ -11,12 +11,14 @@
     // Ensure vertical alignment is centered
 
     .item-description {
-      flex-grow: 1; // Allow the description to take up the available space
+      flex-grow: 1;
+      // Allow the description to take up the available space
     }
 
     .item-price-delete {
       display: flex;
-      align-items: center; // Align price and delete button to the right
+      align-items: center;
+      color: #AD9551;  // Align price and delete button to the right
     }
   }
   h1{
