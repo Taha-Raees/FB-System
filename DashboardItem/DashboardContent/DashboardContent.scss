@@ -1,9 +1,11 @@
 .DashboardContents {
+  position: relative;  /* This is crucial */
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  background-color: #f6f6f6bc;
+  background-color: #f6f6f6bc; /* Confirm this matches your needs */
+  overflow: hidden; /* Ensure this is here to contain the absolute elements */
 
   .events-row {
     display: flex;

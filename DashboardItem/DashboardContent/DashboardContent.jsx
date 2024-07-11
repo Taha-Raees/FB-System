@@ -5,6 +5,7 @@ import { fetchEvents, fetchEventPosOrders } from '@/app/apiService/apiEvent';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Filler } from 'chart.js';
 import './DashboardContent.scss';
+import LoadingOverlay from '@/Components/LoadingOverlay/LoadingOverlay';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Filler);
 
@@ -16,6 +17,7 @@ const DashboardContent = () => {
   const [view, setView] = useState('monthly');
   const [selectedMonth, setSelectedMonth] = useState(moment().month());
   const [selectedYear, setSelectedYear] = useState(moment().year());
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -38,13 +40,16 @@ const DashboardContent = () => {
         setOngoingEvents(ongoing);
         setUpcomingEvents(earliestUpcomingEvents);
         setEventPosOrders(eventPosOrders[0]?.ordersData || {});
+        setLoading(false); 
       } catch (err) {
         setError(err.message);
+        setLoading(false);
       }
     };
 
     loadEvents();
   }, []);
+  
 
   const calculateSalesData = () => {
     const salesData = [];
@@ -134,6 +139,7 @@ const DashboardContent = () => {
 
   return (
     <div className="DashboardContents">
+      {loading && <LoadingOverlay />}
       {error && <Typography color="error">{error}</Typography>}
 
       <div className="events-row">
