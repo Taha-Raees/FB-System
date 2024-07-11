@@ -258,9 +258,7 @@ const DashboardContent = () => {
                 },
               },
               y: {
-                grid: {
-                  display: false,
-                },
+                
                 beginAtZero: true,
               },
             },
