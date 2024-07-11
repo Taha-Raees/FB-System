@@ -112,7 +112,7 @@ const DashboardContent = () => {
         borderColor: '#36A2EB',
         backgroundColor: 'rgba(0,0,255,0.1)',
         fill: true,
-        tension: 0.4, // Make the line curved
+        tension: 0.2, // Make the line curved
       },
       {
         label: 'Profit',
@@ -120,7 +120,7 @@ const DashboardContent = () => {
         borderColor: '#FF6384',
         backgroundColor: 'rgba(0,255,0,0.1)',
         fill: true,
-        tension: 0.4, // Make the line curved
+        tension: 0.2, // Make the line curved
       },
     ],
   };
