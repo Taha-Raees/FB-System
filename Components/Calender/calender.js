@@ -158,7 +158,7 @@ class Calendar extends Component {
                 events={Array.isArray(this.props.events) ? this.props.events.map(event => ({
                     ...event,
                     start: new Date(event.startDate),
-                    end: new Date(moment(event.endDate)) // Adjust end date
+                    end: new Date(moment(event.endDate).add(1, 'days')) // Adjust end date
                   })) : []}
                 eventPropGetter={this.eventStyleGetter}
                 onSelectEvent={this.onSelectEventHandler}
