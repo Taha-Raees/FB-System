@@ -23,7 +23,9 @@ const DashboardContent = () => {
     const loadEvents = async () => {
       try {
         const events = await fetchEvents();
-        const eventPosOrders = await fetchEventPosOrders();
+        const posOrders = await fetchEventPosOrders();
+        console.log('Fetched Events:', events);
+        console.log('Fetched Event POS Orders:', posOrders);
 
         const currentDate = new Date();
         const ongoing = events.filter(event =>
@@ -39,8 +41,8 @@ const DashboardContent = () => {
 
         setOngoingEvents(ongoing);
         setUpcomingEvents(earliestUpcomingEvents);
-        setEventPosOrders(eventPosOrders[0]?.ordersData || {});
-        setLoading(false); 
+        setEventPosOrders(posOrders[0]?.ordersData || {});
+        setLoading(false);
       } catch (err) {
         setError(err.message);
         setLoading(false);
@@ -49,58 +51,73 @@ const DashboardContent = () => {
 
     loadEvents();
   }, []);
-  
 
   const calculateSalesData = () => {
     const salesData = [];
     const labels = [];
-
+  
     if (view === 'monthly') {
       for (let day = 1; day <= moment(selectedYear, 'YYYY').month(selectedMonth).daysInMonth(); day++) {
         labels.push(day);
         let dailySales = 0;
         let dailyProfit = 0;
-
-        ongoingEvents.forEach(event => {
-          if (eventPosOrders[event.title]) {
-            Object.keys(eventPosOrders[event.title]).forEach(date => {
-              if (moment(date).month() === selectedMonth && moment(date).year() === selectedYear && moment(date).date() === day) {
-                Object.values(eventPosOrders[event.title][date]).forEach(pos => {
-                  dailySales += pos.completedOrders.reduce((total, order) => total + parseFloat(order.total), 0);
-                  dailyProfit += pos.completedOrders.reduce((total, order) => total + (parseFloat(order.total) - order.items.reduce((sum, item) => sum + parseFloat(item.costPrice) * item.quantity, 0)), 0);
+  
+        Object.keys(eventPosOrders).forEach(eventTitle => {
+          
+          Object.keys(eventPosOrders[eventTitle]).forEach(date => {
+            const orderDate = moment(date);
+            
+            if (orderDate.month() === selectedMonth && orderDate.year() === selectedYear && orderDate.date() === day) {
+              Object.values(eventPosOrders[eventTitle][date]).forEach(pos => {
+                pos.completedOrders.forEach(order => {
+                  
+                  dailySales += parseFloat(order.total);
+                  const orderProfit = parseFloat(order.total) - order.items.reduce((sum, item) => sum + parseFloat(item.costPrice) * item.quantity, 0);
+                  dailyProfit += orderProfit;
+                  
                 });
-              }
-            });
-          }
+              });
+            }
+          });
         });
-
+  
         salesData.push({ sales: dailySales, profit: dailyProfit });
+        
       }
     } else if (view === 'yearly') {
       for (let month = 0; month < 12; month++) {
         labels.push(moment().month(month).format('MMMM'));
         let monthlySales = 0;
         let monthlyProfit = 0;
-
-        ongoingEvents.forEach(event => {
-          if (eventPosOrders[event.title]) {
-            Object.keys(eventPosOrders[event.title]).forEach(date => {
-              if (moment(date).month() === month && moment(date).year() === selectedYear) {
-                Object.values(eventPosOrders[event.title][date]).forEach(pos => {
-                  monthlySales += pos.completedOrders.reduce((total, order) => total + parseFloat(order.total), 0);
-                  monthlyProfit += pos.completedOrders.reduce((total, order) => total + (parseFloat(order.total) - order.items.reduce((sum, item) => sum + parseFloat(item.costPrice) * item.quantity, 0)), 0);
+  
+        Object.keys(eventPosOrders).forEach(eventTitle => {
+         
+          Object.keys(eventPosOrders[eventTitle]).forEach(date => {
+            const orderDate = moment(date);
+            
+            if (orderDate.month() === month && orderDate.year() === selectedYear) {
+              Object.values(eventPosOrders[eventTitle][date]).forEach(pos => {
+                pos.completedOrders.forEach(order => {
+                  
+                  monthlySales += parseFloat(order.total);
+                  const orderProfit = parseFloat(order.total) - order.items.reduce((sum, item) => sum + parseFloat(item.costPrice) * item.quantity, 0);
+                  monthlyProfit += orderProfit;
+                  
                 });
-              }
-            });
-          }
+              });
+            }
+          });
         });
-
+  
         salesData.push({ sales: monthlySales, profit: monthlyProfit });
+       
       }
     }
-
+  
+    
     return { labels, salesData };
   };
+  
 
   const { labels, salesData } = calculateSalesData();
   const salesChartData = {
@@ -112,7 +129,7 @@ const DashboardContent = () => {
         borderColor: '#36A2EB',
         backgroundColor: 'rgba(0,0,255,0.1)',
         fill: true,
-        tension: 0.2, // Make the line curved
+        tension: 0.2,
       },
       {
         label: 'Profit',
@@ -120,7 +137,7 @@ const DashboardContent = () => {
         borderColor: '#FF6384',
         backgroundColor: 'rgba(0,255,0,0.1)',
         fill: true,
-        tension: 0.2, // Make the line curved
+        tension: 0.2,
       },
     ],
   };
@@ -258,7 +275,6 @@ const DashboardContent = () => {
                 },
               },
               y: {
-                
                 beginAtZero: true,
               },
             },
@@ -270,5 +286,3 @@ const DashboardContent = () => {
 };
 
 export default DashboardContent;
-
-               
