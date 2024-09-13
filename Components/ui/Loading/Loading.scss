@@ -1,0 +1,152 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+   
+    font-family: "Montserrat", sans-serif;
+  }
+  
+  .loading-container {
+    text-align: center;
+  
+    svg {
+      background-color: transparent;
+      border-radius: 50%;
+      animation: spin 3s ease infinite alternate;
+  
+      &.no-spin {
+        animation: none;
+        border-radius: 0%;
+      }
+  
+      .shape {
+        r: 20;
+  
+        &:nth-child(1) {
+          cy: 50;
+          cx: 50;
+          fill: #c20f00;
+          animation: movein 3s ease infinite alternate;
+        }
+        &:nth-child(2) {
+          cy: 50;
+          cx: 150;
+          fill: #ffdd22;
+          animation: movein 3s ease infinite alternate;
+        }
+        &:nth-child(3) {
+          cy: 150;
+          cx: 50;
+          fill: #2374c6;
+          animation: movein 3s ease infinite alternate;
+        }
+        &:nth-child(4) {
+          cy: 150;
+          cx: 150;
+          fill: #000000;
+          animation: movein 3s ease infinite alternate;
+        }
+  
+        &.linear-movement {
+          animation: moveup 2s ease infinite alternate;
+        }
+      }
+    }
+  }
+  
+  .control-panel {
+    position: fixed;
+    bottom: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .switch-label {
+    display: inline-block;
+    color: #000000;
+    margin: 5px;
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+  
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ffdd22;
+      transition: 0.4s;
+  
+      &:before {
+        position: absolute;
+        content: "";
+        height: 19px;
+        width: 19px;
+        left: 3px;
+        bottom: 3px;
+        background-color: #000000;
+        transition: 0.4s;
+      }
+    }
+  
+    input:checked + .slider {
+      background-color: #c20f00;
+    }
+  
+    input:checked + .slider:before {
+      transform: translateX(25px);
+    }
+  
+    .round {
+      border-radius: 34px;
+  
+      &:before {
+        border-radius: 50%;
+      }
+    }
+  
+    &.movement input:checked + .slider {
+      background-color: #2374c6;
+    }
+  
+    &.movement input:focus + .slider {
+      box-shadow: 0 0 3px #2374c6;
+    }
+  
+    input:focus + .slider {
+      box-shadow: 0 0 3px #c20f00;
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+  
+  @keyframes movein {
+    to {
+      cy: 100;
+      cx: 100;
+    }
+  }
+  
+  @keyframes moveup {
+    to {
+      cy: 20;
+    }
+  }
+  

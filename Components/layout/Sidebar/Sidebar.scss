@@ -1,0 +1,190 @@
+.sidebar {
+  transition: min-width 0.5s ease; // Animate the width change
+  display: flex;
+  flex-direction: column;
+  min-width: 13vw;
+  min-height: 96vh;
+  background-color: transparent;
+  border-right: 1px solid #dddddd30;
+
+  &.collapsed {
+    min-width: 3vw;
+    .logo, .menu-item, .user-item span {
+      transition: opacity 0.5s ease; // Animate the opacity change
+    }
+    
+    .logo img, .menu-item span, .user-item span {
+      opacity: 0; // Hide text and logo image in collapsed state
+    }
+    .logo {
+      justify-content: center;
+      margin-top: -50px;
+      color: #AD9551;
+      img {
+        display: none;
+      }
+    }
+    
+    .menu-item, .user-item {
+      transition: background-color 0.3s ease, color 0.3s ease; // Smooth background and color transition for hover and active states
+      justify-content: center;
+      
+      span {
+        display: none;
+      }
+
+      // Vertical line for collapsed state
+      &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 30px; // Vertical line height
+        width: 2px; // Vertical line width
+        background-color: #AD9551; // Vertical line color
+        display: none; // Initially hidden, shown on active
+      }
+
+      &.active::before {
+        display: block; // Show vertical line for active items
+      }
+
+      // Remove horizontal line for active items in collapsed state
+      &.active::after {
+        width: 0 !important;
+      }
+    }
+
+    // Horizontal line on hover for collapsed state
+    .menu-item:hover::after, .user-item:hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 1px;
+      background-color: #AD9551;
+      display: block; // Show on hover
+    }
+  }
+
+  .menu-item, .user-item {
+    position: relative;
+    padding: 10px;
+    color: #949494;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+
+    // Horizontal line for non-collapsed state
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: 0; // Initially hidden
+      height: 1px;
+      background-color: #AD9551;
+      transition: width 0.3s ease;
+    }
+
+    &:hover::after, &.active::after {
+      width: 70%; // Show horizontal line on hover and when active
+    }
+
+    &.active {
+      color: #AD9551;
+      font-weight: bold;
+    }
+
+    span {
+      margin-left: 10px;
+    }
+  }
+
+
+  .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10em;
+    margin-top: -0.5em;
+    cursor: pointer;
+  }
+
+  .menu, .user {
+    display: flex;
+    flex-direction: column;
+  }
+
+  hr {
+    margin-top: 30vh;
+    border: 1px solid #dddddd30;
+  }
+}
+@media (max-width: 768px) {
+  .sidebar {
+    width: 1.5vw;
+    .logo, .menu-item, .user-item span {
+      transition: opacity 0.5s ease; // Animate the opacity change
+    }
+    
+    .logo img, .menu-item span, .user-item span {
+      opacity: 0; // Hide text and logo image in collapsed state
+    }
+    .logo {
+      justify-content: center;
+      display: none;
+    }
+    .menu{
+      margin-top: 10em;
+    }
+    .menu-item, .user-item {
+      transition: background-color 0.3s ease, color 0.3s ease; // Smooth background and color transition for hover and active states
+      justify-content: center;
+      
+      span {
+        display: none;
+      }
+
+      // Vertical line for collapsed state
+      &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 30px; // Vertical line height
+        width: 2px; // Vertical line width
+        background-color: #AD9551; // Vertical line color
+        display: none; // Initially hidden, shown on active
+      }
+
+      &.active::before {
+        display: block; // Show vertical line for active items
+      }
+
+      // Remove horizontal line for active items in collapsed state
+      &.active::after {
+        width: 0 !important;
+      }
+    }
+
+    // Horizontal line on hover for collapsed state
+    .menu-item:hover::after, .user-item:hover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 1px;
+      background-color: #AD9551;
+      display: block; // Show on hover
+    }
+  }
+}

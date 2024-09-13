@@ -1,0 +1,49 @@
+.navbar {
+  padding-top: 5px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dddddd30;
+  height: 2.5vh;
+}
+.user-section {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  color: #AD9551;
+}
+
+.user-icon {
+  margin-right: 5px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  margin-top: 10px;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
