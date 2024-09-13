@@ -1,12 +1,23 @@
-"use client"
-import Events from '@/Components/DashboardItem/Events/Events'
-import React from 'react'
+"use client";
+import dynamic from 'next/dynamic';
+import { CircularProgress } from '@mui/material';
+import React from 'react';
 
-const events = () => {
-  return (
-    <div><Events/>
+// Dynamically import the Events component with a fallback to show a loading spinner
+const Events = dynamic(() => import('@/Components/DashboardItem/Events/Events'), {
+  loading: () => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <CircularProgress />
     </div>
-  )
-}
+  ),
+});
 
-export default events
+const EventsPage = () => {
+  return (
+    <div>
+      <Events />
+    </div>
+  );
+};
+
+export default EventsPage;

@@ -1,11 +1,23 @@
-"use client"
-import Inventory from '@/Components/DashboardItem/Inventory/Inventory'
-import React from 'react'
+"use client";
+import dynamic from 'next/dynamic';
+import { CircularProgress } from '@mui/material';
+import React from 'react';
 
-const inventory = () => {
+// Dynamically import the Inventory component with a loading spinner fallback
+const Inventory = dynamic(() => import('@/Components/DashboardItem/Inventory/Inventory'), {
+  loading: () => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <CircularProgress />
+    </div>
+  ),
+});
+
+const InventoryPage = () => {
   return (
-    <div><Inventory/></div>
-  )
-}
+    <div>
+      <Inventory /> {/* This will dynamically load the Inventory component */}
+    </div>
+  );
+};
 
-export default inventory
+export default InventoryPage;
