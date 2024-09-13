@@ -1,10 +1,21 @@
 .GetStarted {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  
   .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     padding: 20px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; // Hide scrollbars by preventing overflow
+
+    // Hide scrollbars for WebKit browsers
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     .content {
       background-color: rgba(255, 255, 255, 0);
@@ -14,6 +25,12 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 100%;
       max-width: 600px;
+      overflow: hidden; // Optionally hide scrollbars inside content too if needed
+
+      // Hide content scrollbars for WebKit browsers
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .logo {
         margin-bottom: 20px;
