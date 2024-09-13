@@ -32,7 +32,7 @@ const DashboardLayout = ({ children }) => {
         <Sidebar />
         <div className='content'>
           <Navbar />
-          {children} {/* Render children only after validation */}
+          <div className='child'>{children}</div>
         </div>
       </div>
       <Analytics />
