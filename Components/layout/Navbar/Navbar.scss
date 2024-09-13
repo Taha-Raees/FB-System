@@ -1,12 +1,15 @@
 .navbar {
-  padding-top: 5px;
+  padding-top: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #dddddd30;
-  height: 2.5vh;
+  height: 20px;
+  position: fixed;
+  z-index: 1000;
+  width: 85%;
 }
 .user-section {
-  position: absolute;
-  right: 0;
+  display: flex;
+  justify-content: flex-end;
   cursor: pointer;
   
 }

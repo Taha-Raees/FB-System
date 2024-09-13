@@ -15,7 +15,8 @@ export default function DashboardLayout({ children }) {
         <Sidebar />
         <div className='content'>
           <Navbar />
-          {children}
+          <div className='child'>{children}</div>
+          
         </div>
       </div>
       <Analytics />

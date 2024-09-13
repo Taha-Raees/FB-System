@@ -1,18 +1,45 @@
-
-html,
-body,
-:root {
-  background-color: #152039;
-  
+html, body, :root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
-.container{
+
+.container {
   display: flex;
   width: 100%;
   height: 100vh;
-  background: #152039;
- 
+  background-color: #152039;
+  overflow-y: hidden;
 }
-.content{
+
+.child {
+  margin-top: 50px;
+}
+
+.content {
   flex: 1 2;
   background: transparent;
+  overflow-y: scroll;
+}
+
+/* Custom scrollbar styles */
+.content::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2c3e50; /* Scrollbar track color */
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #AD9551; /* Scrollbar thumb color */
+  border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background-color: #2980b9; /* Scrollbar thumb color on hover */
+}
+
+/* Custom scrollbar for Firefox */
+.content {
+  scrollbar-width: thin;  
+  scrollbar-color: #AD9551 #2c3e50; /* thumb and track color */
 }
