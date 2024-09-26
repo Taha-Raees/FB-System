@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 import Button from '@mui/material/Button';
 import "./GetStarted.scss";
 import { Android, Window } from '@mui/icons-material';
