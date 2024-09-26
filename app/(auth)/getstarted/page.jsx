@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from 'react';
-import Login from '@/app/(auth)/Login/page';
 import Button from '@mui/material/Button';
 import "./GetStarted.scss";
 import { Android, Window } from '@mui/icons-material';
@@ -11,7 +10,23 @@ const GetStarted = ({  }) => {
   const handleGetStartedClick = () => {
     router.push('/Login')
   };
+  const routesToPrefetch = [
+    '/',
+    '/events',
+    '/staffing',
+    '/inventory',
+    '/workflow',
+    '/finance',
+    '/messages',
+    '/login',
+  ];
 
+  // Prefetch all routes when the component is mounted
+  useEffect(() => {
+    routesToPrefetch.forEach((route) => {
+      router.prefetch(route);
+    });
+  }, [router]);
    
 
   return (
