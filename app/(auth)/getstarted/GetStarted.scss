@@ -11,7 +11,9 @@
     width: 100%;
     height: 100%;
     overflow: hidden; // Hide scrollbars by preventing overflow
-
+    background-image: url('/images/bg1.png'); /* Corrected the URL path */
+    background-size: cover; /* Removed the quotes */
+    background-position: center;
     // Hide scrollbars for WebKit browsers
     &::-webkit-scrollbar {
       display: none;

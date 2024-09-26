@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import TaskAssignments from './TaskAssignments';
+import TaskAssignments from './TaskAssignments.test.js';
 
 const mockStaffMembers = [
   { id: 1, name: 'John Doe' },

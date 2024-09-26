@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import StaffDirectory from './StaffDirectory';
+import StaffDirectory from './StaffDirectory.test.js';
 
 const mockStaffMembers = [
   { id: 1, name: 'John Doe', position: 'Manager', contact: 'john.doe@example.com', salary: '50000', startDate: '2022-01-01', contractEnd: '2023-01-01' },

@@ -83,7 +83,7 @@ const Login = () => {
           <button type="submit" className="loginButton">Log In</button>
           {isError && <p className="errorMessage">Incorrect username or password.</p>}
           <button type="button" className="quickLoginButton" onClick={handleQuickLogin}>
-            Quick Login as Taha Raees
+            Login for Recruiter
           </button>
         </form>
       )}
