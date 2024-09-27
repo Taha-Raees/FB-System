@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation'; // Use usePathname to get the current route
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircleOutlined from '@mui/icons-material/AccountCircleOutlined';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
@@ -12,6 +12,7 @@ const Navbar = () => {
   const [lastname, setLastname] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false); // State to toggle dropdown
   const router = useRouter();
+  const pathname = usePathname(); // Get the current route
 
   // Load username and lastname from localStorage after the component has mounted
   useEffect(() => {
@@ -41,8 +42,25 @@ const Navbar = () => {
     router.push('/getstarted');
   };
 
+  // Breadcrumb navigation
+  const getBreadcrumbs = () => {
+    const pathSegments = pathname.split('/').filter(Boolean); // Split and filter out empty segments
+    const breadcrumbLinks = pathSegments.map((segment, index) => {
+      const href = `/${pathSegments.slice(0, index + 1).join('/')}`; // Generate the href for each segment
+      return (
+        <span key={href} onClick={() => router.push(href)} className="breadcrumb-link">
+          \ {segment}
+        </span>
+      );
+    });
+    return [<span key="/" onClick={() => router.push('/')} className="breadcrumb-link">\ Dashboard</span>, ...breadcrumbLinks]; // Always include the root '/'
+  };
+
   return (
     <div className="navbar">
+      <div className="breadcrumb-navigation">
+        {getBreadcrumbs()} {/* Render the breadcrumb links */}
+      </div>
       <div className="user-section">
         <div className="user-info" onClick={() => setDropdownOpen(!dropdownOpen)}>
           <AccountCircleOutlined className="user-icon" />

@@ -1,18 +1,38 @@
 .navbar {
   padding-top: 15px;
-  padding-bottom: 15px;
+  padding :15px 0px;
+  margin-bottom: 20px;
   border-bottom: 1px solid #dddddd30;
-  height: 20px;
   position: fixed;
   z-index: 1000;
-  min-width:calc(100% - 13vw ) ;
-  background-color: #152039;
+  min-width: calc(100% - 13vw);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.breadcrumb-navigation {
+  margin-left: 30px ;
+  display: flex;
+  align-items: center;
+  color: #AD9551;
+}
+
+.breadcrumb-link {
+  margin-right: 5px;
+  cursor: pointer;
+  color: #AD9551;
+  transition: color 0.3s;
+}
+
+.breadcrumb-link:hover {
+  color: #ffffff;
+}
+
 .user-section {
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
-  
 }
 
 .user-info {
