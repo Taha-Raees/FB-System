@@ -49,11 +49,11 @@ const Navbar = () => {
       const href = `/${pathSegments.slice(0, index + 1).join('/')}`; // Generate the href for each segment
       return (
         <span key={href} onClick={() => router.push(href)} className="breadcrumb-link">
-          \ {segment}
+          {segment} &gt;
         </span>
       );
     });
-    return [<span key="/" onClick={() => router.push('/')} className="breadcrumb-link">\ Dashboard</span>, ...breadcrumbLinks]; // Always include the root '/'
+    return [<span key="/" onClick={() => router.push('/')} className="breadcrumb-link">Dashboard &gt;</span>, ...breadcrumbLinks]; // Always include the root '/'
   };
 
   return (
