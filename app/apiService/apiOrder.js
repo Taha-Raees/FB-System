@@ -1,5 +1,5 @@
 // Base URL for your API - adjust accordingly if your API is hosted
-const BASE_URL = 'https://fb-be.onrender.com/orders';
+const BASE_URL = 'http://68.221.25.209:3001/orders';
 
 // Function to fetch all orders
 export const fetchOrders = async () => {
