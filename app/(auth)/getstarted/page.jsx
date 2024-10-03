@@ -41,26 +41,6 @@ const GetStarted = ({  }) => {
               <button onClick={handleGetStartedClick} className="button">
                 Get Started.
               </button>
-              <div className="download-section">
-                <h2>Download Our App</h2>
-                <div className="download-buttons">
-                  <Button
-                    variant="contained"
-                    startIcon={<Window/>}
-                    href="/download/Gg-System.exe"
-                    download
-                  >
-                    Windows
-                  </Button>
-                  <Button
-                    variant="contained"
-                    startIcon={<Android/>}
-                    href="/download/app-release.apk"
-                    download
-                  >
-                    Android
-                  </Button>
-                </div>
               </div>
             </div>
           </div>
