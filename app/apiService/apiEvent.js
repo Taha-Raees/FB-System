@@ -1,4 +1,4 @@
-const baseURL = 'https://fb-be.onrender.com1';
+const baseURL = 'https://fb-be.onrender.com';
 
 // Fetch all events
 export const fetchEvents = async () => {
