@@ -82,9 +82,13 @@ const Login = () => {
           />
           <button type="submit" className="loginButton">Log In</button>
           {isError && <p className="errorMessage">Incorrect username or password.</p>}
-          <button type="button" className="quickLoginButton" onClick={handleQuickLogin}>
-            Login for Recruiter
+          <div class="buttonWrapper" onClick={handleQuickLogin}>
+          <button type="button" className="quickLoginButton" >
+            Or Try Me
           </button>
+          </div>
+
+          
         </form>
       )}
     </div>
