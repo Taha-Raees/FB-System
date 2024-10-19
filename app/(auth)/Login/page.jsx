@@ -65,7 +65,7 @@ const Login = () => {
         </div>
       ) : (
         <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="loginForm">
-          <h1>Login</h1>
+          <h1>Login to Dashboard</h1>
           <input
             type="text"
             placeholder="Username"

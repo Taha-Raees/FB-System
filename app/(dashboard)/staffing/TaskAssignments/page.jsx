@@ -25,7 +25,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import './TaskAssignments.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTask, editTask, deleteTask } from '@/lib/context/store/taskSlice'; // Update path
+import { addTask, editTask, deleteTask } from '@/lib/context/slices/taskSlice'; // Update path
 
 const TaskAssignments = () => {
   const dispatch = useDispatch();

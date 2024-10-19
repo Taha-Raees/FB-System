@@ -9,8 +9,7 @@
   background-position: center;
   .loginForm {
       padding: 20px;
-      background-color: rgba(255, 255, 255, 0);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #AD9551;
       border-radius: 8px;
       text-align: center;
       width: 100%; // For responsiveness
@@ -43,8 +42,8 @@
       cursor: pointer;
 
       &:hover {
-          background-color: #a78322;
-      }
+        box-shadow: 0 0 20px rgb(181, 188, 47), 0 0 20px rgb(186, 160, 10); /* Enhanced glow effect */
+    }
   }
   
   .buttonWrapper {
@@ -53,7 +52,7 @@
     display: inline-block; /* Allow the wrapper to size around the button */
     border-radius: 4px; /* Apply border radius to the wrapper */
     overflow: hidden; /* Ensure the inner button does not overflow */
-    background: linear-gradient(45deg, #ff007f, #0abab5); /* Gradient background for border effect */
+    background: linear-gradient(45deg, #978827, #11064e); /* Gradient background for border effect */
     padding: 2px; /* Space for the border effect */
     .quickLoginButton {
       width: 100%;
@@ -72,7 +71,7 @@
   }
 
   &:hover {
-    box-shadow: 0 0 40px rgba(255, 0, 127, 1), 0 0 40px rgba(10, 186, 181, 1); /* Enhanced glow effect */
+    box-shadow: 0 0 20px rgb(181, 188, 47), 0 0 20px rgb(186, 160, 10); /* Enhanced glow effect */
 }
 
 // Add an active state for a pressed effect

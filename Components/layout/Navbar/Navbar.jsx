@@ -6,6 +6,7 @@ import AccountCircleOutlined from '@mui/icons-material/AccountCircleOutlined';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import './Navbar.scss';
 import { InputAdornment, TextField } from '@mui/material';
+import { useSelector } from 'react-redux'; // Add this import
 
 const Navbar = () => {
   const [username, setUsername] = useState('');
@@ -13,6 +14,7 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false); // State to toggle dropdown
   const router = useRouter();
   const pathname = usePathname(); // Get the current route
+  const sidebarCollapsed = useSelector(state => state.sidebar.collapsed); // Add this line
 
   // Load username and lastname from localStorage after the component has mounted
   useEffect(() => {
@@ -57,7 +59,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
+    <div className={`navbar ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="breadcrumb-navigation">
         {getBreadcrumbs()} {/* Render the breadcrumb links */}
       </div>

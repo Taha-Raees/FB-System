@@ -1,9 +1,23 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import DashboardContent from '@/Components/DashboardItem/DashboardContent/DashboardContent';
+import dynamic from 'next/dynamic';
+import { CircularProgress } from '@mui/material';
+import React from 'react';
 
-const Home = () => {
-  return <DashboardContent/>; // Render DashboardContent once signed in and not loading
+// Dynamically import DashboardContent with a loading spinner fallback
+const DashboardContent = dynamic(() => import('@/Components/DashboardItem/DashboardContent/DashboardContent'), {
+  loading: () => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <CircularProgress />
+    </div>
+  ),
+});
+
+const DashboardPage = () => {
+  return (
+    <div>
+      <DashboardContent /> {/* This will dynamically load the DashboardContent component */}
+    </div>
+  );
 };
 
-export default Home;
+export default DashboardPage;

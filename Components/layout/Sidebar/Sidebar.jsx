@@ -3,9 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Home, Event, Person, Inventory, Chat, AccountTree, Euro, Settings, ExitToApp, HelpOutline, AccountCircleOutlined, Menu } from '@mui/icons-material';
 import './Sidebar.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleSidebar } from '@/lib/context/slices/sidebarSlice';
 
 const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const dispatch = useDispatch();
+  const collapsed = useSelector(state => state.sidebar.collapsed);
   const [username, setUsername] = useState('');
   const [lastname, setLastname] = useState('');
   const router = useRouter();
@@ -38,9 +41,13 @@ const Sidebar = () => {
     }
   };
 
+  const handleToggleSidebar = () => {
+    dispatch(toggleSidebar());
+  };
+
   return (
     <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
-      <div className="logo" onClick={() => setCollapsed(!collapsed)}>
+      <div className="logo" onClick={handleToggleSidebar}>
         {collapsed ? <Menu /> : <img src="/images/Logo4.png" alt="Company Logo" width={200} height={200} />}
       </div>
       <div className="menu">

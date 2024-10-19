@@ -23,7 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector, useDispatch } from 'react-redux';
-import { addStaffMember, editStaffMember, deleteStaffMember } from '@/lib/context/store/staffSlice';
+import { addStaffMember, editStaffMember, deleteStaffMember } from '@/lib/context/slices/staffSlice';
 import './StaffDirectory.scss';
 const StaffDirectory = () => {
   const dispatch = useDispatch();
