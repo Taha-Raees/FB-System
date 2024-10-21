@@ -93,12 +93,6 @@ const Sidebar = () => {
         >
           <Chat /><span>Messages</span>
         </div>
-        <div
-          className={`menu-item ${pathname === '/settings' ? 'active' : ''}`}
-          onClick={() => handleMenuItemClick('Settings', '/settings')}
-        >
-          <Settings /><span>Settings</span>
-        </div>
       </div>
       
     </div>
