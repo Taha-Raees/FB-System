@@ -30,8 +30,7 @@ const DashboardContent = () => {
         const lastUpdated = localStorage.getItem('lastUpdated');
         const currentTime = new Date().getTime();
 
-        // Check if data is cached and not older than 1 hour
-        if (cachedData && lastUpdated && (currentTime - lastUpdated < 3600000)) {
+        if (cachedData && lastUpdated && (currentTime - lastUpdated < 36000)) {
           setOngoingEvents(cachedData.ongoingEvents);
           setUpcomingEvents(cachedData.upcomingEvents);
           setEventPosOrders(cachedData.eventPosOrders);
