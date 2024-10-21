@@ -1,4 +1,5 @@
 .navbar {
+  position: fixed;
   padding :15px 0px;
   border-bottom: 1px solid #dddddd30;
   min-width: calc(100% - 13vw);
@@ -6,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
   transition: min-width 0.5s ease, padding-left 0.5s ease;
-
+  background-color: #152039;
   &.sidebar-collapsed {
     min-width: calc(100% - 3vw);
   }
@@ -79,7 +80,6 @@
   .navbar {
     position: fixed;
     min-width: calc(100% - 1.5vw);
-    background-color: rgba(21, 32, 57, 0.779);
     padding-left: 1.5vw;
 
     .breadcrumb-navigation {

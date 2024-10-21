@@ -15,6 +15,13 @@ html, body, :root {
 
 
 
+ 
+    .child{
+      margin-top: 40px;
+    }
+
+  
+
 .content {
   flex: 1 2;
   background: transparent;
