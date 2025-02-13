@@ -57,17 +57,15 @@
     .quickLoginButton {
       width: 100%;
       padding: 10px;
-      background-color: #e0e0e075; /* Background color of the button */
-      color: rgb(255, 255, 255); /* Text color */
+      background-color: #e0e0e0d8; /* Background color of the button */
+      color: rgb(29, 19, 123); /* Text color */
       border: none; /* No solid border */
       border-radius: 4px; /* Rounded corners */
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.3s ease;
   
-      /* Glow effect */
-      box-shadow: 0 0 10px rgba(255, 0, 127, 0.5), 0 0 20px rgba(10, 186, 181, 0.5);
+      
   
-      // Add an active state for a pressed effect
   }
 
   &:hover {

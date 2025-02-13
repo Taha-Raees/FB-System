@@ -84,7 +84,7 @@ const Login = () => {
           {isError && <p className="errorMessage">Incorrect username or password.</p>}
           <div class="buttonWrapper" onClick={handleQuickLogin}>
           <button type="button" className="quickLoginButton" >
-            Or Try Me
+            Quick Login
           </button>
           </div>
 

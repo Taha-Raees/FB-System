@@ -36,7 +36,7 @@ const ChatBox = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            model:'deepseek/deepseek-r1:free',
+            model:'google/gemini-2.0-flash-lite-preview-02-05:free',
             messages: [
                 {
                   role: 'user',
