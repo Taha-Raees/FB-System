@@ -8,7 +8,7 @@ import Navbar from '@/Components/layout/Navbar/Navbar';
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Loading from '@/Components/ui/Loading2/Loading2';
-
+import ChatBox from '@/Components/layout/ChatBot/ChatBox';
 
 const DashboardLayout = ({ children }) => {
   const router = useRouter();
@@ -38,6 +38,7 @@ const DashboardLayout = ({ children }) => {
       </div>
       <Analytics />
       <SpeedInsights />
+      <ChatBox />
     </Provider>
   );
 };
