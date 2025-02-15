@@ -12,19 +12,14 @@ import ChatBox from '@/Components/layout/ChatBot/ChatBox';
 
 const DashboardLayout = ({ children }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // State to manage loading indicator
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const isSignedIn = localStorage.getItem('isSignedIn');
-    if (isSignedIn !== 'true') {
-      router.push('/getstarted'); // Redirect to get started page if not signed in
-    } else {
-      setLoading(false); // Hide loading once the check is complete and user is signed in
-    }
+    setLoading(false);
   }, [router]);
 
   if (loading) {
-    return <Loading/>; // Show loading screen while checking the sign-in status
+    return <Loading/>;
   }
 
   return (

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 const GetStarted = ({  }) => {
   const router = useRouter();
   const handleGetStartedClick = () => {
-    router.push('/Login')
+    router.push('/');
   };
   const routesToPrefetch = [
     '/',
@@ -18,7 +18,6 @@ const GetStarted = ({  }) => {
     '/workflow',
     '/finance',
     '/messages',
-    '/login',
   ];
 
   // Prefetch all routes when the component is mounted

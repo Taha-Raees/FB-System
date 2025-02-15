@@ -16,49 +16,34 @@ const ChatBox = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputMessage.trim() || isLoading) return;
-
+  
+    const userMessage = inputMessage;
+    setInputMessage('');
+    setMessages(prev => [...prev, { text: userMessage, isBot: false }]);
+    setIsLoading(true);
+    setError('');
+  
     try {
-      setIsLoading(true);
-      setError('');
-      
-      // Store user message temporarily
-      const userMessage = inputMessage;
-      // Clear input immediately
-      setInputMessage('');
-      
-      // Add user message to state
-      setMessages(prev => [...prev, { text: userMessage, isBot: false }]);
-
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const response = await fetch('http://localhost:5678/webhook-test/chatbot', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            model:'google/gemini-2.0-flash-lite-preview-02-05:free',
-            messages: [
-                {
-                  role: 'user',
-                  content: userMessage
-                }
-              ]
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage })
       });
-
-      if (!response.ok) throw new Error('API request failed');
-      
+  
+      if (!response.ok) throw new Error('n8n webhook request failed');
+  
       const data = await response.json();
-      const botResponse = data.choices[0].message.content;
-
+      const botResponse = data.reply;
+  
       setMessages(prev => [...prev, { text: botResponse, isBot: true }]);
     } catch (err) {
       setError('Failed to get response. Please try again.');
-      console.error('API Error:', err);
+      console.error('n8n Webhook Error:', err);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="chat-container">
